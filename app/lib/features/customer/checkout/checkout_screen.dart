@@ -112,7 +112,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             child: Column(children: [
               FnKV('مجموع المنتجات', Fmt.money(draft.subtotal)),
               FnKV('التوصيل', draft.delivery == 0 ? 'مجاني' : Fmt.money(draft.delivery)),
-              if (draft.coupon != null) FnKV('كوبون ${draft.coupon}', 'يُحتسب عند التأكيد'),
+              if (draft.discount > 0)
+                FnKV('خصم الكوبون ${draft.coupon ?? ''}', '− ${Fmt.money(draft.discount)}', valueColor: FnColors.primary),
               const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: FnDivider()),
               FnKV('الإجمالي', Fmt.money(draft.total), strong: true),
             ]),
