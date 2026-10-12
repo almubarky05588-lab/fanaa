@@ -5,7 +5,7 @@ import os, plistlib, re, sys
 
 ROOT = sys.argv[1] if len(sys.argv) > 1 else "ios"
 MAPS_KEY = os.environ.get("GOOGLE_MAPS_IOS_KEY", "").strip() or "NO_KEY_SET"
-MIN_IOS = "14.0"
+MIN_IOS = "15.0"  # Flutter 3.47 و GoogleMaps 9 يتطلبان iOS 15
 
 p = os.path.join(ROOT, "Runner", "Info.plist")
 with open(p, "rb") as f:
