@@ -6,6 +6,7 @@ import '../../core/widgets/fn_widgets.dart';
 import '../../data/local/guest_cart.dart';
 import '../../data/models/profile.dart';
 import 'phone_login_screen.dart' show LangPill;
+import '../../core/i18n/i18n.dart';
 
 /// 01 اختيار نوع الحساب
 /// المستخدم يدخل مباشرة كزائر (التسجيل عند الشراء)، وصاحب المتجر يسجّل أولًا.
@@ -40,11 +41,11 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('نوع الحساب', style: FnText.label13.muted),
+                  Text(tr('نوع الحساب'), style: FnText.label13.muted),
                   const SizedBox(height: 10),
                   _Option(
-                    title: 'مستخدم',
-                    subtitle: 'تصفّح المشاتل واطلب نباتاتك المفضلة',
+                    title: tr('مستخدم'),
+                    subtitle: tr('تصفّح المشاتل واطلب نباتاتك المفضلة'),
                     icon: Icons.person_outline_rounded,
                     iconBg: FnColors.soft,
                     iconColor: FnColors.deep,
@@ -53,8 +54,8 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
                   ),
                   const SizedBox(height: 12),
                   _Option(
-                    title: 'صاحب متجر',
-                    subtitle: 'اعرض منتجاتك وأدِر طلباتك بسهولة',
+                    title: tr('صاحب متجر'),
+                    subtitle: tr('اعرض منتجاتك وأدِر طلباتك بسهولة'),
                     icon: Icons.storefront_outlined,
                     iconBg: const Color(0xFFF6E9E1),
                     iconColor: FnColors.clay,
@@ -63,7 +64,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
                   ),
                   const Spacer(),
                   // arrow_forward ينقلبه Flutter في العربية فيشير لليسار ← (للأمام)
-                  FnButton(label: 'تأكيد', icon: const Icon(Icons.arrow_forward_rounded, size: 18), onPressed: _confirm),
+                  FnButton(label: tr('تأكيد'), icon: const Icon(Icons.arrow_forward_rounded, size: 18), onPressed: _confirm),
                   const SizedBox(height: 14),
                   const Center(child: LangPill()),
                 ],
@@ -105,9 +106,9 @@ class _Hero extends StatelessWidget {
                   child: const FnLogoMark(size: 40, color: FnColors.primary, gradient: false),
                 ),
                 const SizedBox(height: 22),
-                Text('أهلًا بك في فناء', style: FnText.display28.onDark),
+                Text(tr('أهلًا بك في فناء'), style: FnText.display28.onDark),
                 const SizedBox(height: 4),
-                Text('سوق النباتات الأول — اختر نوع حسابك للمتابعة', style: FnText.body15.soft),
+                Text(tr('سوق النباتات الأول — اختر نوع حسابك للمتابعة'), style: FnText.body15.soft),
               ]),
             ),
           ),

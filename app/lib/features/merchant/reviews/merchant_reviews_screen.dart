@@ -6,6 +6,7 @@ import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/models/catalog.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../dashboard/merchant_dashboard_screen.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// تقييمات العملاء — لصاحب المتجر
 class MerchantReviewsScreen extends ConsumerWidget {
@@ -22,7 +23,7 @@ class _Reviews extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final async = ref.watch(nurseryReviewsProvider(n.id));
     return Scaffold(
-      appBar: const FnAppBar(title: 'تقييمات العملاء'),
+      appBar: FnAppBar(title: tr('تقييمات العملاء')),
       body: async.when(
         loading: () => const FnLoading(),
         error: (_, __) => FnError(onRetry: () => ref.invalidate(nurseryReviewsProvider(n.id))),
@@ -44,7 +45,7 @@ class _Reviews extends ConsumerWidget {
                       Text(n.ratingAvg.toStringAsFixed(1), style: FnText.display28.deep),
                       _Stars(n.ratingAvg.round()),
                       const SizedBox(height: 4),
-                      Text('${n.ratingCount} تقييم', style: FnText.caption11.muted),
+                      Text(tr('{0} تقييم', [n.ratingCount]), style: FnText.caption11.muted),
                     ]),
                     const SizedBox(width: 20),
                     Expanded(child: Column(children: [
@@ -68,9 +69,9 @@ class _Reviews extends ConsumerWidget {
                 ),
                 const SizedBox(height: 14),
                 if (list.isEmpty)
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(top: 40),
-                    child: FnEmpty(title: 'لا توجد تقييمات بعد', subtitle: 'تظهر هنا تقييمات العملاء بعد توصيل طلباتهم',
+                    child: FnEmpty(title: tr('لا توجد تقييمات بعد'), subtitle: tr('تظهر هنا تقييمات العملاء بعد توصيل طلباتهم'),
                         icon: Icons.star_outline_rounded),
                   )
                 else
@@ -80,7 +81,7 @@ class _Reviews extends ConsumerWidget {
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Row(children: [
                           Expanded(child: Text(
-                              (r['profiles']?['full_name'] as String?)?.isNotEmpty == true ? r['profiles']['full_name'] : 'عميل',
+                              (r['profiles']?['full_name'] as String?)?.isNotEmpty == true ? r['profiles']['full_name'] : tr('عميل'),
                               style: FnText.bodyStrong15)),
                           _Stars((r['rating'] as num).toInt()),
                         ]),

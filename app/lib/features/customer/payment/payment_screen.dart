@@ -6,6 +6,7 @@ import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../checkout/checkout_state.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// 11 بوابة الدفع
 class PaymentScreen extends ConsumerStatefulWidget {
@@ -43,9 +44,9 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     final d = ref.watch(checkoutDraftProvider);
-    if (d == null) return const Scaffold(body: FnEmpty(title: 'لا يوجد طلب'));
+    if (d == null) return Scaffold(body: FnEmpty(title: tr('لا يوجد طلب')));
     return Scaffold(
-      appBar: const FnAppBar(title: 'الدفع'),
+      appBar: FnAppBar(title: tr('الدفع')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(FnSpace.page, 8, FnSpace.page, 24),
         children: [
@@ -53,13 +54,13 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
             padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
             decoration: BoxDecoration(color: FnColors.deep, borderRadius: BorderRadius.circular(22)),
             child: Column(children: [
-              Text('المبلغ المستحق', style: FnText.caption11.lime),
+              Text(tr('المبلغ المستحق'), style: FnText.caption11.lime),
               Text(Fmt.moneyShort(d.total), style: FnText.display28.onDark),
               Text(d.nurseryName, style: FnText.caption11.soft),
             ]),
           ),
           const SizedBox(height: 14),
-          Text('اختر طريقة الدفع', style: FnText.label13.muted),
+          Text(tr('اختر طريقة الدفع'), style: FnText.label13.muted),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.all(4),
@@ -78,14 +79,14 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
             child: Row(children: [
               const Icon(Icons.lock_outline_rounded, size: 14, color: FnColors.deep),
               const SizedBox(width: 8),
-              Expanded(child: Text(_m.needsCard ? 'تُدخل بيانات البطاقة في الخطوة التالية بشكل آمن' : 'دفع آمن ومشفّر',
+              Expanded(child: Text(_m.needsCard ? tr('تُدخل بيانات البطاقة في الخطوة التالية بشكل آمن') : tr('دفع آمن ومشفّر'),
                   style: FnText.caption11.deep)),
             ]),
           ),
         ],
       ),
       bottomNavigationBar: FnBottomBar(
-        child: FnButton(label: _m.needsCard ? 'المتابعة' : 'ادفع ${Fmt.moneyShort(d.total)}', loading: _loading, onPressed: _pay),
+        child: FnButton(label: _m.needsCard ? tr('المتابعة') : tr('ادفع {0}', [Fmt.moneyShort(d.total)]), loading: _loading, onPressed: _pay),
       ),
     );
   }

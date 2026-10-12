@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../core/config/env.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/widgets/fn_widgets.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// الدعم والمساعدة
 class SupportScreen extends StatelessWidget {
@@ -20,20 +21,20 @@ class SupportScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: const FnAppBar(title: 'الدعم والمساعدة'),
+        appBar: FnAppBar(title: tr('الدعم والمساعدة')),
         body: ListView(
           padding: const EdgeInsets.fromLTRB(FnSpace.page, 6, FnSpace.page, 24),
           children: [
             Row(children: [
-              _Contact(icon: Icons.chat_outlined, label: 'واتساب',
+              _Contact(icon: Icons.chat_outlined, label: tr('واتساب'),
                   onTap: () => launchUrl(Uri.parse('https://wa.me/${Env.supportWhatsapp}'), mode: LaunchMode.externalApplication)),
               const SizedBox(width: 10),
-              _Contact(icon: Icons.call_outlined, label: 'اتصال', onTap: () => launchUrl(Uri.parse('tel:${Env.supportPhone}'))),
+              _Contact(icon: Icons.call_outlined, label: tr('اتصال'), onTap: () => launchUrl(Uri.parse('tel:${Env.supportPhone}'))),
               const SizedBox(width: 10),
-              _Contact(icon: Icons.mail_outline_rounded, label: 'البريد', onTap: () => launchUrl(Uri.parse('mailto:${Env.supportEmail}'))),
+              _Contact(icon: Icons.mail_outline_rounded, label: tr('البريد'), onTap: () => launchUrl(Uri.parse('mailto:${Env.supportEmail}'))),
             ]),
             const SizedBox(height: 18),
-            Text('الأسئلة الشائعة', style: FnText.label13.muted),
+            Text(tr('الأسئلة الشائعة'), style: FnText.label13.muted),
             const SizedBox(height: 8),
             Container(
               decoration: BoxDecoration(color: FnColors.surface, borderRadius: BorderRadius.circular(20)),
@@ -46,9 +47,9 @@ class SupportScreen extends StatelessWidget {
                       tilePadding: const EdgeInsets.symmetric(horizontal: 16),
                       childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
                       iconColor: FnColors.deep, collapsedIconColor: FnColors.faint,
-                      title: Text(_faq[i].$1, style: FnText.bodyStrong15),
+                      title: Text(tr(_faq[i].$1), style: FnText.bodyStrong15),
                       expandedAlignment: AlignmentDirectional.centerStart,
-                      children: [Text(_faq[i].$2, style: FnText.body15.muted)],
+                      children: [Text(tr(_faq[i].$2), style: FnText.body15.muted)],
                     ),
                     if (i < _faq.length - 1) const FnDivider(),
                   ],
@@ -60,9 +61,9 @@ class SupportScreen extends StatelessWidget {
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(color: FnColors.surface, borderRadius: BorderRadius.circular(20)),
               child: Column(children: [
-                FnListRow(title: 'سياسة الخصوصية', icon: Icons.privacy_tip_outlined, onTap: () => context.push('/legal/privacy')),
+                FnListRow(title: tr('سياسة الخصوصية'), icon: Icons.privacy_tip_outlined, onTap: () => context.push('/legal/privacy')),
                 const FnDivider(),
-                FnListRow(title: 'الشروط والأحكام', icon: Icons.description_outlined, onTap: () => context.push('/legal/terms')),
+                FnListRow(title: tr('الشروط والأحكام'), icon: Icons.description_outlined, onTap: () => context.push('/legal/terms')),
               ]),
             ),
           ],

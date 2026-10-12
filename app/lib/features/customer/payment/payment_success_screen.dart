@@ -7,6 +7,7 @@ import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/models/order.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../checkout/checkout_state.dart';
+import '../../../core/i18n/i18n.dart';
 
 final orderProvider = FutureProvider.family<Order?, String>((ref, id) => ref.watch(orderRepoProvider).order(id));
 
@@ -36,26 +37,26 @@ class PaymentSuccessScreen extends ConsumerWidget {
                 child: const Icon(Icons.check_rounded, size: 56, color: FnColors.deep),
               ),
               const SizedBox(height: 18),
-              Text(method == 'cod' || !paid ? 'تم تأكيد طلبك' : 'تم الدفع بنجاح', style: FnText.display28.onDark),
+              Text(method == 'cod' || !paid ? tr('تم تأكيد طلبك') : tr('تم الدفع بنجاح'), style: FnText.display28.onDark),
               const SizedBox(height: 6),
-              Text('استلم المشتل طلبك وسيبدأ التجهيز خلال دقائق', style: FnText.body15.soft, textAlign: TextAlign.center),
+              Text(tr('استلم المشتل طلبك وسيبدأ التجهيز خلال دقائق'), style: FnText.body15.soft, textAlign: TextAlign.center),
               const SizedBox(height: 22),
               FnCard(
                 radius: 22,
                 padding: const EdgeInsets.all(18),
                 child: Column(children: [
-                  FnKV('رقم الطلب', o == null ? '—' : '#${o.orderNumber}'),
-                  FnKV('المشتل', o?.nursery?.name ?? '—'),
-                  FnKV('طريقة الدفع', methodTitle),
-                  FnKV('الوصول المتوقع', '٤٥ دقيقة'),
+                  FnKV(tr('رقم الطلب'), o == null ? '—' : '#${o.orderNumber}'),
+                  FnKV(tr('المشتل'), o?.nursery?.name ?? '—'),
+                  FnKV(tr('طريقة الدفع'), methodTitle),
+                  FnKV(tr('الوصول المتوقع'), tr('٤٥ دقيقة')),
                   const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: FnDivider()),
-                  FnKV(paid ? 'المدفوع' : 'المستحق', o == null ? '—' : Fmt.money(o.total), strong: true),
+                  FnKV(paid ? tr('المدفوع') : tr('المستحق'), o == null ? '—' : Fmt.money(o.total), strong: true),
                 ]),
               ),
               const Spacer(),
-              FnButton(label: 'تتبّع الطلب', color: FnColors.lime, textColor: FnColors.deep, onPressed: () => context.go('/order/$orderId')),
+              FnButton(label: tr('تتبّع الطلب'), color: FnColors.lime, textColor: FnColors.deep, onPressed: () => context.go('/order/$orderId')),
               const SizedBox(height: 10),
-              FnGhostButton(label: 'العودة للرئيسية', borderColor: FnColors.primary, textColor: FnColors.surface, height: 58,
+              FnGhostButton(label: tr('العودة للرئيسية'), borderColor: FnColors.primary, textColor: FnColors.surface, height: 58,
                   onPressed: () => context.go('/home')),
               const SizedBox(height: 12),
             ]),

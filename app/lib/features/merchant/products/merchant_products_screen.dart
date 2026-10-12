@@ -7,6 +7,7 @@ import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/models/catalog.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../dashboard/merchant_dashboard_screen.dart';
+import '../../../core/i18n/i18n.dart';
 
 final merchantProductsProvider = FutureProvider.family<List<Product>, String>(
     (ref, nid) => ref.watch(catalogRepoProvider).merchantProducts(nid));
@@ -52,7 +53,7 @@ class _ProductsState extends ConsumerState<_Products> {
 
     return Scaffold(
       appBar: FnAppBar(
-        title: 'المنتجات', showBack: false,
+        title: tr('المنتجات'), showBack: false,
         action: GestureDetector(
           onTap: () async {
             await context.push('/m/products/new');
@@ -62,7 +63,7 @@ class _ProductsState extends ConsumerState<_Products> {
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
             decoration: BoxDecoration(color: FnColors.deep, borderRadius: BorderRadius.circular(14)),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
-              Text('إضافة', style: FnText.label13.onDark),
+              Text(tr('إضافة'), style: FnText.label13.onDark),
               const SizedBox(width: 6),
               const Icon(Icons.add_rounded, size: 16, color: Colors.white),
             ]),
@@ -74,7 +75,7 @@ class _ProductsState extends ConsumerState<_Products> {
           padding: const EdgeInsets.fromLTRB(FnSpace.page, 6, FnSpace.page, 0),
           child: TextField(
             onChanged: (v) => setState(() => _q = v.trim()),
-            decoration: const InputDecoration(hintText: 'ابحث في منتجاتك', prefixIcon: Icon(Icons.search_rounded, color: FnColors.faint)),
+            decoration: InputDecoration(hintText: tr('ابحث في منتجاتك'), prefixIcon: Icon(Icons.search_rounded, color: FnColors.faint)),
           ),
         ),
         SizedBox(
@@ -83,7 +84,7 @@ class _ProductsState extends ConsumerState<_Products> {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.fromLTRB(FnSpace.page, 10, FnSpace.page, 6),
             children: [
-              for (final (f, l) in [(_F.all, 'الكل'), (_F.available, 'متوفر'), (_F.out, 'نفد'), (_F.hidden, 'مخفي')])
+              for (final (f, l) in [(_F.all, tr('الكل')), (_F.available, tr('متوفر')), (_F.out, tr('نفد')), (_F.hidden, tr('مخفي'))])
                 Padding(
                   padding: const EdgeInsetsDirectional.only(end: 8),
                   child: FnChip(small: true, label: '$l ${c(f)}', selected: _f == f, onTap: () => setState(() => _f = f)),
@@ -96,8 +97,8 @@ class _ProductsState extends ConsumerState<_Products> {
               ? const FnLoading()
               : shown.isEmpty
                   ? FnEmpty(
-                      title: all.isEmpty ? 'أضف أول منتج' : 'لا توجد منتجات', icon: Icons.local_florist_outlined,
-                      action: all.isEmpty ? SizedBox(width: 180, child: FnButton(label: 'إضافة منتج', height: 50, onPressed: () => context.push('/m/products/new'))) : null,
+                      title: all.isEmpty ? tr('أضف أول منتج') : tr('لا توجد منتجات'), icon: Icons.local_florist_outlined,
+                      action: all.isEmpty ? SizedBox(width: 180, child: FnButton(label: tr('إضافة منتج'), height: 50, onPressed: () => context.push('/m/products/new'))) : null,
                     )
                   : ListView.separated(
                       padding: const EdgeInsets.fromLTRB(FnSpace.page, 4, FnSpace.page, 24),
@@ -115,12 +116,12 @@ class _ProductsState extends ConsumerState<_Products> {
                               Text(p.name, style: FnText.bodyStrong15),
                               const SizedBox(height: 4),
                               Row(children: [
-                                Flexible(child: Text('${p.categoryName ?? 'بدون قسم'} • ${Fmt.moneyShort(p.fromPrice)}', style: FnText.caption11.muted,
+                                Flexible(child: Text('${p.categoryName ?? tr('بدون قسم')} • ${Fmt.moneyShort(p.fromPrice)}', style: FnText.caption11.muted,
                                     overflow: TextOverflow.ellipsis)),
                                 const SizedBox(width: 8),
                                 st > 0
-                                    ? FnBadge('متوفر $st')
-                                    : const FnBadge('نفد المخزون', bg: FnColors.clay, fg: Colors.white),
+                                    ? FnBadge(tr('متوفر {0}', [st]))
+                                    : FnBadge(tr('نفد المخزون'), bg: FnColors.clay, fg: Colors.white),
                               ]),
                             ])),
                             FnSwitch(

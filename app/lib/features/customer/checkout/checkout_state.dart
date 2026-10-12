@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/models/profile.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// مسوّدة الطلب بين شاشة إتمام الطلب وشاشة الدفع
 class CheckoutDraft {
@@ -54,19 +55,19 @@ extension PayMethodX on PayMethod {
       };
   String get title => switch (this) {
         PayMethod.applePay => 'Apple Pay',
-        PayMethod.mada => 'مدى',
-        PayMethod.creditCard => 'بطاقة ائتمانية',
+        PayMethod.mada => tr('مدى'),
+        PayMethod.creditCard => tr('بطاقة ائتمانية'),
         PayMethod.stcPay => 'STC Pay',
-        PayMethod.tabby => 'تابي',
-        PayMethod.cod => 'الدفع عند الاستلام',
+        PayMethod.tabby => tr('تابي'),
+        PayMethod.cod => tr('الدفع عند الاستلام'),
       };
   String get subtitle => switch (this) {
-        PayMethod.applePay => 'الدفع بلمسة واحدة',
-        PayMethod.mada => 'بطاقة مدى البنكية',
-        PayMethod.creditCard => 'فيزا / ماستركارد',
-        PayMethod.stcPay => 'محفظة إلكترونية',
-        PayMethod.tabby => '٤ دفعات بدون فوائد',
-        PayMethod.cod => 'نقدًا أو شبكة',
+        PayMethod.applePay => tr('الدفع بلمسة واحدة'),
+        PayMethod.mada => tr('بطاقة مدى البنكية'),
+        PayMethod.creditCard => tr('فيزا / ماستركارد'),
+        PayMethod.stcPay => tr('محفظة إلكترونية'),
+        PayMethod.tabby => tr('٤ دفعات بدون فوائد'),
+        PayMethod.cod => tr('نقدًا أو شبكة'),
       };
   bool get needsCard => this == PayMethod.mada || this == PayMethod.creditCard;
 }

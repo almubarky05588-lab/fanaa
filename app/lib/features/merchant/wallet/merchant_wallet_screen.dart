@@ -8,6 +8,7 @@ import '../../../data/models/catalog.dart';
 import '../../../data/models/order.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../dashboard/merchant_dashboard_screen.dart';
+import '../../../core/i18n/i18n.dart';
 
 final _walletProvider = FutureProvider.family<Map<String, dynamic>, String>((ref, nid) => ref.watch(orderRepoProvider).wallet(nid));
 
@@ -30,16 +31,16 @@ class _Wallet extends ConsumerWidget {
       builder: (ctx) => Padding(
         padding: EdgeInsets.fromLTRB(24, 20, 24, MediaQuery.viewInsetsOf(ctx).bottom + 24),
         child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('طلب سحب', style: FnText.heading18),
-          Text('الرصيد المتاح ${Fmt.money(balance)}', style: FnText.caption11.muted),
+          Text(tr('طلب سحب'), style: FnText.heading18),
+          Text(tr('الرصيد المتاح {0}', [Fmt.money(balance)]), style: FnText.caption11.muted),
           const SizedBox(height: 14),
           TextField(controller: amount, keyboardType: TextInputType.number, inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              decoration: const InputDecoration(hintText: 'المبلغ', fillColor: FnColors.bgBase)),
+              decoration: InputDecoration(hintText: tr('المبلغ'), fillColor: FnColors.bgBase)),
           const SizedBox(height: 10),
-          TextField(controller: iban, decoration: const InputDecoration(hintText: 'آخر ٤ أرقام من الآيبان', fillColor: FnColors.bgBase),
+          TextField(controller: iban, decoration: InputDecoration(hintText: tr('آخر ٤ أرقام من الآيبان'), fillColor: FnColors.bgBase),
               keyboardType: TextInputType.number, inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(4)]),
           const SizedBox(height: 16),
-          FnButton(label: 'تأكيد الطلب', onPressed: () async {
+          FnButton(label: tr('تأكيد الطلب'), onPressed: () async {
             final a = double.tryParse(amount.text) ?? 0;
             if (a <= 0 || iban.text.length != 4) return;
             try {
@@ -54,7 +55,7 @@ class _Wallet extends ConsumerWidget {
     );
     if (ok == true) {
       ref.invalidate(_walletProvider(n.id));
-      if (context.mounted) showFnSnack(context, 'تم استلام طلب السحب');
+      if (context.mounted) showFnSnack(context, tr('تم استلام طلب السحب'));
     }
   }
 
@@ -68,7 +69,7 @@ class _Wallet extends ConsumerWidget {
     final monthComm = month.fold<double>(0, (s, o) => s + o.commission);
 
     return Scaffold(
-      appBar: const FnAppBar(title: 'المحفظة', showBack: false),
+      appBar: FnAppBar(title: tr('المحفظة'), showBack: false),
       body: w.when(
         loading: () => const FnLoading(),
         error: (_, __) => FnError(onRetry: () => ref.invalidate(_walletProvider(n.id))),
@@ -86,17 +87,17 @@ class _Wallet extends ConsumerWidget {
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(color: FnColors.deep, borderRadius: BorderRadius.circular(24), boxShadow: FnShadow.raised),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text('الرصيد المتاح للسحب', style: FnText.caption11.lime),
+                    Text(tr('الرصيد المتاح للسحب'), style: FnText.caption11.lime),
                     Text(Fmt.money(bal), style: FnText.display28.onDark),
                     const SizedBox(height: 14),
                     Row(children: [
-                      Expanded(child: Text('التحويلات تتم كل خميس', style: FnText.caption11.soft)),
+                      Expanded(child: Text(tr('التحويلات تتم كل خميس'), style: FnText.caption11.soft)),
                       GestureDetector(
                         onTap: bal <= 0 ? null : () => _withdraw(context, ref, bal),
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                           decoration: BoxDecoration(color: bal <= 0 ? FnColors.lime.withValues(alpha: .5) : FnColors.lime, borderRadius: BorderRadius.circular(14)),
-                          child: Text('طلب سحب', style: FnText.label13.deep),
+                          child: Text(tr('طلب سحب'), style: FnText.label13.deep),
                         ),
                       ),
                     ]),
@@ -104,17 +105,17 @@ class _Wallet extends ConsumerWidget {
                 ),
                 const SizedBox(height: 12),
                 Row(children: [
-                  _S(Fmt.moneyShort(monthSales), 'مبيعات الشهر'),
+                  _S(Fmt.moneyShort(monthSales), tr('مبيعات الشهر')),
                   const SizedBox(width: 10),
-                  _S(Fmt.moneyShort(monthComm), 'عمولة المنصة'),
+                  _S(Fmt.moneyShort(monthComm), tr('عمولة المنصة')),
                   const SizedBox(width: 10),
-                  _S(Fmt.moneyShort(pending), 'قيد التحويل'),
+                  _S(Fmt.moneyShort(pending), tr('قيد التحويل')),
                 ]),
                 const SizedBox(height: 18),
-                const FnSectionTitle('آخر الحركات'),
+                FnSectionTitle(tr('آخر الحركات')),
                 const SizedBox(height: 10),
                 if (tx.isEmpty)
-                  FnCard(child: Center(child: Text('لا توجد حركات بعد', style: FnText.body15.muted)))
+                  FnCard(child: Center(child: Text(tr('لا توجد حركات بعد'), style: FnText.body15.muted)))
                 else
                   Container(
                     padding: const EdgeInsets.all(4),
@@ -145,11 +146,11 @@ class _Wallet extends ConsumerWidget {
   }
 
   String _typeLabel(String t) => switch (t) {
-        'order_credit' => 'تحصيل طلب',
-        'commission' => 'عمولة المنصة',
-        'payout' => 'تحويل بنكي',
-        'refund' => 'استرداد',
-        _ => 'تسوية',
+        'order_credit' => tr('تحصيل طلب'),
+        'commission' => tr('عمولة المنصة'),
+        'payout' => tr('تحويل بنكي'),
+        'refund' => tr('استرداد'),
+        _ => tr('تسوية'),
       };
 }
 

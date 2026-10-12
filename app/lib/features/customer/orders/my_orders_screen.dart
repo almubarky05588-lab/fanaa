@@ -8,6 +8,7 @@ import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/models/order.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../../common/guest_login_prompt.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// طلباتي
 class MyOrdersScreen extends ConsumerWidget {
@@ -18,10 +19,10 @@ class MyOrdersScreen extends ConsumerWidget {
     final user = ref.watch(currentUserProvider);
     if (user == null) {
       return Scaffold(
-        appBar: FnAppBar(title: 'طلباتي', showBack: !isTab),
-        body: const GuestLoginPrompt(
-          title: 'سجّل دخولك لعرض طلباتك',
-          subtitle: 'تابع طلباتك وفواتيرك بعد تسجيل الدخول برقم جوالك',
+        appBar: FnAppBar(title: tr('طلباتي'), showBack: !isTab),
+        body: GuestLoginPrompt(
+          title: tr('سجّل دخولك لعرض طلباتك'),
+          subtitle: tr('تابع طلباتك وفواتيرك بعد تسجيل الدخول برقم جوالك'),
           from: '/orders',
           icon: Icons.receipt_long_outlined,
         ),
@@ -29,14 +30,14 @@ class MyOrdersScreen extends ConsumerWidget {
     }
     final orders = ref.watch(myOrdersProvider);
     return Scaffold(
-      appBar: FnAppBar(title: 'طلباتي', showBack: !isTab),
+      appBar: FnAppBar(title: tr('طلباتي'), showBack: !isTab),
       body: orders.when(
         loading: () => const FnLoading(),
         error: (_, __) => FnError(onRetry: () => ref.invalidate(myOrdersProvider)),
         data: (list) => list.isEmpty
             ? FnEmpty(
-                title: 'لا توجد طلبات بعد', subtitle: 'طلباتك ستظهر هنا', icon: Icons.receipt_long_outlined,
-                action: SizedBox(width: 180, child: FnButton(label: 'ابدأ التسوّق', height: 50, onPressed: () => context.go('/stores'))),
+                title: tr('لا توجد طلبات بعد'), subtitle: tr('طلباتك ستظهر هنا'), icon: Icons.receipt_long_outlined,
+                action: SizedBox(width: 180, child: FnButton(label: tr('ابدأ التسوّق'), height: 50, onPressed: () => context.go('/stores'))),
               )
             : RefreshIndicator(
                 color: FnColors.primary,
@@ -67,7 +68,7 @@ class _OrderCard extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text('#${o.orderNumber} — ${o.nursery?.name ?? ''}', style: FnText.bodyStrong15, maxLines: 1, overflow: TextOverflow.ellipsis),
-          Text('${o.itemCount} منتجات • ${Fmt.date(o.placedAt)}', style: FnText.caption11.muted),
+          Text(tr('{0} منتجات • {1}', [o.itemCount, Fmt.date(o.placedAt)]), style: FnText.caption11.muted),
         ])),
         Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
           FnBadge(o.status.labelAr, bg: bg, fg: fg),

@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/config/env.dart';
+import 'core/i18n/i18n.dart';
 import 'core/router/app_router.dart';
 import 'core/supabase/supabase_client.dart';
 import 'core/theme/app_theme.dart';
@@ -29,22 +30,30 @@ class FenaaApp extends ConsumerWidget {
     });
 
     final router = ref.watch(appRouterProvider);
-    return MaterialApp.router(
-      title: Env.appName,
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light,
-      routerConfig: router,
-      locale: const Locale('ar', 'SA'),
-      supportedLocales: const [Locale('ar', 'SA'), Locale('en')],
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      builder: (context, child) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: child ?? const SizedBox.shrink(),
-      ),
+    // تغيير اللغة يعيد بناء التطبيق كاملًا (المفتاح) مع الحفاظ على الشاشة الحالية في الموجّه
+    return ValueListenableBuilder<String>(
+      valueListenable: AppLang.code,
+      builder: (context, lang, _) {
+        final en = lang == 'en';
+        return MaterialApp.router(
+          key: ValueKey(lang),
+          title: en ? 'Fenaa' : Env.appName,
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.light,
+          routerConfig: router,
+          locale: en ? const Locale('en') : const Locale('ar', 'SA'),
+          supportedLocales: const [Locale('ar', 'SA'), Locale('en')],
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          builder: (context, child) => Directionality(
+            textDirection: en ? TextDirection.ltr : TextDirection.rtl,
+            child: child ?? const SizedBox.shrink(),
+          ),
+        );
+      },
     );
   }
 }

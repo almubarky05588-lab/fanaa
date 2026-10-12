@@ -9,6 +9,7 @@ import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/models/order.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../../customer/payment/payment_success_screen.dart' show orderProvider;
+import '../../../core/i18n/i18n.dart';
 
 /// 17 تفاصيل الطلب (التاجر)
 class MerchantOrderDetailScreen extends ConsumerStatefulWidget {
@@ -44,11 +45,11 @@ class _State extends ConsumerState<MerchantOrderDetailScreen> {
   }
 
   (String, OrderStatus)? _next(OrderStatus s) => switch (s) {
-        OrderStatus.pending => ('قبول الطلب', OrderStatus.accepted),
-        OrderStatus.accepted => ('بدء التجهيز', OrderStatus.preparing),
-        OrderStatus.preparing => ('الطلب جاهز للتوصيل', OrderStatus.ready),
-        OrderStatus.ready => ('خرج للتوصيل', OrderStatus.outForDelivery),
-        OrderStatus.outForDelivery => ('تأكيد التوصيل', OrderStatus.delivered),
+        OrderStatus.pending => (tr('قبول الطلب'), OrderStatus.accepted),
+        OrderStatus.accepted => (tr('بدء التجهيز'), OrderStatus.preparing),
+        OrderStatus.preparing => (tr('الطلب جاهز للتوصيل'), OrderStatus.ready),
+        OrderStatus.ready => (tr('خرج للتوصيل'), OrderStatus.outForDelivery),
+        OrderStatus.outForDelivery => (tr('تأكيد التوصيل'), OrderStatus.delivered),
         _ => null,
       };
 
@@ -56,12 +57,12 @@ class _State extends ConsumerState<MerchantOrderDetailScreen> {
   Widget build(BuildContext context) {
     final async = ref.watch(orderProvider(widget.id));
     return Scaffold(
-      appBar: FnAppBar(title: async.valueOrNull == null ? 'الطلب' : 'طلب #${async.value!.orderNumber}'),
+      appBar: FnAppBar(title: async.valueOrNull == null ? tr('الطلب') : tr('طلب #{0}', [async.value!.orderNumber])),
       body: async.when(
         loading: () => const FnLoading(),
         error: (_, __) => FnError(onRetry: () => ref.invalidate(orderProvider(widget.id))),
         data: (o) {
-          if (o == null) return const FnEmpty(title: 'الطلب غير موجود');
+          if (o == null) return FnEmpty(title: tr('الطلب غير موجود'));
           final due = (o.acceptedAt ?? o.placedAt).add(const Duration(minutes: 45));
           final left = due.difference(DateTime.now());
           return ListView(
@@ -73,10 +74,10 @@ class _State extends ConsumerState<MerchantOrderDetailScreen> {
                 child: Row(children: [
                   Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(o.status.labelAr, style: FnText.bodyStrong15.onDark),
-                    Text(o.status.isTerminal ? Fmt.dateTime(o.placedAt) : 'الوقت المتبقي لتجهيز الطلب', style: FnText.caption11.soft),
+                    Text(o.status.isTerminal ? Fmt.dateTime(o.placedAt) : tr('الوقت المتبقي لتجهيز الطلب'), style: FnText.caption11.soft),
                   ])),
                   if (!o.status.isTerminal)
-                    Text(left.isNegative ? 'متأخر' : '${left.inMinutes}:${(left.inSeconds % 60).toString().padLeft(2, '0')}',
+                    Text(left.isNegative ? tr('متأخر') : '${left.inMinutes}:${(left.inSeconds % 60).toString().padLeft(2, '0')}',
                         style: FnText.heading18.lime),
                 ]),
               ),
@@ -85,11 +86,11 @@ class _State extends ConsumerState<MerchantOrderDetailScreen> {
                 padding: const EdgeInsets.all(14),
                 child: Row(children: [
                   Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(o.customerName?.isNotEmpty == true ? o.customerName! : 'عميل', style: FnText.bodyStrong15),
+                    Text(o.customerName?.isNotEmpty == true ? o.customerName! : tr('عميل'), style: FnText.bodyStrong15),
                     if (o.customerPhone != null)
                       Directionality(textDirection: TextDirection.ltr, child: Text(Fmt.phone(o.customerPhone!), style: FnText.caption11.muted)),
                     Text(o.addressLine, style: FnText.caption11.muted),
-                    if ((o.note ?? '').isNotEmpty) Text('ملاحظة: ${o.note}', style: FnText.caption11.clay),
+                    if ((o.note ?? '').isNotEmpty) Text(tr('ملاحظة: {0}', [o.note]), style: FnText.caption11.clay),
                   ])),
                   if (o.customerPhone != null)
                     FnIconButton(
@@ -100,7 +101,7 @@ class _State extends ConsumerState<MerchantOrderDetailScreen> {
                 ]),
               ),
               const SizedBox(height: 12),
-              Text('المنتجات', style: FnText.label13.muted),
+              Text(tr('المنتجات'), style: FnText.label13.muted),
               const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.all(4),
@@ -114,7 +115,7 @@ class _State extends ConsumerState<MerchantOrderDetailScreen> {
                         const SizedBox(width: 10),
                         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Text(o.items[i].name, style: FnText.bodyStrong15),
-                          Text('${o.items[i].variantName ?? ''} • الكمية ${o.items[i].qty}', style: FnText.caption11.muted),
+                          Text(tr('{0} • الكمية {1}', [o.items[i].variantName ?? '', o.items[i].qty]), style: FnText.caption11.muted),
                         ])),
                         Text(Fmt.moneyShort(o.items[i].lineTotal), style: FnText.label13),
                       ]),
@@ -126,12 +127,12 @@ class _State extends ConsumerState<MerchantOrderDetailScreen> {
               const SizedBox(height: 12),
               FnCard(
                 child: Column(children: [
-                  FnKV('مجموع المنتجات', Fmt.money(o.subtotal)),
-                  FnKV('رسوم التوصيل', Fmt.money(o.deliveryFee)),
-                  if (o.discount > 0) FnKV('الخصم', '− ${Fmt.money(o.discount)}'),
-                  FnKV('عمولة المنصة', '− ${Fmt.money(o.commission)}'),
+                  FnKV(tr('مجموع المنتجات'), Fmt.money(o.subtotal)),
+                  FnKV(tr('رسوم التوصيل'), Fmt.money(o.deliveryFee)),
+                  if (o.discount > 0) FnKV(tr('الخصم'), '− ${Fmt.money(o.discount)}'),
+                  FnKV(tr('عمولة المنصة'), '− ${Fmt.money(o.commission)}'),
                   const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: FnDivider()),
-                  FnKV('صافي مستحقك', Fmt.money(o.netPayout), strong: true),
+                  FnKV(tr('صافي مستحقك'), Fmt.money(o.netPayout), strong: true),
                 ]),
               ),
             ],

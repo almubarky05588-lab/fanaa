@@ -9,6 +9,7 @@ import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/models/catalog.dart';
 import '../../../data/repositories/catalog_repo.dart';
+import '../../../core/i18n/i18n.dart';
 
 final _mapNurseriesProvider = FutureProvider<List<Nursery>>((ref) async {
   final loc = await ref.watch(currentLocationProvider.future);
@@ -71,7 +72,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                     child: Row(children: [
                       const Icon(Icons.search_rounded, size: 20, color: FnColors.muted),
                       const SizedBox(width: 10),
-                      Text('ابحث عن مشتل قريب', style: FnText.body15.muted),
+                      Text(tr('ابحث عن مشتل قريب'), style: FnText.body15.muted),
                     ]),
                   ),
                 ),
@@ -81,7 +82,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
             SizedBox(
               height: 38,
               child: ListView(scrollDirection: Axis.horizontal, children: [
-                for (final (k, l) in [('all', 'الكل'), ('near', 'الأقرب'), ('open', 'مفتوح الآن'), ('free', 'توصيل مجاني')])
+                for (final (k, l) in [('all', tr('الكل')), ('near', tr('الأقرب')), ('open', tr('مفتوح الآن')), ('free', tr('توصيل مجاني'))])
                   Padding(
                     padding: const EdgeInsetsDirectional.only(end: 8),
                     child: FnChip(label: l, shadow: true, selected: _filter == k,
@@ -127,21 +128,21 @@ class _Sheet extends StatelessWidget {
                   Text(n.name, style: FnText.title22),
                   Text([n.location, if (n.distanceKm != null) Fmt.km(n.distanceKm!)].join(' • '), style: FnText.caption11.muted),
                 ])),
-                FnBadge(n.isOpen ? 'مفتوح الآن' : 'مغلق'),
+                FnBadge(n.isOpen ? tr('مفتوح الآن') : tr('مغلق')),
               ]),
               const SizedBox(height: 16),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                _s('${n.ratingAvg.toStringAsFixed(1)} ★', 'التقييم'),
-                _s(Fmt.minutes(n.prepTimeMin), 'وقت التوصيل'),
-                _s(n.freeDelivery ? 'مجاني' : Fmt.moneyShort(n.deliveryFee), 'التوصيل'),
-                _s('${n.ratingCount}', 'المراجعات'),
+                _s('${n.ratingAvg.toStringAsFixed(1)} ★', tr('التقييم')),
+                _s(Fmt.minutes(n.prepTimeMin), tr('وقت التوصيل')),
+                _s(n.freeDelivery ? tr('مجاني') : Fmt.moneyShort(n.deliveryFee), tr('التوصيل')),
+                _s('${n.ratingCount}', tr('المراجعات')),
               ]),
               const SizedBox(height: 16),
               Row(children: [
-                Expanded(child: FnButton(label: 'عرض المتجر', height: 54, onPressed: () => context.push('/store/${n.id}'))),
+                Expanded(child: FnButton(label: tr('عرض المتجر'), height: 54, onPressed: () => context.push('/store/${n.id}'))),
                 const SizedBox(width: 12),
                 Expanded(child: FnGhostButton(
-                  label: 'الاتجاهات',
+                  label: tr('الاتجاهات'),
                   onPressed: n.lat == null ? null : () => launchUrl(
                       Uri.parse('https://www.google.com/maps/dir/?api=1&destination=${n.lat},${n.lng}'), mode: LaunchMode.externalApplication),
                 )),

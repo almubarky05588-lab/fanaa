@@ -10,6 +10,7 @@ import '../../../data/repositories/catalog_repo.dart';
 import '../../../data/models/catalog.dart';
 import '../widgets/nursery_card.dart';
 import '../widgets/product_card.dart';
+import '../../../core/i18n/i18n.dart';
 
 final _nearbyProvider = FutureProvider<List<Nursery>>((ref) async {
   final loc = await ref.watch(currentLocationProvider.future);
@@ -45,11 +46,11 @@ class HomeScreen extends ConsumerWidget {
                 padding: const EdgeInsets.fromLTRB(FnSpace.page, 12, FnSpace.page, 0),
                 child: Row(children: [
                   Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text('مرحبًا ${profile?.fullName?.isNotEmpty == true ? profile!.fullName!.split(' ').first : 'بك'} 👋', style: FnText.title22),
+                    Text(tr('مرحبًا {0} 👋', [profile?.fullName?.isNotEmpty == true ? profile!.fullName!.split(' ').first : tr('بك')]), style: FnText.title22),
                     Row(children: [
                       const Icon(Icons.location_on_outlined, size: 14, color: FnColors.primary),
                       const SizedBox(width: 4),
-                      Text('التوصيل إلى موقعك الحالي', style: FnText.caption11.muted),
+                      Text(tr('التوصيل إلى موقعك الحالي'), style: FnText.caption11.muted),
                     ]),
                   ])),
                   FnIconButton(onTap: () => context.push('/map'), child: const Icon(Icons.map_outlined, size: 20, color: FnColors.deep)),
@@ -71,7 +72,7 @@ class HomeScreen extends ConsumerWidget {
                   child: Row(children: [
                     const Icon(Icons.search_rounded, size: 20, color: FnColors.faint),
                     const SizedBox(width: 10),
-                    Expanded(child: Text('ابحث عن مشتل، نبتة أو منتج', style: FnText.body15.faint)),
+                    Expanded(child: Text(tr('ابحث عن مشتل، نبتة أو منتج'), style: FnText.body15.faint)),
                     Container(width: 34, height: 34,
                         decoration: BoxDecoration(color: FnColors.deep, borderRadius: BorderRadius.circular(11)),
                         child: const Icon(Icons.tune_rounded, size: 18, color: Colors.white)),
@@ -84,7 +85,7 @@ class HomeScreen extends ConsumerWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(FnSpace.page, 24, FnSpace.page, 12),
-              child: FnSectionTitle('المتاجر القريبة منك', action: 'عرض الكل', onAction: () => context.go('/stores')),
+              child: FnSectionTitle(tr('المتاجر القريبة منك'), action: tr('عرض الكل'), onAction: () => context.go('/stores')),
             ),
           ),
           SliverToBoxAdapter(
@@ -94,7 +95,7 @@ class HomeScreen extends ConsumerWidget {
                 loading: () => const FnLoading(),
                 error: (_, __) => FnError(onRetry: () => ref.invalidate(_nearbyProvider)),
                 data: (list) => list.isEmpty
-                    ? Center(child: Text('لا توجد مشاتل قريبة حاليًا', style: FnText.body15.muted))
+                    ? Center(child: Text(tr('لا توجد مشاتل قريبة حاليًا'), style: FnText.body15.muted))
                     : ListView.separated(
                         scrollDirection: Axis.horizontal,
                         padding: const EdgeInsets.symmetric(horizontal: FnSpace.page),
@@ -108,7 +109,7 @@ class HomeScreen extends ConsumerWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(FnSpace.page, 24, FnSpace.page, 12),
-              child: const FnSectionTitle('الأقسام'),
+              child: FnSectionTitle(tr('الأقسام')),
             ),
           ),
           SliverToBoxAdapter(
@@ -129,7 +130,7 @@ class HomeScreen extends ConsumerWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(FnSpace.page, 24, FnSpace.page, 12),
-              child: const FnSectionTitle('الأكثر طلبًا'),
+              child: FnSectionTitle(tr('الأكثر طلبًا')),
             ),
           ),
           popular.maybeWhen(
@@ -167,14 +168,14 @@ class _PromoBanner extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(20),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('هناك نبتة لكل شخص', style: FnText.heading18.onDark),
+              Text(tr('هناك نبتة لكل شخص'), style: FnText.heading18.onDark),
               const SizedBox(height: 2),
-              Text('خصم ٢٠٪ على أول طلب من فناء', style: FnText.caption11.soft),
+              Text(tr('خصم ٢٠٪ على أول طلب من فناء'), style: FnText.caption11.soft),
               const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(color: FnColors.surface, borderRadius: BorderRadius.circular(FnRadius.pill)),
-                child: Text('تسوّق الآن', style: FnText.label13.deep),
+                child: Text(tr('تسوّق الآن'), style: FnText.label13.deep),
               ),
             ]),
           ),
@@ -199,7 +200,7 @@ class _CategoryTile extends StatelessWidget {
                 decoration: BoxDecoration(color: _bgs[index % 5], borderRadius: BorderRadius.circular(20)),
                 child: Icon(_icons[index % 5], color: _fgs[index % 5], size: 26)),
             const SizedBox(height: 6),
-            Text(c.nameAr, style: FnText.caption11, maxLines: 1, overflow: TextOverflow.ellipsis),
+            Text(tr(c.nameAr), style: FnText.caption11, maxLines: 1, overflow: TextOverflow.ellipsis),
           ]),
         ),
       );

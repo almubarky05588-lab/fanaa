@@ -7,6 +7,7 @@ import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/models/profile.dart';
 import '../../../data/repositories/order_repo.dart';
 import 'checkout_state.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// 10 إتمام الطلب
 class CheckoutScreen extends ConsumerStatefulWidget {
@@ -39,10 +40,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           const SizedBox(height: 12),
           Container(width: 44, height: 5, decoration: BoxDecoration(color: FnColors.border, borderRadius: BorderRadius.circular(3))),
-          Padding(padding: const EdgeInsets.all(16), child: Text('اختر عنوان التوصيل', style: FnText.heading18)),
+          Padding(padding: const EdgeInsets.all(16), child: Text(tr('اختر عنوان التوصيل'), style: FnText.heading18)),
           for (final a in list)
-            FnListRow(title: a.label, subtitle: '${a.line}، ${a.full}', icon: Icons.location_on_outlined, showChevron: false, onTap: () => Navigator.pop(context, a)),
-          FnListRow(title: 'إضافة عنوان جديد', icon: Icons.add_location_alt_outlined, iconColor: FnColors.primary,
+            FnListRow(title: a.label, subtitle: tr('{0}، {1}', [a.line, a.full]), icon: Icons.location_on_outlined, showChevron: false, onTap: () => Navigator.pop(context, a)),
+          FnListRow(title: tr('إضافة عنوان جديد'), icon: Icons.add_location_alt_outlined, iconColor: FnColors.primary,
               onTap: () { Navigator.pop(context); context.push('/addresses?add=1'); }),
           const SizedBox(height: 12),
         ]),
@@ -58,7 +59,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   Widget build(BuildContext context) {
     final draft = ref.watch(checkoutDraftProvider);
     final addrs = ref.watch(addressesProvider);
-    if (draft == null) return const Scaffold(body: FnEmpty(title: 'لا يوجد طلب قيد الإعداد'));
+    if (draft == null) return Scaffold(body: FnEmpty(title: tr('لا يوجد طلب قيد الإعداد')));
 
     final list = addrs.valueOrNull ?? const <Address>[];
     final addr = draft.address ?? (list.isEmpty ? null : list.firstWhere((a) => a.isDefault, orElse: () => list.first));
@@ -67,13 +68,13 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     }
 
     return Scaffold(
-      appBar: const FnAppBar(title: 'إتمام الطلب'),
+      appBar: FnAppBar(title: tr('إتمام الطلب')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(FnSpace.page, 8, FnSpace.page, 24),
         children: [
           const _Steps(current: 1),
           const SizedBox(height: 16),
-          _label('عنوان التوصيل'),
+          _label(tr('عنوان التوصيل')),
           FnCard(
             padding: const EdgeInsets.all(14), radius: 18,
             onTap: () => list.isEmpty ? context.push('/addresses?add=1') : _pickAddress(list),
@@ -82,40 +83,40 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   child: const Icon(Icons.location_on_outlined, color: FnColors.deep, size: 20)),
               const SizedBox(width: 12),
               Expanded(child: addr == null
-                  ? Text('أضف عنوان التوصيل', style: FnText.bodyStrong15.primary)
+                  ? Text(tr('أضف عنوان التوصيل'), style: FnText.bodyStrong15.primary)
                   : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text(addr.label, style: FnText.bodyStrong15),
-                      Text('${addr.line}، ${addr.full}', style: FnText.caption11.muted, maxLines: 1, overflow: TextOverflow.ellipsis),
+                      Text(tr('{0}، {1}', [addr.line, addr.full]), style: FnText.caption11.muted, maxLines: 1, overflow: TextOverflow.ellipsis),
                     ])),
-              Text(addr == null ? 'إضافة' : 'تغيير', style: FnText.label13.primary),
+              Text(addr == null ? tr('إضافة') : tr('تغيير'), style: FnText.label13.primary),
             ]),
           ),
           const SizedBox(height: 14),
-          _label('وقت التوصيل'),
+          _label(tr('وقت التوصيل')),
           Row(children: [
             Expanded(child: _TimeOpt(
-              title: 'الآن', subtitle: 'خلال ٤٥ دقيقة', selected: _now,
+              title: tr('الآن'), subtitle: tr('خلال ٤٥ دقيقة'), selected: _now,
               onTap: () { setState(() => _now = true); ref.read(checkoutDraftProvider.notifier).state = draft.copyWith(clearSchedule: true); },
             )),
             const SizedBox(width: 10),
             Expanded(child: _TimeOpt(
-              title: 'جدولة لاحقًا',
-              subtitle: draft.scheduledAt == null ? 'اختر اليوم والوقت' : Fmt.dateTime(draft.scheduledAt!),
+              title: tr('جدولة لاحقًا'),
+              subtitle: draft.scheduledAt == null ? tr('اختر اليوم والوقت') : Fmt.dateTime(draft.scheduledAt!),
               selected: !_now, onTap: _pickSchedule,
             )),
           ]),
           const SizedBox(height: 14),
-          _label('ملاحظة للمشتل'),
-          TextField(controller: _note, maxLines: 2, decoration: const InputDecoration(hintText: 'مثال: اتركها عند الباب')),
+          _label(tr('ملاحظة للمشتل')),
+          TextField(controller: _note, maxLines: 2, decoration: InputDecoration(hintText: tr('مثال: اتركها عند الباب'))),
           const SizedBox(height: 14),
           FnCard(
             child: Column(children: [
-              FnKV('مجموع المنتجات', Fmt.money(draft.subtotal)),
-              FnKV('التوصيل', draft.delivery == 0 ? 'مجاني' : Fmt.money(draft.delivery)),
+              FnKV(tr('مجموع المنتجات'), Fmt.money(draft.subtotal)),
+              FnKV(tr('التوصيل'), draft.delivery == 0 ? tr('مجاني') : Fmt.money(draft.delivery)),
               if (draft.discount > 0)
-                FnKV('خصم الكوبون ${draft.coupon ?? ''}', '− ${Fmt.money(draft.discount)}', valueColor: FnColors.primary),
+                FnKV(tr('خصم الكوبون {0}', [draft.coupon ?? '']), '− ${Fmt.money(draft.discount)}', valueColor: FnColors.primary),
               const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: FnDivider()),
-              FnKV('الإجمالي', Fmt.money(draft.total), strong: true),
+              FnKV(tr('الإجمالي'), Fmt.money(draft.total), strong: true),
             ]),
           ),
         ],
@@ -124,7 +125,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         child: Row(children: [
           Expanded(
             child: FnButton(
-              label: 'المتابعة للدفع',
+              label: tr('المتابعة للدفع'),
               onPressed: addr == null
                   ? null
                   : () {
@@ -136,7 +137,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           ),
           const SizedBox(width: 14),
           Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.end, children: [
-            Text('الإجمالي', style: FnText.caption11.muted),
+            Text(tr('الإجمالي'), style: FnText.caption11.muted),
             Text(Fmt.moneyShort(draft.total), style: FnText.heading18),
           ]),
         ]),
@@ -161,7 +162,7 @@ class _Steps extends StatelessWidget {
             color: i < current ? FnColors.soft : (i == current ? FnColors.deep : FnColors.surface),
             borderRadius: BorderRadius.circular(14),
           ),
-          child: Text(labels[i], style: FnText.caption11.copyWith(
+          child: Text(tr(labels[i]), style: FnText.caption11.copyWith(
               color: i < current ? FnColors.deep : (i == current ? FnColors.surface : FnColors.muted))),
         ),
         if (i < 2) const SizedBox(width: 8),

@@ -5,6 +5,7 @@ import '../../../core/router/shop_mode.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/widgets/fn_bottom_nav.dart';
 import '../../../data/repositories/auth_repo.dart';
+import '../../../core/i18n/i18n.dart';
 
 const customerTabs = [
   FnNavItem('الرئيسية', Icons.home_outlined, Icons.home_rounded),
@@ -46,8 +47,8 @@ class _BackToStoreBar extends StatelessWidget {
             child: Row(children: [
               const Icon(Icons.shopping_bag_outlined, size: 16, color: FnColors.lime),
               const SizedBox(width: 8),
-              Expanded(child: Text('أنت تتسوّق كعميل', style: FnText.label13.onDark)),
-              Text('العودة لمتجري', style: FnText.label13.lime),
+              Expanded(child: Text(tr('أنت تتسوّق كعميل'), style: FnText.label13.onDark)),
+              Text(tr('العودة لمتجري'), style: FnText.label13.lime),
             ]),
           ),
         ),

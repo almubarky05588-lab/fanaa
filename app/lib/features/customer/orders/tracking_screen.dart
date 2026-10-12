@@ -8,6 +8,7 @@ import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/models/order.dart';
 import '../../../data/repositories/order_repo.dart';
+import '../../../core/i18n/i18n.dart';
 
 final _liveOrderProvider = StreamProvider.family<Order?, String>((ref, id) => ref.watch(orderRepoProvider).watchOrder(id));
 
@@ -25,7 +26,7 @@ class TrackingScreen extends ConsumerWidget {
         loading: () => const FnLoading(),
         error: (_, __) => FnError(onRetry: () => ref.invalidate(_liveOrderProvider(orderId))),
         data: (o) {
-          if (o == null) return const FnEmpty(title: 'الطلب غير موجود');
+          if (o == null) return FnEmpty(title: tr('الطلب غير موجود'));
           final lat = (o.address['lat'] as num?)?.toDouble();
           final lng = (o.address['lng'] as num?)?.toDouble();
           return Stack(children: [
@@ -39,7 +40,7 @@ class TrackingScreen extends ConsumerWidget {
                       zoomControlsEnabled: false, myLocationButtonEnabled: false, mapToolbarEnabled: false,
                     ),
             ),
-            Positioned(top: top + 12, right: FnSpace.page, child: FnBackButton(onTap: () => context.canPop() ? context.pop() : context.go('/orders'))),
+            PositionedDirectional(top: top + 12, start: FnSpace.page, child: FnBackButton(onTap: () => context.canPop() ? context.pop() : context.go('/orders'))),
             DraggableScrollableSheet(
               initialChildSize: .58, minChildSize: .58, maxChildSize: .92,
               builder: (_, scroll) => Container(
@@ -50,17 +51,17 @@ class TrackingScreen extends ConsumerWidget {
                   children: [
                     Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        Text('طلب #${o.orderNumber}', style: FnText.title22),
-                        Text('${o.nursery?.name ?? ''} • ${o.itemCount} منتجات', style: FnText.caption11.muted),
+                        Text(tr('طلب #{0}', [o.orderNumber]), style: FnText.title22),
+                        Text(tr('{0} • {1} منتجات', [o.nursery?.name ?? '', o.itemCount]), style: FnText.caption11.muted),
                       ])),
                       Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                        Text(o.status.isTerminal ? 'الحالة' : 'الوصول خلال', style: FnText.caption11.muted),
+                        Text(o.status.isTerminal ? tr('الحالة') : tr('الوصول خلال'), style: FnText.caption11.muted),
                         Text(o.status.isTerminal ? o.status.labelAr : _eta(o), style: FnText.heading18.deep),
                       ]),
                     ]),
                     const SizedBox(height: 16),
                     if (o.status == OrderStatus.cancelled || o.status == OrderStatus.rejected)
-                      FnCard(color: const Color(0xFFF8EAE2), child: Text('تم ${o.status.labelAr} الطلب', style: FnText.bodyStrong15.clay))
+                      FnCard(color: const Color(0xFFF8EAE2), child: Text(tr('تم {0} الطلب', [o.status.labelAr]), style: FnText.bodyStrong15.clay))
                     else
                       _Timeline(o: o),
                     const SizedBox(height: 14),
@@ -71,7 +72,7 @@ class TrackingScreen extends ConsumerWidget {
                         const SizedBox(width: 12),
                         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Text(o.nursery?.name ?? '', style: FnText.bodyStrong15),
-                          Text('المشتل المُجهّز', style: FnText.caption11.muted),
+                          Text(tr('المشتل المُجهّز'), style: FnText.caption11.muted),
                         ])),
                         if (o.nursery?.phone != null)
                           FnIconButton(
@@ -86,25 +87,25 @@ class TrackingScreen extends ConsumerWidget {
                       child: Column(children: [
                         for (final i in o.items) FnKV('${i.name}${i.variantName != null ? ' (${i.variantName})' : ''} × ${i.qty}', Fmt.money(i.lineTotal)),
                         const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: FnDivider()),
-                        FnKV('الإجمالي', Fmt.money(o.total), strong: true),
+                        FnKV(tr('الإجمالي'), Fmt.money(o.total), strong: true),
                       ]),
                     ),
                     const SizedBox(height: 14),
                     if (o.status == OrderStatus.delivered)
-                      FnButton(label: 'عرض الفاتورة', onPressed: () => context.push('/invoice/${o.id}'))
+                      FnButton(label: tr('عرض الفاتورة'), onPressed: () => context.push('/invoice/${o.id}'))
                     else if (o.status == OrderStatus.outForDelivery)
                       FnButton(
-                        label: 'استلمت طلبي',
+                        label: tr('استلمت طلبي'),
                         icon: const Icon(Icons.check_circle_outline_rounded, size: 18),
                         onPressed: () async {
                           final ok = await showDialog<bool>(
                             context: context,
                             builder: (d) => AlertDialog(
-                              title: Text('تأكيد الاستلام', style: FnText.heading18),
-                              content: Text('هل وصلك الطلب كاملًا؟', style: FnText.body15.muted),
+                              title: Text(tr('تأكيد الاستلام'), style: FnText.heading18),
+                              content: Text(tr('هل وصلك الطلب كاملًا؟'), style: FnText.body15.muted),
                               actions: [
-                                TextButton(onPressed: () => Navigator.pop(d, false), child: Text('ليس بعد', style: FnText.label13.muted)),
-                                TextButton(onPressed: () => Navigator.pop(d, true), child: Text('نعم، استلمته', style: FnText.label13.primary)),
+                                TextButton(onPressed: () => Navigator.pop(d, false), child: Text(tr('ليس بعد'), style: FnText.label13.muted)),
+                                TextButton(onPressed: () => Navigator.pop(d, true), child: Text(tr('نعم، استلمته'), style: FnText.label13.primary)),
                               ],
                             ),
                           );
@@ -112,7 +113,7 @@ class TrackingScreen extends ConsumerWidget {
                           try {
                             await ref.read(orderRepoProvider).updateStatus(o.id, OrderStatus.delivered);
                             ref.invalidate(myOrdersProvider);
-                            if (context.mounted) showFnSnack(context, 'شكرًا لك! تم تأكيد استلام الطلب');
+                            if (context.mounted) showFnSnack(context, tr('شكرًا لك! تم تأكيد استلام الطلب'));
                           } catch (e) {
                             if (context.mounted) showFnSnack(context, fnErrorText(e), error: true);
                           }
@@ -120,10 +121,10 @@ class TrackingScreen extends ConsumerWidget {
                       )
                     else if (o.status == OrderStatus.pending)
                       FnGhostButton(
-                        label: 'إلغاء الطلب', textColor: FnColors.clay,
+                        label: tr('إلغاء الطلب'), textColor: FnColors.clay,
                         onPressed: () async {
                           try {
-                            await ref.read(orderRepoProvider).updateStatus(o.id, OrderStatus.cancelled, note: 'ألغاه العميل');
+                            await ref.read(orderRepoProvider).updateStatus(o.id, OrderStatus.cancelled, note: tr('ألغاه العميل'));
                             ref.invalidate(myOrdersProvider);
                           } catch (e) {
                             if (context.mounted) showFnSnack(context, fnErrorText(e), error: true);
@@ -143,7 +144,7 @@ class TrackingScreen extends ConsumerWidget {
   String _eta(Order o) {
     final base = o.acceptedAt ?? o.placedAt;
     final left = base.add(Duration(minutes: o.nursery?.prepTimeMin ?? 45)).difference(DateTime.now()).inMinutes;
-    return left <= 0 ? 'قريبًا' : '$left دقيقة';
+    return left <= 0 ? tr('قريبًا') : tr('{0} دقيقة', [left]);
   }
 }
 
@@ -153,10 +154,10 @@ class _Timeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final steps = [
-      ('تم استلام الطلب', o.placedAt),
-      ('المشتل يجهّز الطلب', o.acceptedAt),
-      ('خرج للتوصيل', o.pickedUpAt),
-      ('تم التوصيل', o.deliveredAt),
+      (tr('تم استلام الطلب'), o.placedAt),
+      (tr('المشتل يجهّز الطلب'), o.acceptedAt),
+      (tr('خرج للتوصيل'), o.pickedUpAt),
+      (tr('تم التوصيل'), o.deliveredAt),
     ];
     final cur = o.status.step;
     return FnCard(
@@ -182,7 +183,7 @@ class _Timeline extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: i < steps.length - 1 ? 18 : 0),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(steps[i].$1, style: i > cur ? FnText.bodyStrong15.faint : FnText.bodyStrong15),
-                  Text(steps[i].$2 == null ? (i == cur + 1 ? 'التالي' : '—') : Fmt.time(steps[i].$2!),
+                  Text(steps[i].$2 == null ? (i == cur + 1 ? tr('التالي') : '—') : Fmt.time(steps[i].$2!),
                       style: i == cur ? FnText.caption11.primary : FnText.caption11.muted),
                 ]),
               )),

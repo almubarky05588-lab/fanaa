@@ -5,6 +5,7 @@ import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_widgets.dart';
 import '../../../core/widgets/store_logo.dart';
 import '../../../data/models/catalog.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// بطاقة المتجر الأفقية في الرئيسية (غلاف + اسم + تقييم)
 class NurseryTileCard extends StatelessWidget {
@@ -27,7 +28,7 @@ class NurseryTileCard extends StatelessWidget {
                 FnImage(url: n.coverUrl, height: 96, width: width, radius: 0,
                     bg: FnColors.primary, markColor: Colors.white.withValues(alpha: .55), markFactor: .45),
               if (n.isOpen)
-                const Positioned(top: 8, left: 8, child: FnBadge('مفتوح', bg: FnColors.surface)),
+                Positioned(top: 8, left: 8, child: FnBadge(tr('مفتوح'), bg: FnColors.surface)),
             ]),
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
@@ -71,9 +72,9 @@ class NurseryRowCard extends StatelessWidget {
             Text([n.district ?? n.city, if (n.distanceKm != null) Fmt.km(n.distanceKm!)].join(' • '), style: FnText.caption11.muted),
             const SizedBox(height: 8),
             Row(children: [
-              FnBadge(n.isOpen ? 'مفتوح الآن' : 'مغلق', bg: n.isOpen ? FnColors.soft : FnColors.bgBase, fg: n.isOpen ? FnColors.deep : FnColors.muted),
+              FnBadge(n.isOpen ? tr('مفتوح الآن') : tr('مغلق'), bg: n.isOpen ? FnColors.soft : FnColors.bgBase, fg: n.isOpen ? FnColors.deep : FnColors.muted),
               const SizedBox(width: 6),
-              FnBadge(n.freeDelivery ? 'توصيل مجاني' : 'توصيل ${Fmt.moneyShort(n.deliveryFee)}', bg: FnColors.bgBase, fg: FnColors.muted),
+              FnBadge(n.freeDelivery ? tr('توصيل مجاني') : tr('توصيل {0}', [Fmt.moneyShort(n.deliveryFee)]), bg: FnColors.bgBase, fg: FnColors.muted),
               const SizedBox(width: 6),
               FnBadge(Fmt.minutes(n.prepTimeMin), bg: FnColors.bgBase, fg: FnColors.muted),
             ]),

@@ -13,6 +13,7 @@ import '../../../data/repositories/auth_repo.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../../customer/account/account_screen.dart' show showLanguageSheet;
 import '../dashboard/merchant_dashboard_screen.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// 21 إعدادات المتجر
 class MerchantSettingsScreen extends ConsumerWidget {
@@ -42,7 +43,7 @@ class _SettingsState extends ConsumerState<_Settings> {
     }
   }
 
-  Future<void> _editNumber(String title, String field, num? current, {String suffix = 'ر.س'}) async {
+  Future<void> _editNumber(String title, String field, num? current, {String suffix = tr('ر.س')}) async {
     final c = TextEditingController(text: current?.toString() ?? '');
     final v = await showModalBottomSheet<String>(
       context: context, isScrollControlled: true,
@@ -55,7 +56,7 @@ class _SettingsState extends ConsumerState<_Settings> {
               inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
               decoration: InputDecoration(suffixText: suffix, fillColor: FnColors.bgBase)),
           const SizedBox(height: 16),
-          FnButton(label: 'حفظ', onPressed: () => Navigator.pop(ctx, c.text.trim())),
+          FnButton(label: tr('حفظ'), onPressed: () => Navigator.pop(ctx, c.text.trim())),
         ]),
       ),
     );
@@ -76,7 +77,7 @@ class _SettingsState extends ConsumerState<_Settings> {
       await _update({kind == 'logo' ? 'logo_url' : 'cover_url': url});
       return url;
     } catch (e) {
-      if (mounted) showFnSnack(context, 'تعذّر رفع الصورة', error: true);
+      if (mounted) showFnSnack(context, tr('تعذّر رفع الصورة'), error: true);
       return null;
     }
   }
@@ -92,7 +93,7 @@ class _SettingsState extends ConsumerState<_Settings> {
       builder: (ctx) => StatefulBuilder(builder: (ctx, setSheet) => Padding(
         padding: EdgeInsets.fromLTRB(24, 20, 24, MediaQuery.viewInsetsOf(ctx).bottom + 24),
         child: SingleChildScrollView(child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('بيانات المتجر', style: FnText.heading18),
+          Text(tr('بيانات المتجر'), style: FnText.heading18),
           const SizedBox(height: 14),
           // الشعار والغلاف
           Row(children: [
@@ -132,29 +133,29 @@ class _SettingsState extends ConsumerState<_Settings> {
                       : Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(color: FnColors.surface.withValues(alpha: .92), borderRadius: BorderRadius.circular(12)),
-                          child: Text(cover == null ? 'إضافة صورة الغلاف' : 'تغيير الغلاف', style: FnText.caption11.deep),
+                          child: Text(cover == null ? tr('إضافة صورة الغلاف') : tr('تغيير الغلاف'), style: FnText.caption11.deep),
                         )),
                 ]),
               ),
             )),
           ]),
           const SizedBox(height: 6),
-          Text('الشعار يظهر للعملاء في صفحة متجرك وبطاقته', style: FnText.caption11.faint),
+          Text(tr('الشعار يظهر للعملاء في صفحة متجرك وبطاقته'), style: FnText.caption11.faint),
           const SizedBox(height: 14),
-          Text('اسم المتجر', style: FnText.label13.muted),
+          Text(tr('اسم المتجر'), style: FnText.label13.muted),
           const SizedBox(height: 6),
           TextField(controller: name, decoration: const InputDecoration(fillColor: FnColors.bgBase)),
           const SizedBox(height: 12),
-          Text('الوصف', style: FnText.label13.muted),
+          Text(tr('الوصف'), style: FnText.label13.muted),
           const SizedBox(height: 6),
           TextField(controller: desc, maxLines: 3, decoration: const InputDecoration(fillColor: FnColors.bgBase)),
           const SizedBox(height: 12),
-          Text('رقم التواصل', style: FnText.label13.muted),
+          Text(tr('رقم التواصل'), style: FnText.label13.muted),
           const SizedBox(height: 6),
           TextField(controller: phone, keyboardType: TextInputType.phone, textDirection: TextDirection.ltr,
               decoration: const InputDecoration(fillColor: FnColors.bgBase)),
           const SizedBox(height: 18),
-          FnButton(label: 'حفظ', onPressed: () => Navigator.pop(ctx, true)),
+          FnButton(label: tr('حفظ'), onPressed: () => Navigator.pop(ctx, true)),
         ])),
       )),
     );
@@ -170,7 +171,7 @@ class _SettingsState extends ConsumerState<_Settings> {
   Widget build(BuildContext context) {
     final n = ref.watch(myNurseryProvider).valueOrNull ?? widget.n;
     return Scaffold(
-      appBar: const FnAppBar(title: 'إعدادات المتجر', showBack: false),
+      appBar: FnAppBar(title: tr('إعدادات المتجر'), showBack: false),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(FnSpace.page, 6, FnSpace.page, 24),
         children: [
@@ -182,47 +183,47 @@ class _SettingsState extends ConsumerState<_Settings> {
               const SizedBox(width: 12),
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(n.name, style: FnText.bodyStrong15),
-                Text('الشعار والغلاف والاسم والوصف', style: FnText.caption11.muted),
+                Text(tr('الشعار والغلاف والاسم والوصف'), style: FnText.caption11.muted),
               ])),
               const Icon(Icons.edit_outlined, size: 18, color: FnColors.faint),
             ]),
           ),
           const SizedBox(height: 8),
-          _label('المبيعات'),
+          _label(tr('المبيعات')),
           _Group(children: [
-            FnListRow(title: 'الكوبونات والعروض', subtitle: 'أنشئ أكواد خصم لعملائك', icon: Icons.local_offer_outlined,
+            FnListRow(title: tr('الكوبونات والعروض'), subtitle: tr('أنشئ أكواد خصم لعملائك'), icon: Icons.local_offer_outlined,
                 onTap: () => context.push('/m/coupons')),
-            FnListRow(title: 'تسوّق كعميل', subtitle: 'تصفّح المتاجر الأخرى واشترِ منها', icon: Icons.shopping_bag_outlined,
+            FnListRow(title: tr('تسوّق كعميل'), subtitle: tr('تصفّح المتاجر الأخرى واشترِ منها'), icon: Icons.shopping_bag_outlined,
                 onTap: () => startShoppingAsCustomer(context)),
           ]),
           const SizedBox(height: 8),
-          _label('التوصيل والرسوم'),
+          _label(tr('التوصيل والرسوم')),
           _Group(children: [
-            FnListRow(title: 'نطاق التوصيل', showChevron: false, value: Fmt.km(n.deliveryRadiusKm),
-                onTap: () => _editNumber('نطاق التوصيل', 'delivery_radius_km', n.deliveryRadiusKm, suffix: 'كم')),
-            FnListRow(title: 'رسوم التوصيل', showChevron: false, value: Fmt.moneyShort(n.deliveryFee),
-                onTap: () => _editNumber('رسوم التوصيل', 'delivery_fee', n.deliveryFee)),
-            FnListRow(title: 'توصيل مجاني فوق', showChevron: false, value: n.freeDeliveryOver == null ? '—' : Fmt.moneyShort(n.freeDeliveryOver!),
-                onTap: () => _editNumber('توصيل مجاني فوق', 'free_delivery_over', n.freeDeliveryOver)),
-            FnListRow(title: 'الحد الأدنى للطلب', showChevron: false, value: Fmt.moneyShort(n.minOrder),
-                onTap: () => _editNumber('الحد الأدنى للطلب', 'min_order', n.minOrder)),
-            FnListRow(title: 'وقت التجهيز', showChevron: false, value: Fmt.minutes(n.prepTimeMin),
-                onTap: () => _editNumber('وقت التجهيز', 'prep_time_min', n.prepTimeMin, suffix: 'دقيقة')),
+            FnListRow(title: tr('نطاق التوصيل'), showChevron: false, value: Fmt.km(n.deliveryRadiusKm),
+                onTap: () => _editNumber(tr('نطاق التوصيل'), 'delivery_radius_km', n.deliveryRadiusKm, suffix: tr('كم'))),
+            FnListRow(title: tr('رسوم التوصيل'), showChevron: false, value: Fmt.moneyShort(n.deliveryFee),
+                onTap: () => _editNumber(tr('رسوم التوصيل'), 'delivery_fee', n.deliveryFee)),
+            FnListRow(title: tr('توصيل مجاني فوق'), showChevron: false, value: n.freeDeliveryOver == null ? '—' : Fmt.moneyShort(n.freeDeliveryOver!),
+                onTap: () => _editNumber(tr('توصيل مجاني فوق'), 'free_delivery_over', n.freeDeliveryOver)),
+            FnListRow(title: tr('الحد الأدنى للطلب'), showChevron: false, value: Fmt.moneyShort(n.minOrder),
+                onTap: () => _editNumber(tr('الحد الأدنى للطلب'), 'min_order', n.minOrder)),
+            FnListRow(title: tr('وقت التجهيز'), showChevron: false, value: Fmt.minutes(n.prepTimeMin),
+                onTap: () => _editNumber(tr('وقت التجهيز'), 'prep_time_min', n.prepTimeMin, suffix: tr('دقيقة'))),
           ]),
           const SizedBox(height: 8),
-          _label('التشغيل'),
+          _label(tr('التشغيل')),
           _Group(children: [
-            _Toggle('قبول الطلبات تلقائيًا', 'بدون تأكيد يدوي', _auto, (v) { setState(() => _auto = v); _update({'auto_accept': v}); }),
-            _Toggle('إشعارات الطلبات الجديدة', 'صوت + تنبيه', _notif, (v) => setState(() => _notif = v)),
-            _Toggle('الإجازة المؤقتة', 'إيقاف استقبال الطلبات', _vacation, (v) { setState(() => _vacation = v); _update({'on_vacation': v}); }),
+            _Toggle(tr('قبول الطلبات تلقائيًا'), tr('بدون تأكيد يدوي'), _auto, (v) { setState(() => _auto = v); _update({'auto_accept': v}); }),
+            _Toggle(tr('إشعارات الطلبات الجديدة'), tr('صوت + تنبيه'), _notif, (v) => setState(() => _notif = v)),
+            _Toggle(tr('الإجازة المؤقتة'), tr('إيقاف استقبال الطلبات'), _vacation, (v) { setState(() => _vacation = v); _update({'on_vacation': v}); }),
           ]),
           const SizedBox(height: 14),
           _Group(children: [
-            FnListRow(title: 'اللغة', icon: Icons.language_rounded, value: 'العربية', showChevron: false,
+            FnListRow(title: tr('اللغة'), icon: Icons.language_rounded, value: tr('العربية'), showChevron: false,
                 onTap: () => showLanguageSheet(context)),
-            FnListRow(title: 'الدعم والمساعدة', icon: Icons.help_outline_rounded, onTap: () => context.push('/support')),
+            FnListRow(title: tr('الدعم والمساعدة'), icon: Icons.help_outline_rounded, onTap: () => context.push('/support')),
             FnListRow(
-              title: 'تسجيل الخروج', titleStyle: FnText.bodyStrong15.clay, icon: Icons.logout_rounded, iconColor: FnColors.clay,
+              title: tr('تسجيل الخروج'), titleStyle: FnText.bodyStrong15.clay, icon: Icons.logout_rounded, iconColor: FnColors.clay,
               trailing: const SizedBox.shrink(),
               onTap: () async {
                 ShopMode.active.value = false;

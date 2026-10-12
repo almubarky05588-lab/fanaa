@@ -10,6 +10,7 @@ import '../../../data/models/order.dart';
 import '../../../data/repositories/coupon_repo.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../checkout/checkout_state.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// 09 السلة
 class CartScreen extends ConsumerStatefulWidget {
@@ -46,7 +47,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       if (!mounted) return;
       setState(() => _applied = r.ok ? r : null);
       if (!silent || !r.ok) {
-        showFnSnack(context, r.ok ? '${r.message} — خصم ${Fmt.money(r.discount)}' : r.message, error: !r.ok);
+        showFnSnack(context, r.ok ? tr('{0} — خصم {1}', [tr(r.message), Fmt.money(r.discount)]) : tr(r.message), error: !r.ok);
       }
     } catch (e) {
       if (mounted) showFnSnack(context, fnErrorText(e), error: true);
@@ -90,7 +91,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     final carts = ref.watch(cartsProvider);
     return Scaffold(
       appBar: FnAppBar(
-        title: 'السلة',
+        title: tr('السلة'),
         showBack: !widget.isTab,
         action: carts.valueOrNull?.isNotEmpty == true
             ? GestureDetector(
@@ -98,7 +99,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   final c = _current(carts.value!);
                   if (c != null) _clear(c);
                 },
-                child: Text('إفراغ السلة', style: FnText.label13.clay),
+                child: Text(tr('إفراغ السلة'), style: FnText.label13.clay),
               )
             : null,
       ),
@@ -109,10 +110,10 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           final c = _current(list);
           if (c == null) {
             return FnEmpty(
-              title: 'سلتك فارغة',
-              subtitle: 'تصفّح المشاتل وأضف نباتاتك المفضلة',
+              title: tr('سلتك فارغة'),
+              subtitle: tr('تصفّح المشاتل وأضف نباتاتك المفضلة'),
               icon: Icons.shopping_bag_outlined,
-              action: SizedBox(width: 180, child: FnButton(label: 'تصفّح المتاجر', height: 50, onPressed: () => context.go('/stores'))),
+              action: SizedBox(width: 180, child: FnButton(label: tr('تصفّح المتاجر'), height: 50, onPressed: () => context.go('/stores'))),
             );
           }
           final n = c.nursery!;
@@ -144,7 +145,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                       child: const Center(child: FnLogoMark(size: 22, color: FnColors.deep, gradient: false))),
                   const SizedBox(width: 10),
                   Expanded(child: Text(n.name, style: FnText.bodyStrong15)),
-                  Text('${c.count} منتجات', style: FnText.caption11.muted),
+                  Text(tr('{0} منتجات', [c.count]), style: FnText.caption11.muted),
                 ]),
               ),
               const SizedBox(height: 14),
@@ -171,7 +172,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                       onChanged: (_) { if (_applied != null) setState(() => _applied = null); },
                       onSubmitted: (_) => _validate(c),
                       decoration: InputDecoration(
-                        hintText: 'أدخل كود الخصم', filled: false, isDense: true, contentPadding: EdgeInsets.zero,
+                        hintText: tr('أدخل كود الخصم'), filled: false, isDense: true, contentPadding: EdgeInsets.zero,
                         border: InputBorder.none, enabledBorder: InputBorder.none, focusedBorder: InputBorder.none, hintStyle: FnText.body15.faint),
                     ),
                   ),
@@ -192,7 +193,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                       decoration: BoxDecoration(color: discount > 0 ? FnColors.bgBase : FnColors.soft, borderRadius: BorderRadius.circular(12)),
                       child: _checking
                           ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: FnColors.deep))
-                          : Text(discount > 0 ? 'إزالة' : 'تطبيق', style: discount > 0 ? FnText.label13.clay : FnText.label13.deep),
+                          : Text(discount > 0 ? tr('إزالة') : tr('تطبيق'), style: discount > 0 ? FnText.label13.clay : FnText.label13.deep),
                     ),
                   ),
                 ]),
@@ -200,20 +201,20 @@ class _CartScreenState extends ConsumerState<CartScreen> {
               const SizedBox(height: 14),
               FnCard(
                 child: Column(children: [
-                  FnKV('مجموع المنتجات', Fmt.money(c.subtotal)),
-                  FnKV('رسوم التوصيل', delivery == 0 ? 'مجاني' : Fmt.money(delivery)),
-                  if (discount > 0) FnKV('خصم الكوبون ${_applied!.code}', '− ${Fmt.money(discount)}', valueColor: FnColors.primary),
+                  FnKV(tr('مجموع المنتجات'), Fmt.money(c.subtotal)),
+                  FnKV(tr('رسوم التوصيل'), delivery == 0 ? tr('مجاني') : Fmt.money(delivery)),
+                  if (discount > 0) FnKV(tr('خصم الكوبون {0}', [_applied!.code]), '− ${Fmt.money(discount)}', valueColor: FnColors.primary),
                   if (n.freeDeliveryOver != null && delivery > 0)
                     Padding(
                       padding: const EdgeInsets.only(top: 2, bottom: 4),
                       child: Align(
                         alignment: AlignmentDirectional.centerStart,
-                        child: Text('أضف ${Fmt.money(n.freeDeliveryOver! - c.subtotal)} للحصول على توصيل مجاني', style: FnText.caption11.primary),
+                        child: Text(tr('أضف {0} للحصول على توصيل مجاني', [Fmt.money(n.freeDeliveryOver! - c.subtotal)]), style: FnText.caption11.primary),
                       ),
                     ),
                   const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: FnDivider()),
-                  FnKV('الإجمالي', Fmt.money((c.subtotal + delivery - discount).clamp(0, double.infinity)), strong: true),
-                  Align(alignment: AlignmentDirectional.centerStart, child: Text('الأسعار شاملة ضريبة القيمة المضافة', style: FnText.caption11.faint)),
+                  FnKV(tr('الإجمالي'), Fmt.money((c.subtotal + delivery - discount).clamp(0, double.infinity)), strong: true),
+                  Align(alignment: AlignmentDirectional.centerStart, child: Text(tr('الأسعار شاملة ضريبة القيمة المضافة'), style: FnText.caption11.faint)),
                 ]),
               ),
             ],
@@ -231,13 +232,13 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           child: Row(children: [
             Expanded(
               child: FnButton(
-                label: belowMin ? 'الحد الأدنى ${Fmt.moneyShort(n.minOrder)}' : 'إتمام الطلب',
+                label: belowMin ? tr('الحد الأدنى {0}', [Fmt.moneyShort(n.minOrder)]) : tr('إتمام الطلب'),
                 onPressed: belowMin ? null : () => _checkout(c),
               ),
             ),
             const SizedBox(width: 14),
             Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.end, children: [
-              Text('الإجمالي', style: FnText.caption11.muted),
+              Text(tr('الإجمالي'), style: FnText.caption11.muted),
               Text(Fmt.moneyShort(total), style: FnText.heading18),
             ]),
           ]),
@@ -265,7 +266,7 @@ class _ItemRow extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(item.product.name, style: FnText.bodyStrong15, maxLines: 1, overflow: TextOverflow.ellipsis),
-            if (item.variant != null) Text('حجم ${item.variant!.name}', style: FnText.caption11.muted),
+            if (item.variant != null) Text(tr('حجم {0}', [item.variant!.name]), style: FnText.caption11.muted),
             const SizedBox(height: 4),
             Text(Fmt.moneyShort(item.unitPrice), style: FnText.label13.deep),
           ])),

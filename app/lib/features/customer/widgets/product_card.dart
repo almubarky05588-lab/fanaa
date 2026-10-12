@@ -4,6 +4,7 @@ import '../../../core/theme/tokens.dart';
 import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/models/catalog.dart';
+import '../../../core/i18n/i18n.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({super.key, required this.p, this.onAdd, this.width});
@@ -21,7 +22,7 @@ class ProductCard extends StatelessWidget {
             AspectRatio(aspectRatio: 1, child: FnImage(url: p.cover, radius: 16, bg: FnColors.soft)),
             const SizedBox(height: 8),
             Text(p.name, style: FnText.label13, maxLines: 1, overflow: TextOverflow.ellipsis),
-            if (p.categoryName != null) Text(p.categoryName!, style: FnText.caption11.muted, maxLines: 1),
+            if (p.categoryName != null) Text(tr(p.categoryName!), style: FnText.caption11.muted, maxLines: 1),
             const SizedBox(height: 6),
             Row(children: [
               Expanded(child: Text(Fmt.moneyShort(p.fromPrice), style: FnText.label13.deep)),

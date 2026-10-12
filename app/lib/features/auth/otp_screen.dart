@@ -10,6 +10,7 @@ import '../../core/widgets/fn_widgets.dart';
 import '../../data/models/profile.dart';
 import '../../data/repositories/auth_repo.dart';
 import 'phone_login_screen.dart' show EnglishDigitsFormatter;
+import '../../core/i18n/i18n.dart';
 
 /// طول رمز التحقق — 4 أرقام (يُضبط بنفس القيمة في إعدادات SMS في Supabase)
 const kOtpLength = 4;
@@ -56,7 +57,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
       // الموجّه ينقل المستخدم تلقائيًا للوجهة المحفوظة؛ هذا احتياط فقط
       if (mounted) context.go(AuthRedirect.take() ?? '/splash');
     } catch (_) {
-      if (mounted) showFnSnack(context, 'الرمز غير صحيح أو انتهت صلاحيته', error: true);
+      if (mounted) showFnSnack(context, tr('الرمز غير صحيح أو انتهت صلاحيته'), error: true);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -66,9 +67,9 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
     try {
       await ref.read(authRepoProvider).sendOtp(widget.phone, role: widget.role);
       _startTimer();
-      if (mounted) showFnSnack(context, 'تم إرسال رمز جديد');
+      if (mounted) showFnSnack(context, tr('تم إرسال رمز جديد'));
     } catch (_) {
-      if (mounted) showFnSnack(context, 'تعذّر الإرسال', error: true);
+      if (mounted) showFnSnack(context, tr('تعذّر الإرسال'), error: true);
     }
   }
 
@@ -85,7 +86,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 12),
-              Align(alignment: Alignment.centerRight, child: FnBackButton(onTap: () => context.pop())),
+              Align(alignment: AlignmentDirectional.centerStart, child: FnBackButton(onTap: () => context.pop())),
               const SizedBox(height: 28),
               Container(
                 width: 74, height: 74,
@@ -93,9 +94,9 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                 child: Icon(merchant ? Icons.storefront_outlined : Icons.person_outline_rounded, size: 34, color: FnColors.deep),
               ),
               const SizedBox(height: 22),
-              Text('أدخل رمز التحقق', style: FnText.display28),
+              Text(tr('أدخل رمز التحقق'), style: FnText.display28),
               const SizedBox(height: 8),
-              Text('أرسلنا رمزًا مكوّنًا من $kOtpLength أرقام إلى', style: FnText.body15.muted),
+              Text(tr('أرسلنا رمزًا مكوّنًا من {0} أرقام إلى', [kOtpLength]), style: FnText.body15.muted),
               const SizedBox(height: 4),
               Row(children: [
                 Directionality(textDirection: TextDirection.ltr, child: Text(Fmt.phone(widget.phone), style: FnText.bodyStrong15)),
@@ -105,7 +106,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(color: FnColors.surface, borderRadius: BorderRadius.circular(12)),
-                    child: Text('تغيير', style: FnText.caption11.primary),
+                    child: Text(tr('تغيير'), style: FnText.caption11.primary),
                   ),
                 ),
               ]),
@@ -137,10 +138,10 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
               Center(
                 child: _seconds > 0
                     ? Text.rich(TextSpan(children: [
-                        TextSpan(text: 'إعادة إرسال الرمز خلال ', style: FnText.body15.muted),
+                        TextSpan(text: tr('إعادة إرسال الرمز خلال '), style: FnText.body15.muted),
                         TextSpan(text: '$mm:$ss', style: FnText.label13.deep),
                       ]))
-                    : GestureDetector(onTap: _resend, child: Text('إعادة إرسال الرمز', style: FnText.label13.primary)),
+                    : GestureDetector(onTap: _resend, child: Text(tr('إعادة إرسال الرمز'), style: FnText.label13.primary)),
               ),
               const SizedBox(height: 16),
               Container(
@@ -149,13 +150,13 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                 child: Row(children: [
                   const Icon(Icons.lock_outline_rounded, size: 14, color: FnColors.deep),
                   const SizedBox(width: 8),
-                  Expanded(child: Text('لا تشارك الرمز مع أحد، فريق فناء لن يطلبه منك', style: FnText.caption11.deep)),
+                  Expanded(child: Text(tr('لا تشارك الرمز مع أحد، فريق فناء لن يطلبه منك'), style: FnText.caption11.deep)),
                 ]),
               ),
               const Spacer(),
-              FnButton(label: 'تأكيد', loading: _loading, onPressed: _code.length == kOtpLength ? _verify : null, height: 60),
+              FnButton(label: tr('تأكيد'), loading: _loading, onPressed: _code.length == kOtpLength ? _verify : null, height: 60),
               const SizedBox(height: 12),
-              Center(child: Text('لم يصلك الرمز؟ جرّب الاتصال الصوتي', style: FnText.caption11.muted)),
+              Center(child: Text(tr('لم يصلك الرمز؟ جرّب الاتصال الصوتي'), style: FnText.caption11.muted)),
               const SizedBox(height: 12),
             ],
           ),

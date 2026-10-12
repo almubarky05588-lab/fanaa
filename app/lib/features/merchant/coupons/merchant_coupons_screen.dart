@@ -8,6 +8,7 @@ import '../../../data/models/catalog.dart';
 import '../../../data/models/coupon.dart';
 import '../../../data/repositories/coupon_repo.dart';
 import '../dashboard/merchant_dashboard_screen.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// الكوبونات والعروض — لصاحب المتجر
 class MerchantCouponsScreen extends ConsumerWidget {
@@ -34,14 +35,14 @@ class _Coupons extends ConsumerWidget {
     final async = ref.watch(merchantCouponsProvider(n.id));
     return Scaffold(
       appBar: FnAppBar(
-        title: 'الكوبونات',
+        title: tr('الكوبونات'),
         action: GestureDetector(
           onTap: () => _add(context, ref),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
             decoration: BoxDecoration(color: FnColors.deep, borderRadius: BorderRadius.circular(14)),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
-              Text('كوبون جديد', style: FnText.label13.onDark),
+              Text(tr('كوبون جديد'), style: FnText.label13.onDark),
               const SizedBox(width: 6),
               const Icon(Icons.add_rounded, size: 16, color: Colors.white),
             ]),
@@ -53,10 +54,10 @@ class _Coupons extends ConsumerWidget {
         error: (_, __) => FnError(onRetry: () => ref.invalidate(merchantCouponsProvider(n.id))),
         data: (list) => list.isEmpty
             ? FnEmpty(
-                title: 'لا توجد كوبونات بعد',
-                subtitle: 'أنشئ كوبون خصم وشاركه مع عملائك لزيادة مبيعاتك',
+                title: tr('لا توجد كوبونات بعد'),
+                subtitle: tr('أنشئ كوبون خصم وشاركه مع عملائك لزيادة مبيعاتك'),
                 icon: Icons.local_offer_outlined,
-                action: SizedBox(width: 180, child: FnButton(label: 'كوبون جديد', height: 50, onPressed: () => _add(context, ref))),
+                action: SizedBox(width: 180, child: FnButton(label: tr('كوبون جديد'), height: 50, onPressed: () => _add(context, ref))),
               )
             : RefreshIndicator(
                 color: FnColors.primary,
@@ -81,13 +82,13 @@ class _CouponCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dead = c.expired || c.exhausted;
-    final status = c.expired ? 'منتهي' : (c.exhausted ? 'اكتملت الاستخدامات' : (c.isActive ? 'فعّال' : 'موقوف'));
+    final status = c.expired ? tr('منتهي') : (c.exhausted ? tr('اكتملت الاستخدامات') : (c.isActive ? tr('فعّال') : tr('موقوف')));
     final valueLabel = c.isPercent ? '${c.value.toStringAsFixed(0)}%' : Fmt.moneyShort(c.value);
     final details = [
-      if (c.minOrder > 0) 'حد أدنى ${Fmt.moneyShort(c.minOrder)}',
-      if (c.isPercent && c.maxDiscount != null) 'حتى ${Fmt.moneyShort(c.maxDiscount!)}',
-      'استُخدم ${c.usedCount}${c.usageLimit != null ? ' من ${c.usageLimit}' : ''}',
-      if (c.endsAt != null) 'ينتهي ${Fmt.date(c.endsAt!)}',
+      if (c.minOrder > 0) tr('حد أدنى {0}', [Fmt.moneyShort(c.minOrder)]),
+      if (c.isPercent && c.maxDiscount != null) tr('حتى {0}', [Fmt.moneyShort(c.maxDiscount!)]),
+      tr('استُخدم {0}{1}', [c.usedCount, c.usageLimit != null ? tr(' من {0}', [c.usageLimit]) : '']),
+      if (c.endsAt != null) tr('ينتهي {0}', [Fmt.date(c.endsAt!)]),
     ].join(' • ');
 
     return FnCard(
@@ -128,10 +129,10 @@ class _CouponCard extends ConsumerWidget {
               final ok = await showDialog<bool>(
                 context: context,
                 builder: (d) => AlertDialog(
-                  title: Text('حذف الكوبون ${c.code}؟', style: FnText.heading18),
+                  title: Text(tr('حذف الكوبون {0}؟', [c.code]), style: FnText.heading18),
                   actions: [
-                    TextButton(onPressed: () => Navigator.pop(d, false), child: Text('إلغاء', style: FnText.label13.muted)),
-                    TextButton(onPressed: () => Navigator.pop(d, true), child: Text('حذف', style: FnText.label13.clay)),
+                    TextButton(onPressed: () => Navigator.pop(d, false), child: Text(tr('إلغاء'), style: FnText.label13.muted)),
+                    TextButton(onPressed: () => Navigator.pop(d, true), child: Text(tr('حذف'), style: FnText.label13.clay)),
                   ],
                 ),
               );
@@ -169,11 +170,11 @@ class _CouponFormState extends ConsumerState<_CouponForm> {
     final code = _code.text.trim().toUpperCase();
     final value = double.tryParse(_value.text);
     if (code.length < 3 || value == null || value <= 0) {
-      showFnSnack(context, 'أدخل الكود (٣ أحرف على الأقل) وقيمة الخصم', error: true);
+      showFnSnack(context, tr('أدخل الكود (٣ أحرف على الأقل) وقيمة الخصم'), error: true);
       return;
     }
     if (_type == 'percent' && value > 100) {
-      showFnSnack(context, 'النسبة لا تتجاوز ١٠٠٪', error: true);
+      showFnSnack(context, tr('النسبة لا تتجاوز ١٠٠٪'), error: true);
       return;
     }
     setState(() => _saving = true);
@@ -193,7 +194,7 @@ class _CouponFormState extends ConsumerState<_CouponForm> {
     } catch (e) {
       final s = e.toString();
       if (mounted) {
-        showFnSnack(context, s.contains('duplicate') || s.contains('23505') ? 'هذا الكود مستخدم، اختر كودًا آخر' : fnErrorText(e), error: true);
+        showFnSnack(context, s.contains('duplicate') || s.contains('23505') ? tr('هذا الكود مستخدم، اختر كودًا آخر') : fnErrorText(e), error: true);
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -225,29 +226,29 @@ class _CouponFormState extends ConsumerState<_CouponForm> {
           child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
             Center(child: Container(width: 44, height: 5, decoration: BoxDecoration(color: FnColors.border, borderRadius: BorderRadius.circular(3)))),
             const SizedBox(height: 14),
-            Text('كوبون جديد', style: FnText.heading18),
+            Text(tr('كوبون جديد'), style: FnText.heading18),
             const SizedBox(height: 14),
-            _f('الكود', _code, 'SPRING20', number: false, code: true),
-            Text('نوع الخصم', style: FnText.label13.muted),
+            _f(tr('الكود'), _code, 'SPRING20', number: false, code: true),
+            Text(tr('نوع الخصم'), style: FnText.label13.muted),
             const SizedBox(height: 6),
             Row(children: [
-              FnChip(label: 'نسبة ٪', selected: _type == 'percent', onTap: () => setState(() => _type = 'percent')),
+              FnChip(label: tr('نسبة ٪'), selected: _type == 'percent', onTap: () => setState(() => _type = 'percent')),
               const SizedBox(width: 8),
-              FnChip(label: 'مبلغ ثابت', selected: _type == 'fixed', onTap: () => setState(() => _type = 'fixed')),
+              FnChip(label: tr('مبلغ ثابت'), selected: _type == 'fixed', onTap: () => setState(() => _type = 'fixed')),
             ]),
             const SizedBox(height: 12),
             Row(children: [
-              Expanded(child: _f('قيمة الخصم', _value, _type == 'percent' ? '10' : '15', suffix: _type == 'percent' ? '%' : 'ر.س')),
+              Expanded(child: _f(tr('قيمة الخصم'), _value, _type == 'percent' ? '10' : '15', suffix: _type == 'percent' ? '%' : tr('ر.س'))),
               const SizedBox(width: 12),
-              Expanded(child: _f('الحد الأدنى للطلب', _min, '0', suffix: 'ر.س')),
+              Expanded(child: _f(tr('الحد الأدنى للطلب'), _min, '0', suffix: tr('ر.س'))),
             ]),
-            if (_type == 'percent') _f('أقصى خصم (اختياري)', _max, 'بدون حد', suffix: 'ر.س'),
+            if (_type == 'percent') _f(tr('أقصى خصم (اختياري)'), _max, tr('بدون حد'), suffix: tr('ر.س')),
             Row(children: [
-              Expanded(child: _f('عدد الاستخدامات (اختياري)', _limit, 'بدون حد')),
+              Expanded(child: _f(tr('عدد الاستخدامات (اختياري)'), _limit, tr('بدون حد'))),
               const SizedBox(width: 12),
-              Expanded(child: _f('لكل عميل', _perUser, '1', suffix: 'مرة')),
+              Expanded(child: _f(tr('لكل عميل'), _perUser, '1', suffix: tr('مرة'))),
             ]),
-            Text('تاريخ الانتهاء', style: FnText.label13.muted),
+            Text(tr('تاريخ الانتهاء'), style: FnText.label13.muted),
             const SizedBox(height: 6),
             GestureDetector(
               onTap: () async {
@@ -264,7 +265,7 @@ class _CouponFormState extends ConsumerState<_CouponForm> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(color: FnColors.bgBase, borderRadius: BorderRadius.circular(FnRadius.field)),
                 child: Row(children: [
-                  Expanded(child: Text(_endsAt == null ? 'بدون تاريخ انتهاء' : Fmt.date(_endsAt!),
+                  Expanded(child: Text(_endsAt == null ? tr('بدون تاريخ انتهاء') : Fmt.date(_endsAt!),
                       style: _endsAt == null ? FnText.body15.faint : FnText.body15)),
                   if (_endsAt != null)
                     GestureDetector(onTap: () => setState(() => _endsAt = null),
@@ -275,7 +276,7 @@ class _CouponFormState extends ConsumerState<_CouponForm> {
               ),
             ),
             const SizedBox(height: 18),
-            FnButton(label: 'حفظ الكوبون', loading: _saving, onPressed: _save),
+            FnButton(label: tr('حفظ الكوبون'), loading: _saving, onPressed: _save),
           ]),
         ),
       );

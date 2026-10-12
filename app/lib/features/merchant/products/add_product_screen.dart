@@ -8,6 +8,7 @@ import '../../../core/theme/tokens.dart';
 import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/models/catalog.dart';
 import '../../../data/repositories/catalog_repo.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// 19 إضافة منتج
 class AddProductScreen extends ConsumerStatefulWidget {
@@ -25,7 +26,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
   final _water = TextEditingController();
   final _temp = TextEditingController();
   String? _categoryId;
-  final _sizes = <String>{'متوسط'};
+  final _sizes = <String>{tr('متوسط')};
   final _images = <(String, Uint8List)>[];
   bool _available = true;
   bool _saving = false;
@@ -42,7 +43,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
   Future<void> _save(Nursery n, {bool draft = false}) async {
     final price = double.tryParse(_price.text.replaceAll(',', '.'));
     if (_name.text.trim().isEmpty || price == null) {
-      showFnSnack(context, 'أدخل اسم المنتج والسعر', error: true);
+      showFnSnack(context, tr('أدخل اسم المنتج والسعر'), error: true);
       return;
     }
     setState(() => _saving = true);
@@ -53,9 +54,9 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
         urls.add(await repo.uploadProductImage(n.id, name, bytes));
       }
       final qty = int.tryParse(_qty.text) ?? 0;
-      final ordered = ['صغير', 'متوسط', 'كبير'].where(_sizes.contains).toList();
+      final ordered = [tr('صغير'), tr('متوسط'), tr('كبير')].where(_sizes.contains).toList();
       // الحجم المتوسط = السعر المدخل، الصغير −٣٥٪، الكبير +٤٥٪ (يعدّلها التاجر لاحقًا)
-      double priceFor(String s) => switch (s) { 'صغير' => (price * .65).roundToDouble(), 'كبير' => (price * 1.45).roundToDouble(), _ => price };
+      double priceFor(String s) => switch (s) { tr('صغير') => (price * .65).roundToDouble(), tr('كبير') => (price * 1.45).roundToDouble(), _ => price };
       await repo.createProduct({
         'nursery_id': n.id,
         'category_id': _categoryId,
@@ -72,7 +73,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
           ? [for (var i = 0; i < ordered.length; i++) {'name': ordered[i], 'price': priceFor(ordered[i]), 'stock': qty, 'sort': i}]
           : const []);
       if (mounted) {
-        showFnSnack(context, draft ? 'حُفظ كمسودة' : 'تمت إضافة المنتج');
+        showFnSnack(context, draft ? tr('حُفظ كمسودة') : tr('تمت إضافة المنتج'));
         context.pop();
       }
     } catch (e) {
@@ -87,7 +88,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
     final n = ref.watch(myNurseryProvider).valueOrNull;
     final cats = ref.watch(categoriesProvider).valueOrNull ?? const <Category>[];
     return Scaffold(
-      appBar: const FnAppBar(title: 'إضافة منتج'),
+      appBar: FnAppBar(title: tr('إضافة منتج')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(FnSpace.page, 8, FnSpace.page, 24),
         children: [
@@ -102,8 +103,8 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
                       Container(width: 44, height: 44, decoration: BoxDecoration(color: FnColors.soft, borderRadius: BorderRadius.circular(16)),
                           child: const Icon(Icons.add_rounded, color: FnColors.deep)),
                       const SizedBox(height: 8),
-                      Text('أضف صور المنتج', style: FnText.bodyStrong15),
-                      Text('حتى ٥ صور • JPG أو PNG', style: FnText.caption11.muted),
+                      Text(tr('أضف صور المنتج'), style: FnText.bodyStrong15),
+                      Text(tr('حتى ٥ صور • JPG أو PNG'), style: FnText.caption11.muted),
                     ])
                   : SizedBox(
                       height: 76,
@@ -128,39 +129,39 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
             ),
           ),
           const SizedBox(height: 14),
-          _field('اسم المنتج', TextField(controller: _name, decoration: const InputDecoration(hintText: 'مثال: نبتة مونستيرا'))),
-          _field('القسم', DropdownButtonFormField<String>(
+          _field(tr('اسم المنتج'), TextField(controller: _name, decoration: InputDecoration(hintText: tr('مثال: نبتة مونستيرا')))),
+          _field(tr('القسم'), DropdownButtonFormField<String>(
             value: _categoryId,
-            hint: Text('اختر القسم', style: FnText.body15.faint),
+            hint: Text(tr('اختر القسم'), style: FnText.body15.faint),
             icon: const Icon(Icons.keyboard_arrow_down_rounded, color: FnColors.faint),
             decoration: const InputDecoration(),
-            items: [for (final c in cats) DropdownMenuItem(value: c.id, child: Text(c.nameAr, style: FnText.body15))],
+            items: [for (final c in cats) DropdownMenuItem(value: c.id, child: Text(tr(c.nameAr), style: FnText.body15))],
             onChanged: (v) => setState(() => _categoryId = v),
           )),
           Row(children: [
-            Expanded(child: _field('السعر (ر.س)', TextField(controller: _price, keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            Expanded(child: _field(tr('السعر (ر.س)'), TextField(controller: _price, keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))], decoration: const InputDecoration(hintText: '0.00')))),
             const SizedBox(width: 12),
-            Expanded(child: _field('الكمية', TextField(controller: _qty, keyboardType: TextInputType.number,
+            Expanded(child: _field(tr('الكمية'), TextField(controller: _qty, keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly], decoration: const InputDecoration(hintText: '0')))),
           ]),
-          _field('الأحجام المتاحة', Wrap(spacing: 8, runSpacing: 8, children: [
-            for (final s in ['صغير', 'متوسط', 'كبير'])
+          _field(tr('الأحجام المتاحة'), Wrap(spacing: 8, runSpacing: 8, children: [
+            for (final s in [tr('صغير'), tr('متوسط'), tr('كبير')])
               FnChip(label: s, selected: _sizes.contains(s), height: 36,
                   onTap: () => setState(() => _sizes.contains(s) ? (_sizes.length > 1 ? _sizes.remove(s) : null) : _sizes.add(s))),
           ])),
-          _field('العناية (اختياري)', Column(children: [
-            TextField(controller: _light, decoration: const InputDecoration(hintText: 'الإضاءة: ضوء غير مباشر')),
+          _field(tr('العناية (اختياري)'), Column(children: [
+            TextField(controller: _light, decoration: InputDecoration(hintText: tr('الإضاءة: ضوء غير مباشر'))),
             const SizedBox(height: 8),
-            TextField(controller: _water, decoration: const InputDecoration(hintText: 'الري: مرة أسبوعيًا')),
+            TextField(controller: _water, decoration: InputDecoration(hintText: tr('الري: مرة أسبوعيًا'))),
             const SizedBox(height: 8),
-            TextField(controller: _temp, decoration: const InputDecoration(hintText: 'الحرارة: ٢٠–٣٠°')),
+            TextField(controller: _temp, decoration: InputDecoration(hintText: tr('الحرارة: ٢٠–٣٠°'))),
           ])),
-          _field('الوصف', TextField(controller: _desc, maxLines: 3, decoration: const InputDecoration(hintText: 'اكتب وصفًا مختصرًا ومعلومات العناية'))),
+          _field(tr('الوصف'), TextField(controller: _desc, maxLines: 3, decoration: InputDecoration(hintText: tr('اكتب وصفًا مختصرًا ومعلومات العناية')))),
           FnCard(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12), radius: 16,
             child: Row(children: [
-              Expanded(child: Text('متوفر للبيع فور الحفظ', style: FnText.body15)),
+              Expanded(child: Text(tr('متوفر للبيع فور الحفظ'), style: FnText.body15)),
               FnSwitch(value: _available, onChanged: (v) => setState(() => _available = v)),
             ]),
           ),
@@ -168,10 +169,10 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       ),
       bottomNavigationBar: FnBottomBar(
         child: Row(children: [
-          SizedBox(width: 110, child: FnButton(label: 'مسودة', color: FnColors.bgBase, textColor: FnColors.ink,
+          SizedBox(width: 110, child: FnButton(label: tr('مسودة'), color: FnColors.bgBase, textColor: FnColors.ink,
               onPressed: n == null || _saving ? null : () => _save(n, draft: true))),
           const SizedBox(width: 12),
-          Expanded(child: FnButton(label: 'حفظ المنتج', loading: _saving, onPressed: n == null ? null : () => _save(n))),
+          Expanded(child: FnButton(label: tr('حفظ المنتج'), loading: _saving, onPressed: n == null ? null : () => _save(n))),
         ]),
       ),
     );

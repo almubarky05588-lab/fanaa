@@ -13,6 +13,7 @@ import '../../../data/models/catalog.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../widgets/product_card.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// 05 صفحة المتجر
 class StoreScreen extends ConsumerStatefulWidget {
@@ -31,7 +32,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
       await ref.read(orderRepoProvider).addToCart(
           nurseryId: p.nurseryId, productId: p.id, variantId: p.variants.isEmpty ? null : p.variants.first.id);
       ref.invalidate(cartsProvider);
-      if (mounted) showFnSnack(context, 'أُضيف ${p.name} إلى السلة');
+      if (mounted) showFnSnack(context, tr('أُضيف {0} إلى السلة', [p.name]));
     } catch (e) {
       if (mounted) showFnSnack(context, fnErrorText(e), error: true);
     }
@@ -49,10 +50,10 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
         loading: () => const FnLoading(),
         error: (_, __) => FnError(onRetry: () => ref.invalidate(nurseryProvider(widget.id))),
         data: (n) {
-          if (n == null) return const FnEmpty(title: 'المتجر غير متاح');
+          if (n == null) return FnEmpty(title: tr('المتجر غير متاح'));
           final list = products.valueOrNull ?? const <Product>[];
           final cats = <String, String>{};
-          for (final p in list) { if (p.categoryId != null && p.categoryName != null) cats[p.categoryId!] = p.categoryName!; }
+          for (final p in list) { if (p.categoryId != null && p.categoryName != null) cats[p.categoryId!] = tr(p.categoryName!); }
           final shown = _cat == null ? list : list.where((p) => p.categoryId == _cat).toList();
           return CustomScrollView(slivers: [
             SliverToBoxAdapter(child: _Header(n: n)),
@@ -71,7 +72,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: FnSpace.page),
                   children: [
                     Padding(padding: const EdgeInsetsDirectional.only(end: 8),
-                        child: FnChip(label: 'الكل', selected: _cat == null, onTap: () => setState(() => _cat = null))),
+                        child: FnChip(label: tr('الكل'), selected: _cat == null, onTap: () => setState(() => _cat = null))),
                     for (final e in cats.entries)
                       Padding(padding: const EdgeInsetsDirectional.only(end: 8),
                           child: FnChip(label: e.value, selected: _cat == e.key, onTap: () => setState(() => _cat = e.key))),
@@ -82,7 +83,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
             if (products.isLoading)
               const SliverToBoxAdapter(child: Padding(padding: EdgeInsets.all(40), child: FnLoading()))
             else if (shown.isEmpty)
-              const SliverToBoxAdapter(child: FnEmpty(title: 'لا توجد منتجات في هذا القسم'))
+              SliverToBoxAdapter(child: FnEmpty(title: tr('لا توجد منتجات في هذا القسم')))
             else
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(FnSpace.page, 12, FnSpace.page, 120),
@@ -100,7 +101,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
           ? null
           : FnBottomBar(
               child: FnButton(
-                label: 'عرض السلة • ${myCart.count} منتج • ${Fmt.moneyShort(myCart.subtotal)}',
+                label: tr('عرض السلة • {0} منتج • {1}', [myCart.count, Fmt.moneyShort(myCart.subtotal)]),
                 onPressed: () => context.push('/cart?nursery=${widget.id}'),
               ),
             ),
@@ -124,7 +125,7 @@ class _Header extends ConsumerWidget {
       await ref.read(catalogRepoProvider).toggleFavoriteNursery(n.id, !now);
       ref.invalidate(favoriteNurseryIdsProvider);
       ref.invalidate(favoriteNurseriesProvider);
-      if (context.mounted) showFnSnack(context, now ? 'أُزيل من المفضلة' : 'أُضيف ${n.name} إلى المفضلة');
+      if (context.mounted) showFnSnack(context, now ? tr('أُزيل من المفضلة') : tr('أُضيف {0} إلى المفضلة', [n.name]));
     } catch (e) {
       if (context.mounted) showFnSnack(context, fnErrorText(e), error: true);
     }
@@ -132,7 +133,7 @@ class _Header extends ConsumerWidget {
 
   void _share() {
     final link = 'https://fenaa.netlify.app/store/${n.id}';
-    Share.share('تسوّق من ${n.name} على تطبيق فناء 🌿\n$link', subject: n.name);
+    Share.share(tr('تسوّق من {0} على تطبيق فناء 🌿\n{1}', [n.name, link]), subject: n.name);
   }
 
   @override
@@ -203,16 +204,16 @@ class _InfoCard extends StatelessWidget {
               Text(n.location, style: FnText.caption11.muted, maxLines: 1, overflow: TextOverflow.ellipsis),
             ])),
             const SizedBox(width: 8),
-            FnBadge(n.isOpen ? 'مفتوح الآن' : 'مغلق', bg: n.isOpen ? FnColors.soft : FnColors.bgBase, fg: n.isOpen ? FnColors.deep : FnColors.muted),
+            FnBadge(n.isOpen ? tr('مفتوح الآن') : tr('مغلق'), bg: n.isOpen ? FnColors.soft : FnColors.bgBase, fg: n.isOpen ? FnColors.deep : FnColors.muted),
           ]),
           const SizedBox(height: 14),
           const FnDivider(),
           const SizedBox(height: 12),
           Row(children: [
-            Expanded(child: _Stat('${n.ratingAvg.toStringAsFixed(1)} ★', 'التقييم (${n.ratingCount})')),
-            Expanded(child: _Stat(Fmt.minutes(n.prepTimeMin), 'وقت التوصيل')),
-            Expanded(child: _Stat(n.freeDelivery ? 'مجاني' : Fmt.moneyShort(n.deliveryFee), 'التوصيل')),
-            Expanded(child: _Stat(n.minOrder == 0 ? '—' : Fmt.moneyShort(n.minOrder), 'الحد الأدنى')),
+            Expanded(child: _Stat('${n.ratingAvg.toStringAsFixed(1)} ★', tr('التقييم ({0})', [n.ratingCount]))),
+            Expanded(child: _Stat(Fmt.minutes(n.prepTimeMin), tr('وقت التوصيل'))),
+            Expanded(child: _Stat(n.freeDelivery ? tr('مجاني') : Fmt.moneyShort(n.deliveryFee), tr('التوصيل'))),
+            Expanded(child: _Stat(n.minOrder == 0 ? '—' : Fmt.moneyShort(n.minOrder), tr('الحد الأدنى'))),
           ]),
         ]),
       );

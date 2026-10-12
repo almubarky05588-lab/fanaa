@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/router/auth_redirect.dart';
 import '../../core/theme/tokens.dart';
 import '../../core/widgets/fn_widgets.dart';
+import '../../core/i18n/i18n.dart';
 
 /// بطاقة دعوة الزائر لتسجيل الدخول — تظهر في الأقسام المرتبطة بالحساب
 class GuestLoginPrompt extends StatelessWidget {
@@ -14,7 +15,7 @@ class GuestLoginPrompt extends StatelessWidget {
         title: title,
         subtitle: subtitle,
         icon: icon,
-        action: SizedBox(width: 200, child: FnButton(label: 'تسجيل الدخول', height: 50, onPressed: () => goLogin(context, from: from))),
+        action: SizedBox(width: 200, child: FnButton(label: tr('تسجيل الدخول'), height: 50, onPressed: () => goLogin(context, from: from))),
       );
 }
 
@@ -30,13 +31,13 @@ Future<void> askToLogin(BuildContext context, {required String reason, String? f
             Container(width: 60, height: 60, decoration: const BoxDecoration(color: FnColors.soft, shape: BoxShape.circle),
                 child: const Icon(Icons.lock_outline_rounded, color: FnColors.deep, size: 26)),
             const SizedBox(height: 12),
-            Text('سجّل دخولك للمتابعة', style: FnText.heading18),
+            Text(tr('سجّل دخولك للمتابعة'), style: FnText.heading18),
             const SizedBox(height: 4),
             Text(reason, style: FnText.body15.muted, textAlign: TextAlign.center),
             const SizedBox(height: 18),
-            FnButton(label: 'تسجيل الدخول برقم الجوال', onPressed: () { Navigator.pop(ctx); goLogin(context, from: from); }),
+            FnButton(label: tr('تسجيل الدخول برقم الجوال'), onPressed: () { Navigator.pop(ctx); goLogin(context, from: from); }),
             const SizedBox(height: 8),
-            TextButton(onPressed: () => Navigator.pop(ctx), child: Text('لاحقًا', style: FnText.label13.muted)),
+            TextButton(onPressed: () => Navigator.pop(ctx), child: Text(tr('لاحقًا'), style: FnText.label13.muted)),
           ]),
         ),
       ),

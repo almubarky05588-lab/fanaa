@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../theme/tokens.dart';
+import '../i18n/i18n.dart';
 
 /// علامة فناء — ثلاث أوراق بدوّامة نمو. نفس الهندسة المستخدمة في Figma.
 class FnLogoMark extends StatelessWidget {
@@ -76,7 +77,7 @@ class FnLogoLockup extends StatelessWidget {
         children: [
           FnLogoMark(size: markSize, color: markColor, gradient: markColor == null),
           const SizedBox(width: 10),
-          Text('فناء', style: textStyle ?? FnText.title22.deep),
+          Text(tr('فناء'), style: textStyle ?? FnText.title22.deep),
         ],
       );
 }

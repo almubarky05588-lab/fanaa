@@ -1,3 +1,4 @@
+import '../../core/i18n/i18n.dart';
 enum UserRole { customer, merchant, courier, admin }
 
 UserRole roleFrom(String? s) =>
@@ -57,7 +58,7 @@ class Address {
 
   factory Address.fromJson(Map<String, dynamic> j) => Address(
         id: j['id'],
-        label: j['label'] ?? 'المنزل',
+        label: j['label'] ?? tr('المنزل'),
         line: j['line'] ?? '',
         district: j['district'],
         city: j['city'] ?? '',
@@ -67,5 +68,5 @@ class Address {
         isDefault: j['is_default'] ?? false,
       );
 
-  String get full => [district, city].where((e) => (e ?? '').isNotEmpty).join('، ');
+  String get full => [district, city].where((e) => (e ?? '').isNotEmpty).join(tr('، '));
 }

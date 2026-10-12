@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../theme/tokens.dart';
+import '../i18n/i18n.dart';
 export 'fn_image.dart';
 
 /// زر دائري أبيض مع سهم الرجوع — يظهر يمين العنوان (RTL)
@@ -351,10 +352,10 @@ class FnError extends StatelessWidget {
   final VoidCallback? onRetry;
   @override
   Widget build(BuildContext context) => FnEmpty(
-        title: 'تعذّر التحميل',
-        subtitle: 'تحقّق من الاتصال وحاول مجددًا',
+        title: tr('تعذّر التحميل'),
+        subtitle: tr('تحقّق من الاتصال وحاول مجددًا'),
         icon: Icons.wifi_off_rounded,
-        action: onRetry == null ? null : SizedBox(width: 160, child: FnButton(label: 'إعادة المحاولة', height: 48, onPressed: onRetry)),
+        action: onRetry == null ? null : SizedBox(width: 160, child: FnButton(label: tr('إعادة المحاولة'), height: 48, onPressed: onRetry)),
       );
 }
 
@@ -373,7 +374,7 @@ class FnSwitch extends StatelessWidget {
             color: value ? (lime ? FnColors.lime : FnColors.deep) : FnColors.border,
             borderRadius: BorderRadius.circular(13),
           ),
-          alignment: value ? Alignment.centerLeft : Alignment.centerRight,
+          alignment: value ? AlignmentDirectional.centerEnd : AlignmentDirectional.centerStart,
           child: Container(width: 20, height: 20,
               decoration: BoxDecoration(color: lime && value ? FnColors.deep : FnColors.surface, shape: BoxShape.circle)),
         ),
@@ -390,5 +391,5 @@ void showFnSnack(BuildContext context, String msg, {bool error = false}) {
 String fnErrorText(Object e) {
   final s = e.toString();
   final m = RegExp(r'message: ([^,]+)').firstMatch(s);
-  return (m?.group(1) ?? 'حدث خطأ غير متوقع').trim();
+  return m == null ? tr('حدث خطأ غير متوقع') : tr(m.group(1)!.trim());
 }

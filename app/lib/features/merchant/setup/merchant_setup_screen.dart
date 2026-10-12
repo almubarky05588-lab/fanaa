@@ -7,6 +7,7 @@ import '../../../core/widgets/fn_logo.dart';
 import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../../../core/supabase/supabase_client.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// إنشاء المتجر — يظهر للتاجر الذي لا يملك مشتلًا بعد
 class MerchantSetupScreen extends ConsumerStatefulWidget {
@@ -17,7 +18,7 @@ class MerchantSetupScreen extends ConsumerStatefulWidget {
 
 class _MerchantSetupScreenState extends ConsumerState<MerchantSetupScreen> {
   final _name = TextEditingController();
-  final _city = TextEditingController(text: 'الرياض');
+  final _city = TextEditingController(text: tr('الرياض'));
   final _district = TextEditingController();
   final _phone = TextEditingController();
   final _vat = TextEditingController();
@@ -31,7 +32,7 @@ class _MerchantSetupScreenState extends ConsumerState<MerchantSetupScreen> {
 
   Future<void> _create() async {
     if (_name.text.trim().length < 2 || _city.text.trim().isEmpty) {
-      showFnSnack(context, 'أدخل اسم المتجر والمدينة', error: true);
+      showFnSnack(context, tr('أدخل اسم المتجر والمدينة'), error: true);
       return;
     }
     setState(() => _loading = true);
@@ -67,16 +68,16 @@ class _MerchantSetupScreenState extends ConsumerState<MerchantSetupScreen> {
               Container(width: 74, height: 74, decoration: BoxDecoration(color: FnColors.deep, borderRadius: BorderRadius.circular(26)),
                   child: const Center(child: FnLogoMark(size: 42, color: FnColors.lime, gradient: false))),
               const SizedBox(height: 18),
-              Text('أنشئ متجرك على فناء', style: FnText.display28),
-              Text('بيانات أساسية تقدر تعدّلها لاحقًا من الإعدادات', style: FnText.body15.muted),
+              Text(tr('أنشئ متجرك على فناء'), style: FnText.display28),
+              Text(tr('بيانات أساسية تقدر تعدّلها لاحقًا من الإعدادات'), style: FnText.body15.muted),
               const SizedBox(height: 22),
               for (final (l, c, h) in [
-                ('اسم المتجر', _name, 'مثال: مشتل الروضة'),
-                ('المدينة', _city, 'الرياض'),
-                ('الحي', _district, 'حي الروضة'),
-                ('رقم التواصل', _phone, '05X XXX XXXX'),
-                ('الرقم الضريبي (اختياري)', _vat, '3XXXXXXXXXXXXX3'),
-                ('السجل التجاري (اختياري)', _cr, '10XXXXXXXX'),
+                (tr('اسم المتجر'), _name, tr('مثال: مشتل الروضة')),
+                (tr('المدينة'), _city, tr('الرياض')),
+                (tr('الحي'), _district, tr('حي الروضة')),
+                (tr('رقم التواصل'), _phone, '05X XXX XXXX'),
+                (tr('الرقم الضريبي (اختياري)'), _vat, '3XXXXXXXXXXXXX3'),
+                (tr('السجل التجاري (اختياري)'), _cr, '10XXXXXXXX'),
               ])
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
@@ -89,10 +90,10 @@ class _MerchantSetupScreenState extends ConsumerState<MerchantSetupScreen> {
               Row(children: [
                 const Icon(Icons.my_location_rounded, size: 14, color: FnColors.primary),
                 const SizedBox(width: 6),
-                Expanded(child: Text('سيُحفظ موقع المتجر من موقعك الحالي', style: FnText.caption11.muted)),
+                Expanded(child: Text(tr('سيُحفظ موقع المتجر من موقعك الحالي'), style: FnText.caption11.muted)),
               ]),
               const SizedBox(height: 22),
-              FnButton(label: 'إنشاء المتجر', loading: _loading, onPressed: _create),
+              FnButton(label: tr('إنشاء المتجر'), loading: _loading, onPressed: _create),
             ],
           ),
         ),

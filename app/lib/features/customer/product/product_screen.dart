@@ -10,6 +10,7 @@ import '../../../data/models/catalog.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../../common/guest_login_prompt.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// 08 صفحة المنتج
 class ProductScreen extends ConsumerStatefulWidget {
@@ -31,7 +32,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
       await ref.read(orderRepoProvider).addToCart(nurseryId: p.nurseryId, productId: p.id, variantId: _variant?.id, qty: _qty);
       ref.invalidate(cartsProvider);
       if (!mounted) return;
-      showFnSnack(context, 'أُضيف إلى السلة');
+      showFnSnack(context, tr('أُضيف إلى السلة'));
       context.pop();
     } catch (e) {
       if (mounted) showFnSnack(context, fnErrorText(e), error: true);
@@ -43,7 +44,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   Future<void> _toggleFav(String id, bool now) async {
     // المفضلة مرتبطة بالحساب — الزائر يُطلب منه التسجيل
     if (ref.read(currentUserProvider) == null) {
-      await askToLogin(context, reason: 'احفظ نباتاتك المفضلة في حسابك وارجع لها متى ما شئت', from: '/product/$id');
+      await askToLogin(context, reason: tr('احفظ نباتاتك المفضلة في حسابك وارجع لها متى ما شئت'), from: '/product/$id');
       return;
     }
     await ref.read(catalogRepoProvider).toggleFavorite(id, !now);
@@ -59,7 +60,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
         loading: () => const FnLoading(),
         error: (_, __) => FnError(onRetry: () => ref.invalidate(productProvider(widget.id))),
         data: (p) {
-          if (p == null) return const FnEmpty(title: 'المنتج غير متاح');
+          if (p == null) return FnEmpty(title: tr('المنتج غير متاح'));
           _variant ??= p.variants.isEmpty ? null : p.variants.firstWhere((v) => v.stock > 0, orElse: () => p.variants.first);
           final price = _variant?.price ?? p.basePrice;
           final fav = favs.contains(p.id);
@@ -115,7 +116,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                       ]),
                       if (p.variants.isNotEmpty) ...[
                         const SizedBox(height: 18),
-                        Text('الحجم', style: FnText.heading18),
+                        Text(tr('الحجم'), style: FnText.heading18),
                         const SizedBox(height: 10),
                         Wrap(spacing: 10, runSpacing: 10, children: [
                           for (final v in p.variants)
@@ -129,19 +130,19 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                       ],
                       if (p.careLight != null || p.careWater != null || p.careTemp != null) ...[
                         const SizedBox(height: 18),
-                        Text('العناية', style: FnText.heading18),
+                        Text(tr('العناية'), style: FnText.heading18),
                         const SizedBox(height: 10),
                         Row(children: [
-                          _Care('الإضاءة', p.careLight ?? '—', Icons.wb_sunny_outlined),
+                          _Care(tr('الإضاءة'), p.careLight ?? '—', Icons.wb_sunny_outlined),
                           const SizedBox(width: 10),
-                          _Care('الري', p.careWater ?? '—', Icons.water_drop_outlined),
+                          _Care(tr('الري'), p.careWater ?? '—', Icons.water_drop_outlined),
                           const SizedBox(width: 10),
-                          _Care('الحرارة', p.careTemp ?? '—', Icons.thermostat_outlined),
+                          _Care(tr('الحرارة'), p.careTemp ?? '—', Icons.thermostat_outlined),
                         ]),
                       ],
                       if (p.description != null && p.description!.isNotEmpty) ...[
                         const SizedBox(height: 18),
-                        Text('الوصف', style: FnText.heading18),
+                        Text(tr('الوصف'), style: FnText.heading18),
                         const SizedBox(height: 8),
                         Text(p.description!, style: FnText.body15.muted),
                       ],
@@ -172,7 +173,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                 const SizedBox(width: 14),
                 Expanded(
                   child: FnButton(
-                    label: 'أضف للسلة — ${Fmt.moneyShort((_variant?.price ?? async.value!.basePrice) * _qty)}',
+                    label: tr('أضف للسلة — {0}', [Fmt.moneyShort((_variant?.price ?? async.value!.basePrice) * _qty)]),
                     loading: _adding,
                     onPressed: async.value!.inStock ? () => _add(async.value!) : null,
                   ),

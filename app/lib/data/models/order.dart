@@ -1,4 +1,5 @@
 import 'catalog.dart';
+import '../../core/i18n/i18n.dart';
 
 class CartItem {
   final String id;
@@ -55,14 +56,14 @@ extension OrderStatusX on OrderStatus {
       };
 
   String get labelAr => switch (this) {
-        OrderStatus.pending => 'جديد',
-        OrderStatus.accepted => 'تم القبول',
-        OrderStatus.preparing => 'قيد التجهيز',
-        OrderStatus.ready => 'جاهز',
-        OrderStatus.outForDelivery => 'في الطريق',
-        OrderStatus.delivered => 'تم التوصيل',
-        OrderStatus.cancelled => 'ملغي',
-        OrderStatus.rejected => 'مرفوض',
+        OrderStatus.pending => tr('جديد'),
+        OrderStatus.accepted => tr('تم القبول'),
+        OrderStatus.preparing => tr('قيد التجهيز'),
+        OrderStatus.ready => tr('جاهز'),
+        OrderStatus.outForDelivery => tr('في الطريق'),
+        OrderStatus.delivered => tr('تم التوصيل'),
+        OrderStatus.cancelled => tr('ملغي'),
+        OrderStatus.rejected => tr('مرفوض'),
       };
 
   /// ترتيب المرحلة في الخط الزمني (0..3)
@@ -182,7 +183,7 @@ class Order {
   int get itemCount => items.fold(0, (s, i) => s + i.qty);
   String get addressLine => [address['line'], address['district'], address['city']]
       .where((e) => (e ?? '').toString().isNotEmpty)
-      .join('، ');
+      .join(tr('، '));
 }
 
 class Invoice {

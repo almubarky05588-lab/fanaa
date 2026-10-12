@@ -12,6 +12,7 @@ import '../../../data/repositories/catalog_repo.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../../customer/orders/my_orders_screen.dart' show statusColors;
 import '../orders/merchant_orders_screen.dart' show merchantOrdersTabRequest;
+import '../../../core/i18n/i18n.dart';
 
 final merchantStatsProvider = FutureProvider.family<Map<String, dynamic>, String>(
     (ref, nid) => ref.watch(orderRepoProvider).merchantStats(nid));
@@ -81,7 +82,7 @@ class _Dash extends ConsumerWidget {
               const SizedBox(width: 12),
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(n.name, style: FnText.heading18),
-                Text('لوحة التاجر', style: FnText.caption11.muted),
+                Text(tr('لوحة التاجر'), style: FnText.caption11.muted),
               ])),
               FnIconButton(radius: 16, onTap: () {}, child: const Icon(Icons.notifications_none_rounded, size: 20, color: FnColors.ink)),
             ]),
@@ -89,34 +90,34 @@ class _Dash extends ConsumerWidget {
             _OpenToggle(n: n),
             const SizedBox(height: 12),
             Row(children: [
-              _Kpi(Fmt.moneyShort((stats?['todaySales'] as num?) ?? 0), 'مبيعات اليوم', highlight: true,
+              _Kpi(Fmt.moneyShort((stats?['todaySales'] as num?) ?? 0), tr('مبيعات اليوم'), highlight: true,
                   onTap: () => context.go('/m/wallet')),
               const SizedBox(width: 10),
-              _Kpi('${n.ratingAvg.toStringAsFixed(1)} ★', 'تقييم المتجر (${n.ratingCount})',
+              _Kpi('${n.ratingAvg.toStringAsFixed(1)} ★', tr('تقييم المتجر ({0})', [n.ratingCount]),
                   onTap: () => context.push('/m/reviews')),
             ]),
             const SizedBox(height: 10),
             Row(children: [
-              _Kpi('${stats?['newCount'] ?? 0}', 'طلبات جديدة', onTap: () {
+              _Kpi('${stats?['newCount'] ?? 0}', tr('طلبات جديدة'), onTap: () {
                 merchantOrdersTabRequest.value = 0;
                 context.go('/m/orders');
               }),
               const SizedBox(width: 10),
-              _Kpi('${stats?['preparing'] ?? 0}', 'قيد التجهيز', onTap: () {
+              _Kpi('${stats?['preparing'] ?? 0}', tr('قيد التجهيز'), onTap: () {
                 merchantOrdersTabRequest.value = 1;
                 context.go('/m/orders');
               }),
             ]),
             const SizedBox(height: 12),
             Row(children: [
-              _QuickAction(icon: Icons.local_offer_outlined, label: 'الكوبونات', onTap: () => context.push('/m/coupons')),
+              _QuickAction(icon: Icons.local_offer_outlined, label: tr('الكوبونات'), onTap: () => context.push('/m/coupons')),
               const SizedBox(width: 10),
-              _QuickAction(icon: Icons.shopping_bag_outlined, label: 'تسوّق كعميل', onTap: () => startShoppingAsCustomer(context)),
+              _QuickAction(icon: Icons.shopping_bag_outlined, label: tr('تسوّق كعميل'), onTap: () => startShoppingAsCustomer(context)),
             ]),
             const SizedBox(height: 12),
             FnCard(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text('مبيعات آخر ٧ أيام', style: FnText.label13),
+                Text(tr('مبيعات آخر ٧ أيام'), style: FnText.label13),
                 const SizedBox(height: 12),
                 SizedBox(
                   height: 110,
@@ -128,17 +129,17 @@ class _Dash extends ConsumerWidget {
                           decoration: BoxDecoration(color: i == 6 ? FnColors.deep : FnColors.soft, borderRadius: BorderRadius.circular(8)),
                         ),
                         const SizedBox(height: 6),
-                        Text(dayLetters[days[i].weekday - 1], style: FnText.caption11.muted),
+                        Text(tr(dayLetters[days[i].weekday - 1]), style: FnText.caption11.muted),
                       ]),
                   ]),
                 ),
               ]),
             ),
             const SizedBox(height: 18),
-            FnSectionTitle('آخر الطلبات', action: 'عرض الكل', onAction: () => context.go('/m/orders')),
+            FnSectionTitle(tr('آخر الطلبات'), action: tr('عرض الكل'), onAction: () => context.go('/m/orders')),
             const SizedBox(height: 10),
             if (orders.isEmpty)
-              FnCard(child: Center(child: Text('لا توجد طلبات بعد', style: FnText.body15.muted)))
+              FnCard(child: Center(child: Text(tr('لا توجد طلبات بعد'), style: FnText.body15.muted)))
             else
               Container(
                 padding: const EdgeInsets.all(4),
@@ -195,8 +196,8 @@ class _OpenToggleState extends ConsumerState<_OpenToggle> {
         decoration: BoxDecoration(color: FnColors.deep, borderRadius: BorderRadius.circular(18)),
         child: Row(children: [
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(_open ? 'المتجر مفتوح الآن' : 'المتجر مغلق', style: FnText.bodyStrong15.onDark),
-            Text(_open ? 'يستقبل الطلبات الآن' : 'لن تصلك طلبات جديدة', style: FnText.caption11.soft),
+            Text(_open ? tr('المتجر مفتوح الآن') : tr('المتجر مغلق'), style: FnText.bodyStrong15.onDark),
+            Text(_open ? tr('يستقبل الطلبات الآن') : tr('لن تصلك طلبات جديدة'), style: FnText.caption11.soft),
           ])),
           FnSwitch(
             value: _open, lime: true,
@@ -243,7 +244,7 @@ class _MiniOrder extends StatelessWidget {
         child: Row(children: [
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('#${o.orderNumber}', style: FnText.bodyStrong15),
-            Text('${o.customerName?.isNotEmpty == true ? o.customerName : 'عميل'} • ${o.itemCount} منتجات', style: FnText.caption11.muted),
+            Text(tr('{0} • {1} منتجات', [o.customerName?.isNotEmpty == true ? o.customerName : tr('عميل'), o.itemCount]), style: FnText.caption11.muted),
           ])),
           Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
             FnBadge(o.status.labelAr, bg: bg, fg: fg),

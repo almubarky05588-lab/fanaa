@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../core/config/env.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/widgets/fn_widgets.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// سياسة الخصوصية والشروط — نص مبدئي يُراجَع قانونيًا قبل الإطلاق
 class LegalScreen extends StatelessWidget {
@@ -13,19 +14,19 @@ class LegalScreen extends StatelessWidget {
     final privacy = kind == 'privacy';
     final sections = privacy ? _privacy : _terms;
     return Scaffold(
-      appBar: FnAppBar(title: privacy ? 'سياسة الخصوصية' : 'الشروط والأحكام'),
+      appBar: FnAppBar(title: privacy ? tr('سياسة الخصوصية') : tr('الشروط والأحكام')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(FnSpace.page, 6, FnSpace.page, 32),
         children: [
-          Text('آخر تحديث: أكتوبر ٢٠٢٦', style: FnText.caption11.faint),
+          Text(tr('آخر تحديث: أكتوبر ٢٠٢٦'), style: FnText.caption11.faint),
           const SizedBox(height: 12),
           for (final s in sections) ...[
-            Text(s.$1, style: FnText.heading18),
+            Text(tr(s.$1), style: FnText.heading18),
             const SizedBox(height: 6),
-            Text(s.$2, style: FnText.body15.muted.copyWith(height: 1.8)),
+            Text(tr(s.$2), style: FnText.body15.muted.copyWith(height: 1.8)),
             const SizedBox(height: 18),
           ],
-          Text('للتواصل: ${Env.supportEmail}', style: FnText.label13.primary),
+          Text(tr('للتواصل: {0}', [Env.supportEmail]), style: FnText.label13.primary),
         ],
       ),
     );

@@ -7,6 +7,7 @@ import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../checkout/checkout_state.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// 11c بيانات البطاقة
 ///
@@ -58,7 +59,7 @@ class _CardDetailsScreenState extends ConsumerState<CardDetailsScreen> {
   Widget build(BuildContext context) {
     final d = ref.watch(checkoutDraftProvider);
     return Scaffold(
-      appBar: const FnAppBar(title: 'بيانات البطاقة'),
+      appBar: FnAppBar(title: tr('بيانات البطاقة')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(FnSpace.page, 12, FnSpace.page, 24),
         children: [
@@ -77,39 +78,39 @@ class _CardDetailsScreenState extends ConsumerState<CardDetailsScreen> {
               const SizedBox(height: 18),
               Row(children: [
                 Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text('حامل البطاقة', style: FnText.caption11.soft),
-                  Text(_name.text.isEmpty ? 'الاسم كما في البطاقة' : _name.text, style: FnText.label13.onDark),
+                  Text(tr('حامل البطاقة'), style: FnText.caption11.soft),
+                  Text(_name.text.isEmpty ? tr('الاسم كما في البطاقة') : _name.text, style: FnText.label13.onDark),
                 ])),
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text('تاريخ الانتهاء', style: FnText.caption11.soft),
+                  Text(tr('تاريخ الانتهاء'), style: FnText.caption11.soft),
                   Text(_exp.text.isEmpty ? 'MM / YY' : _exp.text, style: FnText.label13.onDark),
                 ]),
               ]),
             ]),
           ),
           const SizedBox(height: 18),
-          _f('رقم البطاقة', _number, '0000 0000 0000 0000', [FilteringTextInputFormatter.digitsOnly, _CardFmt()], ltr: true),
+          _f(tr('رقم البطاقة'), _number, '0000 0000 0000 0000', [FilteringTextInputFormatter.digitsOnly, _CardFmt()], ltr: true),
           Row(children: [
-            Expanded(child: _f('تاريخ الانتهاء', _exp, 'MM/YY', [FilteringTextInputFormatter.digitsOnly, _ExpFmt()], ltr: true)),
+            Expanded(child: _f(tr('تاريخ الانتهاء'), _exp, 'MM/YY', [FilteringTextInputFormatter.digitsOnly, _ExpFmt()], ltr: true)),
             const SizedBox(width: 12),
             Expanded(child: _f('CVV', _cvv, '•••', [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(4)], ltr: true, obscure: true)),
           ]),
-          _f('الاسم على البطاقة', _name, 'الاسم الكامل', const []),
+          _f(tr('الاسم على البطاقة'), _name, tr('الاسم الكامل'), const []),
           const SizedBox(height: 4),
           Row(children: [
-            Expanded(child: Text('احفظ هذه البطاقة للطلبات القادمة', style: FnText.body15)),
+            Expanded(child: Text(tr('احفظ هذه البطاقة للطلبات القادمة'), style: FnText.body15)),
             FnSwitch(value: _save, onChanged: (v) => setState(() => _save = v)),
           ]),
           const SizedBox(height: 12),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             const Icon(Icons.lock_outline_rounded, size: 14, color: FnColors.muted),
             const SizedBox(width: 6),
-            Text('محمي بتشفير 3-D Secure', style: FnText.caption11.muted),
+            Text(tr('محمي بتشفير 3-D Secure'), style: FnText.caption11.muted),
           ]),
         ],
       ),
       bottomNavigationBar: FnBottomBar(
-        child: FnButton(label: 'تأكيد الدفع ${Fmt.moneyShort(d?.total ?? 0)}', loading: _loading, onPressed: _valid ? _confirm : null),
+        child: FnButton(label: tr('تأكيد الدفع {0}', [Fmt.moneyShort(d?.total ?? 0)]), loading: _loading, onPressed: _valid ? _confirm : null),
       ),
     );
   }

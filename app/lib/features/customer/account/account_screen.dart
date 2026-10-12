@@ -13,6 +13,7 @@ import '../../../data/repositories/auth_repo.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../../../data/repositories/coupon_repo.dart';
 import '../../../data/repositories/order_repo.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// 06 المزيد / 13 حسابي
 class AccountScreen extends ConsumerStatefulWidget {
@@ -22,23 +23,33 @@ class AccountScreen extends ConsumerStatefulWidget {
   ConsumerState<AccountScreen> createState() => _AccountScreenState();
 }
 
-/// اختيار اللغة — الإنجليزية تُفعَّل في التحديث القادم
+/// اختيار اللغة — يُحفظ ويعيد بناء التطبيق كاملًا باللغة الجديدة
 void showLanguageSheet(BuildContext context) => showModalBottomSheet<void>(
       context: context,
-      builder: (ctx) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Container(width: 44, height: 5, decoration: BoxDecoration(color: FnColors.border, borderRadius: BorderRadius.circular(3))),
-            Padding(padding: const EdgeInsets.all(14), child: Text('اللغة', style: FnText.heading18)),
-            FnListRow(title: 'العربية', trailing: const Icon(Icons.check_circle_rounded, color: FnColors.primary, size: 20),
-                onTap: () => Navigator.pop(ctx)),
-            const FnDivider(),
-            FnListRow(title: 'English', titleStyle: FnText.body15.faint,
-                trailing: const FnBadge('قريبًا', bg: FnColors.bgBase, fg: FnColors.muted)),
-          ]),
-        ),
-      ),
+      builder: (ctx) {
+        Widget opt(String code, String label) => FnListRow(
+              title: label,
+              trailing: AppLang.code.value == code
+                  ? const Icon(Icons.check_circle_rounded, color: FnColors.primary, size: 20)
+                  : const Icon(Icons.circle_outlined, color: FnColors.border, size: 20),
+              onTap: () {
+                Navigator.pop(ctx);
+                if (AppLang.code.value != code) AppLang.set(code);
+              },
+            );
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              Container(width: 44, height: 5, decoration: BoxDecoration(color: FnColors.border, borderRadius: BorderRadius.circular(3))),
+              Padding(padding: const EdgeInsets.all(14), child: Text(tr('اللغة'), style: FnText.heading18)),
+              opt('ar', 'العربية'),
+              const FnDivider(),
+              opt('en', 'English'),
+            ]),
+          ),
+        );
+      },
     );
 
 class _AccountScreenState extends ConsumerState<AccountScreen> {
@@ -51,11 +62,11 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
       builder: (ctx) => Padding(
         padding: EdgeInsets.fromLTRB(24, 20, 24, MediaQuery.viewInsetsOf(ctx).bottom + 24),
         child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('تعديل الاسم', style: FnText.heading18),
+          Text(tr('تعديل الاسم'), style: FnText.heading18),
           const SizedBox(height: 12),
-          TextField(controller: c, autofocus: true, decoration: const InputDecoration(hintText: 'الاسم الكامل', fillColor: FnColors.bgBase)),
+          TextField(controller: c, autofocus: true, decoration: InputDecoration(hintText: tr('الاسم الكامل'), fillColor: FnColors.bgBase)),
           const SizedBox(height: 16),
-          FnButton(label: 'حفظ', onPressed: () => Navigator.pop(ctx, c.text.trim())),
+          FnButton(label: tr('حفظ'), onPressed: () => Navigator.pop(ctx, c.text.trim())),
         ]),
       ),
     );
@@ -68,7 +79,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
   Widget build(BuildContext context) {
     final user = ref.watch(currentUserProvider);
     return Scaffold(
-      appBar: FnAppBar(title: 'حسابي', showBack: !widget.isTab),
+      appBar: FnAppBar(title: tr('حسابي'), showBack: !widget.isTab),
       body: user == null ? _guest(context) : _member(context),
     );
   }
@@ -86,22 +97,22 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                     child: const Center(child: FnLogoMark(size: 32, color: FnColors.deep, gradient: false))),
                 const SizedBox(width: 12),
                 Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text('أهلًا بك في فناء', style: FnText.heading18.onDark),
-                  Text('سجّل دخولك لحفظ طلباتك وعناوينك', style: FnText.caption11.soft),
+                  Text(tr('أهلًا بك في فناء'), style: FnText.heading18.onDark),
+                  Text(tr('سجّل دخولك لحفظ طلباتك وعناوينك'), style: FnText.caption11.soft),
                 ])),
               ]),
               const SizedBox(height: 14),
-              FnButton(label: 'تسجيل الدخول برقم الجوال', height: 50, color: FnColors.lime, textColor: FnColors.deep,
+              FnButton(label: tr('تسجيل الدخول برقم الجوال'), height: 50, color: FnColors.lime, textColor: FnColors.deep,
                   onPressed: () => goLogin(context, from: '/more')),
             ]),
           ),
           const SizedBox(height: 10),
           _Group(children: [
-            FnListRow(title: 'اللغة', icon: Icons.language_rounded, value: 'العربية', showChevron: false,
+            FnListRow(title: tr('اللغة'), icon: Icons.language_rounded, value: tr('العربية'), showChevron: false,
                 onTap: () => showLanguageSheet(context)),
-            FnListRow(title: 'الدعم والمساعدة', icon: Icons.help_outline_rounded, onTap: () => context.push('/support')),
+            FnListRow(title: tr('الدعم والمساعدة'), icon: Icons.help_outline_rounded, onTap: () => context.push('/support')),
             FnListRow(
-              title: 'هل أنت صاحب متجر؟', subtitle: 'سجّل مشتلك وابدأ البيع', icon: Icons.storefront_outlined, iconColor: FnColors.clay,
+              title: tr('هل أنت صاحب متجر؟'), subtitle: tr('سجّل مشتلك وابدأ البيع'), icon: Icons.storefront_outlined, iconColor: FnColors.clay,
               onTap: () async {
                 await AppPrefs.clearRoleChoice();
                 if (context.mounted) context.go('/auth/type');
@@ -131,8 +142,8 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                 child: const Center(child: FnLogoMark(size: 32, color: FnColors.deep, gradient: false))),
             const SizedBox(width: 12),
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(p?.fullName?.isNotEmpty == true ? p!.fullName! : 'أضف اسمك', style: FnText.heading18.onDark),
-              if (myStore != null) Text('صاحب ${myStore.name}', style: FnText.caption11.lime),
+              Text(p?.fullName?.isNotEmpty == true ? p!.fullName! : tr('أضف اسمك'), style: FnText.heading18.onDark),
+              if (myStore != null) Text(tr('صاحب {0}', [myStore.name]), style: FnText.caption11.lime),
               Directionality(textDirection: TextDirection.ltr, child: Text(p?.phone == null ? '' : Fmt.phone(p!.phone!), style: FnText.caption11.soft)),
             ])),
             GestureDetector(
@@ -140,36 +151,36 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                 decoration: BoxDecoration(color: FnColors.primary, borderRadius: BorderRadius.circular(13)),
-                child: Text(myStore != null ? 'تعديل اسمك' : 'تعديل', style: FnText.caption11.onDark),
+                child: Text(myStore != null ? tr('تعديل اسمك') : tr('تعديل'), style: FnText.caption11.onDark),
               ),
             ),
           ]),
         ),
         const SizedBox(height: 10),
         Row(children: [
-          _Stat('${orders.length}', 'الطلبات', onTap: () => context.go('/orders')),
+          _Stat('${orders.length}', tr('الطلبات'), onTap: () => context.go('/orders')),
           const SizedBox(width: 10),
-          _Stat('${p?.loyaltyPoints ?? 0}', 'نقاط الولاء'),
+          _Stat('${p?.loyaltyPoints ?? 0}', tr('نقاط الولاء')),
           const SizedBox(width: 10),
-          _Stat('${coupons.length}', 'الكوبونات', onTap: () => context.push('/my-coupons')),
+          _Stat('${coupons.length}', tr('الكوبونات'), onTap: () => context.push('/my-coupons')),
         ]),
         const SizedBox(height: 10),
         _Group(children: [
-          FnListRow(title: 'طلباتي', icon: Icons.shopping_bag_outlined, value: '${orders.length}', onTap: () => context.go('/orders')),
-          FnListRow(title: 'العناوين المحفوظة', icon: Icons.location_on_outlined, value: '${addrs.length}', onTap: () => context.push('/addresses')),
-          FnListRow(title: 'طرق الدفع', icon: Icons.credit_card_rounded, onTap: () => context.push('/pay-methods')),
-          FnListRow(title: 'المفضلة', icon: Icons.favorite_border_rounded, value: '${favs.length + favStores.length}',
+          FnListRow(title: tr('طلباتي'), icon: Icons.shopping_bag_outlined, value: '${orders.length}', onTap: () => context.go('/orders')),
+          FnListRow(title: tr('العناوين المحفوظة'), icon: Icons.location_on_outlined, value: '${addrs.length}', onTap: () => context.push('/addresses')),
+          FnListRow(title: tr('طرق الدفع'), icon: Icons.credit_card_rounded, onTap: () => context.push('/pay-methods')),
+          FnListRow(title: tr('المفضلة'), icon: Icons.favorite_border_rounded, value: '${favs.length + favStores.length}',
               onTap: () => context.push('/favorites')),
         ]),
         const SizedBox(height: 10),
         _Group(children: [
-          FnListRow(title: 'الإشعارات', icon: Icons.notifications_none_rounded,
+          FnListRow(title: tr('الإشعارات'), icon: Icons.notifications_none_rounded,
               trailing: FnSwitch(value: _notif, onChanged: (v) => setState(() => _notif = v))),
-          FnListRow(title: 'اللغة', icon: Icons.language_rounded, value: 'العربية', showChevron: false,
+          FnListRow(title: tr('اللغة'), icon: Icons.language_rounded, value: tr('العربية'), showChevron: false,
               onTap: () => showLanguageSheet(context)),
-          FnListRow(title: 'الدعم والمساعدة', icon: Icons.help_outline_rounded, onTap: () => context.push('/support')),
+          FnListRow(title: tr('الدعم والمساعدة'), icon: Icons.help_outline_rounded, onTap: () => context.push('/support')),
           FnListRow(
-            title: 'تسجيل الخروج', titleStyle: FnText.bodyStrong15.clay, icon: Icons.logout_rounded, iconColor: FnColors.clay,
+            title: tr('تسجيل الخروج'), titleStyle: FnText.bodyStrong15.clay, icon: Icons.logout_rounded, iconColor: FnColors.clay,
             trailing: const SizedBox.shrink(),
             onTap: () async {
               ShopMode.active.value = false;

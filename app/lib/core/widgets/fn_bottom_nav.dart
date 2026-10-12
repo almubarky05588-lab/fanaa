@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../theme/tokens.dart';
+import '../i18n/i18n.dart';
 
 class FnNavItem {
   const FnNavItem(this.label, this.icon, this.activeIcon);
@@ -55,7 +56,7 @@ class _Tab extends StatelessWidget {
               child: Icon(active ? item.activeIcon : item.icon, size: 20, color: active ? FnColors.deep : FnColors.faint),
             ),
             const SizedBox(height: 4),
-            Text(item.label, style: active ? FnText.caption11.deep : FnText.caption11.muted),
+            Text(tr(item.label), style: active ? FnText.caption11.deep : FnText.caption11.muted),
           ]),
         ),
       );

@@ -7,6 +7,8 @@ import '../../core/theme/tokens.dart';
 import '../../core/widgets/fn_widgets.dart';
 import '../../data/models/profile.dart';
 import '../../data/repositories/auth_repo.dart';
+import '../customer/account/account_screen.dart' show showLanguageSheet;
+import '../../core/i18n/i18n.dart';
 
 /// 02 تسجيل دخول المستخدم / 14 دخول صاحب المتجر — نفس الشاشة بأيقونة وعنوان مختلفين
 class PhoneLoginScreen extends ConsumerStatefulWidget {
@@ -33,7 +35,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
       if (!mounted) return;
       context.push('/auth/otp', extra: {'phone': _phone.text, 'role': widget.role});
     } catch (e) {
-      if (mounted) showFnSnack(context, 'تعذّر إرسال الرمز، تحقّق من الرقم', error: true);
+      if (mounted) showFnSnack(context, tr('تعذّر إرسال الرمز، تحقّق من الرقم'), error: true);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -50,7 +52,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 12),
-              Align(alignment: Alignment.centerRight, child: FnBackButton(onTap: () => context.pop())),
+              Align(alignment: AlignmentDirectional.centerStart, child: FnBackButton(onTap: () => context.pop())),
               const SizedBox(height: 36),
               Container(
                 width: 74, height: 74,
@@ -58,26 +60,26 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                 child: Icon(merchant ? Icons.storefront_outlined : Icons.person_outline_rounded, size: 34, color: FnColors.deep),
               ),
               const SizedBox(height: 22),
-              Text(merchant ? 'تسجيل الدخول كصاحب متجر' : 'تسجيل الدخول كمستخدم', style: FnText.display28),
+              Text(merchant ? tr('تسجيل الدخول كصاحب متجر') : tr('تسجيل الدخول كمستخدم'), style: FnText.display28),
               const SizedBox(height: 4),
-              Text('أدخل رقم جوالك وسنرسل لك رمز تحقق للمتابعة', style: FnText.body15.muted),
+              Text(tr('أدخل رقم جوالك وسنرسل لك رمز تحقق للمتابعة'), style: FnText.body15.muted),
               const SizedBox(height: 30),
-              Text('رقم الجوال', style: FnText.label13),
+              Text(tr('رقم الجوال'), style: FnText.label13),
               const SizedBox(height: 8),
               PhoneField(controller: _phone, onChanged: (_) => setState(() {}), onSubmitted: _valid ? (_) => _send() : null),
               const SizedBox(height: 8),
               Row(children: [
                 const Icon(Icons.info_outline_rounded, size: 14, color: FnColors.faint),
                 const SizedBox(width: 6),
-                Text('سنرسل رمز التحقق عبر رسالة نصية', style: FnText.caption11.faint),
+                Text(tr('سنرسل رمز التحقق عبر رسالة نصية'), style: FnText.caption11.faint),
               ]),
               const Spacer(),
-              FnButton(label: 'تسجيل الدخول', loading: _loading, onPressed: _valid ? _send : null),
+              FnButton(label: tr('تسجيل الدخول'), loading: _loading, onPressed: _valid ? _send : null),
               const SizedBox(height: 14),
               Center(
                 child: Text.rich(TextSpan(children: [
-                  TextSpan(text: 'ليس لديك حساب؟ ', style: FnText.label13.muted),
-                  TextSpan(text: 'سجّل الآن', style: FnText.label13.primary),
+                  TextSpan(text: tr('ليس لديك حساب؟ '), style: FnText.label13.muted),
+                  TextSpan(text: tr('سجّل الآن'), style: FnText.label13.primary),
                 ])),
               ),
               const SizedBox(height: 10),
@@ -182,13 +184,15 @@ class SaudiMobileFormatter extends TextInputFormatter {
 class LangPill extends StatelessWidget {
   const LangPill({super.key});
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => GestureDetector(
+      onTap: () => showLanguageSheet(context),
+      child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(color: FnColors.surface, borderRadius: BorderRadius.circular(FnRadius.pill)),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
-          Text('العربية', style: FnText.label13),
+          Text(tr('العربية'), style: FnText.label13),
           const SizedBox(width: 6),
           const Icon(Icons.language_rounded, size: 16, color: FnColors.deep),
         ]),
-      );
+      ));
 }

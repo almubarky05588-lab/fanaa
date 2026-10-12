@@ -9,6 +9,7 @@ import '../../../data/models/catalog.dart';
 import '../../../data/models/order.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../dashboard/merchant_dashboard_screen.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// 16 الطلبات الواردة
 class MerchantOrdersScreen extends ConsumerWidget {
@@ -89,7 +90,7 @@ class _OrdersState extends ConsumerState<_Orders> {
     final shown = all.where(_inTab).toList();
 
     return Scaffold(
-      appBar: const FnAppBar(title: 'الطلبات الواردة', showBack: false),
+      appBar: FnAppBar(title: tr('الطلبات الواردة'), showBack: false),
       body: Column(children: [
         SizedBox(
           height: 50,
@@ -97,7 +98,7 @@ class _OrdersState extends ConsumerState<_Orders> {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.fromLTRB(FnSpace.page, 6, FnSpace.page, 6),
             children: [
-              for (final (t, l) in [(_Tab.pending, 'جديدة'), (_Tab.preparing, 'قيد التجهيز'), (_Tab.ready, 'جاهزة'), (_Tab.done, 'مكتملة')])
+              for (final (t, l) in [(_Tab.pending, tr('جديدة')), (_Tab.preparing, tr('قيد التجهيز')), (_Tab.ready, tr('جاهزة')), (_Tab.done, tr('مكتملة'))])
                 Padding(
                   padding: const EdgeInsetsDirectional.only(end: 8),
                   child: FnChip(small: true, label: t == _Tab.done ? l : '$l ${count(t)}', selected: _tab == t,
@@ -110,7 +111,7 @@ class _OrdersState extends ConsumerState<_Orders> {
           child: async.isLoading && all.isEmpty
               ? const FnLoading()
               : shown.isEmpty
-                  ? const FnEmpty(title: 'لا توجد طلبات هنا', icon: Icons.inbox_outlined)
+                  ? FnEmpty(title: tr('لا توجد طلبات هنا'), icon: Icons.inbox_outlined)
                   : RefreshIndicator(
                       color: FnColors.primary,
                       onRefresh: () async => ref.invalidate(merchantOrdersProvider(widget.n.id)),
@@ -121,7 +122,7 @@ class _OrdersState extends ConsumerState<_Orders> {
                         itemBuilder: (_, i) => _IncomingCard(
                           o: shown[i],
                           onAccept: () => _set(shown[i], OrderStatus.accepted),
-                          onReject: () => _set(shown[i], OrderStatus.rejected, note: 'رفض المتجر'),
+                          onReject: () => _set(shown[i], OrderStatus.rejected, note: tr('رفض المتجر')),
                         ),
                       ),
                     ),
@@ -142,8 +143,8 @@ class _IncomingCard extends StatelessWidget {
         child: Column(children: [
           Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('#${o.orderNumber} — ${o.customerName?.isNotEmpty == true ? o.customerName : 'عميل'}', style: FnText.bodyStrong15),
-              Text('${o.itemCount} منتجات • ${o.address['district'] ?? o.address['city'] ?? ''}', style: FnText.caption11.muted),
+              Text('#${o.orderNumber} — ${o.customerName?.isNotEmpty == true ? o.customerName : tr('عميل')}', style: FnText.bodyStrong15),
+              Text(tr('{0} منتجات • {1}', [o.itemCount, o.address['district'] ?? o.address['city'] ?? '']), style: FnText.caption11.muted),
             ])),
             Text(Fmt.moneyShort(o.total), style: FnText.heading18.deep),
           ]),
@@ -156,14 +157,14 @@ class _IncomingCard extends StatelessWidget {
                 onTap: onReject,
                 child: Container(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
                     decoration: BoxDecoration(color: FnColors.bgBase, borderRadius: BorderRadius.circular(13)),
-                    child: Text('رفض', style: FnText.label13.clay)),
+                    child: Text(tr('رفض'), style: FnText.label13.clay)),
               ),
               const SizedBox(width: 8),
               GestureDetector(
                 onTap: onAccept,
                 child: Container(padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 9),
                     decoration: BoxDecoration(color: FnColors.deep, borderRadius: BorderRadius.circular(13)),
-                    child: Text('قبول الطلب', style: FnText.label13.onDark)),
+                    child: Text(tr('قبول الطلب'), style: FnText.label13.onDark)),
               ),
             ] else
               FnBadge(o.status.labelAr),

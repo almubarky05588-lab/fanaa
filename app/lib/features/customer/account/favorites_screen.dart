@@ -6,6 +6,7 @@ import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../widgets/nursery_card.dart';
 import '../widgets/product_card.dart';
+import '../../../core/i18n/i18n.dart';
 
 /// المفضلة — المنتجات والمتاجر المحفوظة
 class FavoritesScreen extends ConsumerStatefulWidget {
@@ -22,14 +23,14 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
     final products = ref.watch(favoriteProductsProvider);
     final stores = ref.watch(favoriteNurseriesProvider);
     return Scaffold(
-      appBar: const FnAppBar(title: 'المفضلة'),
+      appBar: FnAppBar(title: tr('المفضلة')),
       body: Column(children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(FnSpace.page, 4, FnSpace.page, 12),
           child: Row(children: [
-            FnChip(label: 'المنتجات (${products.valueOrNull?.length ?? 0})', selected: !_stores, onTap: () => setState(() => _stores = false)),
+            FnChip(label: tr('المنتجات ({0})', [products.valueOrNull?.length ?? 0]), selected: !_stores, onTap: () => setState(() => _stores = false)),
             const SizedBox(width: 8),
-            FnChip(label: 'المتاجر (${stores.valueOrNull?.length ?? 0})', selected: _stores, onTap: () => setState(() => _stores = true)),
+            FnChip(label: tr('المتاجر ({0})', [stores.valueOrNull?.length ?? 0]), selected: _stores, onTap: () => setState(() => _stores = true)),
           ]),
         ),
         Expanded(
@@ -44,8 +45,8 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
                     loading: () => const FnLoading(),
                     error: (_, __) => FnError(onRetry: () => ref.invalidate(favoriteNurseriesProvider)),
                     data: (list) => list.isEmpty
-                        ? ListView(children: const [SizedBox(height: 80),
-                            FnEmpty(title: 'لا توجد متاجر مفضلة', subtitle: 'اضغط ♡ في صفحة أي متجر لحفظه هنا', icon: Icons.storefront_outlined)])
+                        ? ListView(children: [SizedBox(height: 80),
+                            FnEmpty(title: tr('لا توجد متاجر مفضلة'), subtitle: tr('اضغط ♡ في صفحة أي متجر لحفظه هنا'), icon: Icons.storefront_outlined)])
                         : ListView.separated(
                             padding: const EdgeInsets.fromLTRB(FnSpace.page, 0, FnSpace.page, 24),
                             itemCount: list.length,
@@ -57,8 +58,8 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
                     loading: () => const FnLoading(),
                     error: (_, __) => FnError(onRetry: () => ref.invalidate(favoriteProductsProvider)),
                     data: (list) => list.isEmpty
-                        ? ListView(children: const [SizedBox(height: 80),
-                            FnEmpty(title: 'لا توجد منتجات مفضلة', subtitle: 'اضغط ♡ في صفحة أي منتج لحفظه هنا', icon: Icons.favorite_border_rounded)])
+                        ? ListView(children: [SizedBox(height: 80),
+                            FnEmpty(title: tr('لا توجد منتجات مفضلة'), subtitle: tr('اضغط ♡ في صفحة أي منتج لحفظه هنا'), icon: Icons.favorite_border_rounded)])
                         : GridView.builder(
                             padding: const EdgeInsets.fromLTRB(FnSpace.page, 0, FnSpace.page, 24),
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
