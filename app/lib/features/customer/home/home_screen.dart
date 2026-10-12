@@ -8,6 +8,8 @@ import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/repositories/auth_repo.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../../../data/models/catalog.dart';
+import '../../../data/models/profile.dart';
+import '../../../data/repositories/order_repo.dart';
 import '../widgets/nursery_card.dart';
 import '../widgets/product_card.dart';
 import '../../../core/i18n/i18n.dart';
@@ -29,6 +31,11 @@ class HomeScreen extends ConsumerWidget {
     final nearby = ref.watch(_nearbyProvider);
     final cats = ref.watch(categoriesProvider);
     final popular = ref.watch(popularProductsProvider);
+    final addrs = ref.watch(addressesProvider).valueOrNull ?? const <Address>[];
+    final addr = addrs.where((a) => a.isDefault).firstOrNull ?? addrs.firstOrNull;
+    final addrText = addr == null
+        ? tr('التوصيل إلى موقعك الحالي')
+        : tr('التوصيل إلى {0}', [[addr.label, addr.district].whereType<String>().where((s) => s.isNotEmpty).join(' — ')]);
 
     return Scaffold(
       body: RefreshIndicator(
@@ -47,11 +54,20 @@ class HomeScreen extends ConsumerWidget {
                 child: Row(children: [
                   Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(tr('مرحبًا {0} 👋', [profile?.fullName?.isNotEmpty == true ? profile!.fullName!.split(' ').first : tr('بك')]), style: FnText.title22),
-                    Row(children: [
-                      const Icon(Icons.location_on_outlined, size: 14, color: FnColors.primary),
-                      const SizedBox(width: 4),
-                      Text(tr('التوصيل إلى موقعك الحالي'), style: FnText.caption11.muted),
-                    ]),
+                    // العنوان الافتراضي — الضغط يفتح العناوين لاختيار غيره
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => context.push('/addresses'),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Row(children: [
+                          const Icon(Icons.location_on_outlined, size: 14, color: FnColors.primary),
+                          const SizedBox(width: 4),
+                          Flexible(child: Text(addrText, style: FnText.caption11.muted, maxLines: 1, overflow: TextOverflow.ellipsis)),
+                          const Icon(Icons.keyboard_arrow_down_rounded, size: 16, color: FnColors.faint),
+                        ]),
+                      ),
+                    ),
                   ])),
                   FnIconButton(onTap: () => context.push('/map'), child: const Icon(Icons.map_outlined, size: 20, color: FnColors.deep)),
                   const SizedBox(width: 8),
@@ -154,7 +170,9 @@ class HomeScreen extends ConsumerWidget {
 class _PromoBanner extends StatelessWidget {
   const _PromoBanner();
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => GestureDetector(
+      onTap: () => context.go('/stores'),
+      child: Container(
         height: 150,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(22),
@@ -180,7 +198,7 @@ class _PromoBanner extends StatelessWidget {
             ]),
           ),
         ]),
-      );
+      ));
 }
 
 class _CategoryTile extends StatelessWidget {
