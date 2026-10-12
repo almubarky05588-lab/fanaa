@@ -1,7 +1,8 @@
-# نفس مستودع الشهادات المشفّرة المستخدم في share
+# خزنة شهادات مستقلة لفناء — فرع "fenaa" داخل مستودع share-certs
+# مشفّرة بكلمة مرور خاصة بفناء (MATCH_PASSWORD)، ولا تلمس شهادات share في فرع main
 git_url("https://github.com/almubarky05588-lab/share-certs")
 storage_mode("git")
-git_branch("main")
+git_branch("fenaa")
 
 type("appstore")
 app_identifier(["sa.almubarky.fenaa"])
