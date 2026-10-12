@@ -93,6 +93,12 @@ class _AddressesScreenState extends ConsumerState<AddressesScreen> {
                 separatorBuilder: (_, __) => const SizedBox(height: 10),
                 itemBuilder: (_, i) => FnCard(
                   padding: const EdgeInsets.all(14),
+                  // الضغط على عنوان يجعله عنوان التوصيل الافتراضي
+                  onTap: list[i].isDefault ? null : () async {
+                    await ref.read(orderRepoProvider).setDefaultAddress(list[i].id);
+                    ref.invalidate(addressesProvider);
+                    if (context.mounted) showFnSnack(context, tr('تم تعيين عنوان التوصيل'));
+                  },
                   child: Row(children: [
                     Container(width: 40, height: 40, decoration: BoxDecoration(color: FnColors.soft, borderRadius: BorderRadius.circular(14)),
                         child: const Icon(Icons.location_on_outlined, color: FnColors.deep, size: 20)),
