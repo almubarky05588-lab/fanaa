@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/router/shop_mode.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_logo.dart';
@@ -15,6 +16,12 @@ final merchantStatsProvider = FutureProvider.family<Map<String, dynamic>, String
     (ref, nid) => ref.watch(orderRepoProvider).merchantStats(nid));
 final merchantOrdersProvider = FutureProvider.family<List<Order>, String>(
     (ref, nid) => ref.watch(orderRepoProvider).merchantOrders(nid));
+
+/// ينقل صاحب المتجر لواجهة العميل للتسوّق من المتاجر الأخرى
+void startShoppingAsCustomer(BuildContext context) {
+  ShopMode.active.value = true;
+  context.go('/home');
+}
 
 /// غلاف: يجلب متجر التاجر أو يوجّه لإنشائه
 class WithMyNursery extends ConsumerWidget {
@@ -93,6 +100,12 @@ class _Dash extends ConsumerWidget {
               _Kpi('${stats?['preparing'] ?? 0}', 'قيد التجهيز'),
             ]),
             const SizedBox(height: 12),
+            Row(children: [
+              _QuickAction(icon: Icons.local_offer_outlined, label: 'الكوبونات', onTap: () => context.push('/m/coupons')),
+              const SizedBox(width: 10),
+              _QuickAction(icon: Icons.shopping_bag_outlined, label: 'تسوّق كعميل', onTap: () => startShoppingAsCustomer(context)),
+            ]),
+            const SizedBox(height: 12),
             FnCard(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text('مبيعات آخر ٧ أيام', style: FnText.label13),
@@ -134,6 +147,28 @@ class _Dash extends ConsumerWidget {
       ),
     );
   }
+}
+
+class _QuickAction extends StatelessWidget {
+  const _QuickAction({required this.icon, required this.label, required this.onTap});
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+  @override
+  Widget build(BuildContext context) => Expanded(
+        child: FnCard(
+          onTap: onTap,
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          radius: 18,
+          child: Row(children: [
+            Container(width: 36, height: 36, decoration: BoxDecoration(color: FnColors.soft, borderRadius: BorderRadius.circular(12)),
+                child: Icon(icon, size: 18, color: FnColors.deep)),
+            const SizedBox(width: 10),
+            Expanded(child: Text(label, style: FnText.label13)),
+            const Icon(Icons.chevron_left_rounded, size: 18, color: FnColors.faint),
+          ]),
+        ),
+      );
 }
 
 class _OpenToggle extends ConsumerStatefulWidget {

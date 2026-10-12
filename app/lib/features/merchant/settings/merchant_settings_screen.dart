@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/router/shop_mode.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_logo.dart';
@@ -82,6 +83,14 @@ class _SettingsState extends ConsumerState<_Settings> {
             ]),
           ),
           const SizedBox(height: 8),
+          _label('المبيعات'),
+          _Group(children: [
+            FnListRow(title: 'الكوبونات والعروض', subtitle: 'أنشئ أكواد خصم لعملائك', icon: Icons.local_offer_outlined,
+                onTap: () => context.push('/m/coupons')),
+            FnListRow(title: 'تسوّق كعميل', subtitle: 'تصفّح المتاجر الأخرى واشترِ منها', icon: Icons.shopping_bag_outlined,
+                onTap: () => startShoppingAsCustomer(context)),
+          ]),
+          const SizedBox(height: 8),
           _label('التوصيل والرسوم'),
           _Group(children: [
             FnListRow(title: 'نطاق التوصيل', value: Fmt.km(n.deliveryRadiusKm),
@@ -108,6 +117,7 @@ class _SettingsState extends ConsumerState<_Settings> {
               title: 'تسجيل الخروج', titleStyle: FnText.bodyStrong15.clay, icon: Icons.logout_rounded, iconColor: FnColors.clay,
               trailing: const SizedBox.shrink(),
               onTap: () async {
+                ShopMode.active.value = false;
                 await ref.read(authRepoProvider).signOut();
                 if (context.mounted) context.go('/auth/type');
               },
