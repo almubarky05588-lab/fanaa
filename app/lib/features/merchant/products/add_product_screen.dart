@@ -56,7 +56,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       final qty = int.tryParse(_qty.text) ?? 0;
       final ordered = [tr('صغير'), tr('متوسط'), tr('كبير')].where(_sizes.contains).toList();
       // الحجم المتوسط = السعر المدخل، الصغير −٣٥٪، الكبير +٤٥٪ (يعدّلها التاجر لاحقًا)
-      double priceFor(String s) => switch (s) { tr('صغير') => (price * .65).roundToDouble(), tr('كبير') => (price * 1.45).roundToDouble(), _ => price };
+      double priceFor(String s) => s == tr('صغير') ? (price * .65).roundToDouble() : s == tr('كبير') ? (price * 1.45).roundToDouble() : price;
       await repo.createProduct({
         'nursery_id': n.id,
         'category_id': _categoryId,

@@ -43,7 +43,7 @@ class _SettingsState extends ConsumerState<_Settings> {
     }
   }
 
-  Future<void> _editNumber(String title, String field, num? current, {String suffix = tr('ر.س')}) async {
+  Future<void> _editNumber(String title, String field, num? current, {String suffix = 'ر.س'}) async {
     final c = TextEditingController(text: current?.toString() ?? '');
     final v = await showModalBottomSheet<String>(
       context: context, isScrollControlled: true,
@@ -54,7 +54,7 @@ class _SettingsState extends ConsumerState<_Settings> {
           const SizedBox(height: 12),
           TextField(controller: c, autofocus: true, keyboardType: const TextInputType.numberWithOptions(decimal: true),
               inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
-              decoration: InputDecoration(suffixText: suffix, fillColor: FnColors.bgBase)),
+              decoration: InputDecoration(suffixText: tr(suffix), fillColor: FnColors.bgBase)),
           const SizedBox(height: 16),
           FnButton(label: tr('حفظ'), onPressed: () => Navigator.pop(ctx, c.text.trim())),
         ]),
