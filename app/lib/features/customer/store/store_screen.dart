@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
+import '../../../core/router/auth_redirect.dart';
+import '../../../core/supabase/supabase_client.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_logo.dart';
 import '../../../core/widgets/fn_widgets.dart';
+import '../../../core/widgets/store_logo.dart';
 import '../../../data/models/catalog.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../../../data/repositories/order_repo.dart';
@@ -51,16 +55,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
           for (final p in list) { if (p.categoryId != null && p.categoryName != null) cats[p.categoryId!] = p.categoryName!; }
           final shown = _cat == null ? list : list.where((p) => p.categoryId == _cat).toList();
           return CustomScrollView(slivers: [
-            SliverToBoxAdapter(child: _Cover(n: n)),
-            SliverToBoxAdapter(
-              child: Transform.translate(
-                offset: const Offset(0, -28),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: FnSpace.page),
-                  child: _InfoCard(n: n),
-                ),
-              ),
-            ),
+            SliverToBoxAdapter(child: _Header(n: n)),
             if (n.description != null && n.description!.isNotEmpty)
               SliverToBoxAdapter(
                 child: Padding(
@@ -113,36 +108,80 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
   }
 }
 
-class _Cover extends StatelessWidget {
-  const _Cover({required this.n});
+/// رأس صفحة المتجر: غلاف قصير + بطاقة معلومات تتداخل معه + شعار المتجر
+class _Header extends ConsumerWidget {
+  const _Header({required this.n});
   final Nursery n;
+  static const _coverH = 150.0;
+  static const _overlap = 44.0;
+
+  Future<void> _toggleFav(BuildContext context, WidgetRef ref, bool now) async {
+    if (ref.read(currentUserProvider) == null) {
+      goLogin(context, from: '/store/${n.id}');
+      return;
+    }
+    try {
+      await ref.read(catalogRepoProvider).toggleFavoriteNursery(n.id, !now);
+      ref.invalidate(favoriteNurseryIdsProvider);
+      ref.invalidate(favoriteNurseriesProvider);
+      if (context.mounted) showFnSnack(context, now ? 'أُزيل من المفضلة' : 'أُضيف ${n.name} إلى المفضلة');
+    } catch (e) {
+      if (context.mounted) showFnSnack(context, fnErrorText(e), error: true);
+    }
+  }
+
+  void _share() {
+    final link = 'https://fenaa.netlify.app/store/${n.id}';
+    Share.share('تسوّق من ${n.name} على تطبيق فناء 🌿\n$link', subject: n.name);
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final top = MediaQuery.paddingOf(context).top;
-    return SizedBox(
-      height: 230 + top,
-      child: Stack(fit: StackFit.expand, children: [
-        if (n.coverUrl != null)
-          FnImage(url: n.coverUrl, radius: 0)
-        else
-          Container(
-            decoration: const BoxDecoration(gradient: LinearGradient(colors: [FnColors.primary, FnColors.deep])),
-            child: Stack(children: [
-              Positioned(left: 30, top: top + 30, child: FnLogoMark(size: 168, color: Colors.white.withValues(alpha: .9), gradient: false)),
-            ]),
-          ),
-        Positioned(
-          top: top + 12, right: FnSpace.page, left: FnSpace.page,
-          child: Row(children: [
-            const FnBackButton(),
-            const Spacer(),
-            FnIconButton(onTap: () {}, child: const Icon(Icons.share_outlined, size: 19, color: FnColors.ink)),
-            const SizedBox(width: 8),
-            FnIconButton(onTap: () {}, child: const Icon(Icons.favorite_border_rounded, size: 20, color: FnColors.clay)),
-          ]),
+    final fav = (ref.watch(favoriteNurseryIdsProvider).valueOrNull ?? const <String>{}).contains(n.id);
+    final coverH = _coverH + top;
+    return Stack(children: [
+      // الغلاف
+      Positioned(
+        top: 0, left: 0, right: 0, height: coverH,
+        child: n.coverUrl != null
+            ? FnImage(url: n.coverUrl, radius: 0)
+            : Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(begin: Alignment.topRight, end: Alignment.bottomLeft, colors: [FnColors.primary, FnColors.deep]),
+                ),
+                child: Stack(children: [
+                  Positioned(left: 24, bottom: _overlap + 6,
+                      child: FnLogoMark(size: 72, color: Colors.white.withValues(alpha: .14), gradient: false)),
+                  Positioned(left: 110, top: top + 26,
+                      child: FnLogoMark(size: 34, color: Colors.white.withValues(alpha: .10), gradient: false)),
+                ]),
+              ),
+      ),
+      // البطاقة تبدأ داخل الغلاف بمقدار التداخل وتُرسم فوقه
+      Column(children: [
+        SizedBox(height: coverH - _overlap),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: FnSpace.page),
+          child: _InfoCard(n: n),
         ),
+        const SizedBox(height: 16),
       ]),
-    );
+      // أزرار الأعلى
+      Positioned(
+        top: top + 10, right: FnSpace.page, left: FnSpace.page,
+        child: Row(children: [
+          const FnBackButton(),
+          const Spacer(),
+          FnIconButton(onTap: _share, child: const Icon(Icons.share_outlined, size: 19, color: FnColors.ink)),
+          const SizedBox(width: 8),
+          FnIconButton(
+            onTap: () => _toggleFav(context, ref, fav),
+            child: Icon(fav ? Icons.favorite_rounded : Icons.favorite_border_rounded, size: 20, color: FnColors.clay),
+          ),
+        ]),
+      ),
+    ]);
   }
 }
 
@@ -153,21 +192,27 @@ class _InfoCard extends StatelessWidget {
   Widget build(BuildContext context) => FnCard(
         shadow: true,
         radius: 24,
-        padding: const EdgeInsets.all(18),
+        padding: const EdgeInsets.all(16),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
+            StoreLogo(url: n.logoUrl, size: 56, radius: 18),
+            const SizedBox(width: 12),
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(n.name, style: FnText.title22),
-              Text(n.location, style: FnText.caption11.muted),
+              Text(n.name, style: FnText.heading18, maxLines: 1, overflow: TextOverflow.ellipsis),
+              const SizedBox(height: 2),
+              Text(n.location, style: FnText.caption11.muted, maxLines: 1, overflow: TextOverflow.ellipsis),
             ])),
+            const SizedBox(width: 8),
             FnBadge(n.isOpen ? 'مفتوح الآن' : 'مغلق', bg: n.isOpen ? FnColors.soft : FnColors.bgBase, fg: n.isOpen ? FnColors.deep : FnColors.muted),
           ]),
           const SizedBox(height: 14),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            _Stat('${n.ratingAvg.toStringAsFixed(1)} ★', 'التقييم (${n.ratingCount})'),
-            _Stat(Fmt.minutes(n.prepTimeMin), 'وقت التوصيل'),
-            _Stat(n.freeDelivery ? 'مجاني' : Fmt.moneyShort(n.deliveryFee), 'التوصيل'),
-            _Stat(n.minOrder == 0 ? '—' : Fmt.moneyShort(n.minOrder), 'الحد الأدنى'),
+          const FnDivider(),
+          const SizedBox(height: 12),
+          Row(children: [
+            Expanded(child: _Stat('${n.ratingAvg.toStringAsFixed(1)} ★', 'التقييم (${n.ratingCount})')),
+            Expanded(child: _Stat(Fmt.minutes(n.prepTimeMin), 'وقت التوصيل')),
+            Expanded(child: _Stat(n.freeDelivery ? 'مجاني' : Fmt.moneyShort(n.deliveryFee), 'التوصيل')),
+            Expanded(child: _Stat(n.minOrder == 0 ? '—' : Fmt.moneyShort(n.minOrder), 'الحد الأدنى')),
           ]),
         ]),
       );
@@ -178,7 +223,8 @@ class _Stat extends StatelessWidget {
   final String v, l;
   @override
   Widget build(BuildContext context) => Column(children: [
-        Text(v, style: FnText.bodyStrong15),
-        Text(l, style: FnText.caption11.muted),
+        Text(v, style: FnText.bodyStrong15, maxLines: 1),
+        const SizedBox(height: 2),
+        Text(l, style: FnText.caption11.muted, maxLines: 1, overflow: TextOverflow.ellipsis),
       ]);
 }

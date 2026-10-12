@@ -10,6 +10,11 @@ import '../../features/auth/phone_login_screen.dart';
 import '../../features/auth/splash_screen.dart';
 import '../../features/customer/account/account_screen.dart';
 import '../../features/customer/account/addresses_screen.dart';
+import '../../features/customer/account/favorites_screen.dart';
+import '../../features/customer/account/legal_screen.dart';
+import '../../features/customer/account/my_coupons_screen.dart';
+import '../../features/customer/account/payment_methods_screen.dart';
+import '../../features/customer/account/support_screen.dart';
 import '../../features/customer/cart/cart_screen.dart';
 import '../../features/customer/checkout/checkout_screen.dart';
 import '../../features/customer/checkout/checkout_state.dart';
@@ -31,6 +36,7 @@ import '../../features/merchant/orders/merchant_order_detail_screen.dart';
 import '../../features/merchant/orders/merchant_orders_screen.dart';
 import '../../features/merchant/products/add_product_screen.dart';
 import '../../features/merchant/products/merchant_products_screen.dart';
+import '../../features/merchant/reviews/merchant_reviews_screen.dart';
 import '../../features/merchant/settings/merchant_settings_screen.dart';
 import '../../features/merchant/setup/merchant_setup_screen.dart';
 import '../../features/merchant/shell/merchant_shell.dart';
@@ -81,7 +87,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       final p = ref.read(profileProvider).valueOrNull;
       if (p == null) return null;
-      if (loc.startsWith('/invoice/')) return null; // مشتركة بين الطرفين
+      if (loc.startsWith('/invoice/') || loc == '/support' || loc.startsWith('/legal/')) return null; // مشتركة بين الطرفين
       final merchantArea = loc.startsWith('/m/');
       // صاحب المتجر يدخل واجهة العميل فقط في وضع «تسوّق كعميل»
       if (p.isMerchant && !merchantArea && !ShopMode.active.value) return '/m/dashboard';
@@ -124,6 +130,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       top('/invoice/:orderId', (s) => InvoiceScreen(orderId: s.pathParameters['orderId']!)),
       top('/account', (_) => const AccountScreen(isTab: false)),
       top('/addresses', (s) => AddressesScreen(openAdd: s.uri.queryParameters['add'] == '1')),
+      top('/favorites', (_) => const FavoritesScreen()),
+      top('/my-coupons', (_) => const MyCouponsScreen()),
+      top('/pay-methods', (_) => const PaymentMethodsScreen()),
+      top('/support', (_) => const SupportScreen()),
+      top('/legal/:kind', (s) => LegalScreen(kind: s.pathParameters['kind']!)),
 
       // -------------------------------------------------------------- التاجر
       top('/m/setup', (_) => const MerchantSetupScreen()),
@@ -140,6 +151,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       top('/m/order/:id', (s) => MerchantOrderDetailScreen(id: s.pathParameters['id']!)),
       top('/m/products/new', (_) => const AddProductScreen()),
       top('/m/coupons', (_) => const MerchantCouponsScreen()),
+      top('/m/reviews', (_) => const MerchantReviewsScreen()),
     ],
   );
 });
