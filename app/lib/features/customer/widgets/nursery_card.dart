@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/location/location.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_widgets.dart';
@@ -7,13 +9,25 @@ import '../../../core/widgets/store_logo.dart';
 import '../../../data/models/catalog.dart';
 import '../../../core/i18n/i18n.dart';
 
+/// المسافة من موقع العميل الفعلي للمتجر — من الخادم إن وُجدت، وإلا تُحسب من الإحداثيات.
+/// لا تُعرض لو رفض العميل إذن الموقع (حتى لا نعرض مسافة من موقع افتراضي)
+double? nurseryDistanceKm(WidgetRef ref, Nursery n) {
+  final me = ref.watch(currentLocationProvider).valueOrNull;
+  if (me == null || identical(me, kFallbackLocation)) return null;
+  if (n.distanceKm != null) return n.distanceKm;
+  if (n.lat == null || n.lng == null) return null;
+  return kmBetween(me.lat, me.lng, n.lat!, n.lng!);
+}
+
 /// بطاقة المتجر الأفقية في الرئيسية (غلاف + اسم + تقييم)
-class NurseryTileCard extends StatelessWidget {
+class NurseryTileCard extends ConsumerWidget {
   const NurseryTileCard({super.key, required this.n, this.width = 168});
   final Nursery n;
   final double width;
   @override
-  Widget build(BuildContext context) => GestureDetector(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final km = nurseryDistanceKm(ref, n);
+    return GestureDetector(
         onTap: () => context.push('/store/${n.id}'),
         child: Container(
           width: width,
@@ -37,7 +51,7 @@ class NurseryTileCard extends StatelessWidget {
                 const SizedBox(height: 2),
                 Row(children: [
                   Expanded(child: Text(
-                    [n.district, if (n.distanceKm != null) Fmt.km(n.distanceKm!)].whereType<String>().join(' • '),
+                    [n.district, if (km != null) Fmt.km(km)].whereType<String>().join(' • '),
                     style: FnText.caption11.muted, maxLines: 1, overflow: TextOverflow.ellipsis)),
                   const Icon(Icons.star_rounded, size: 14, color: FnColors.star),
                   const SizedBox(width: 2),
@@ -48,14 +62,17 @@ class NurseryTileCard extends StatelessWidget {
           ]),
         ),
       );
+  }
 }
 
 /// صف المتجر في شاشة المتاجر (شعار + معلومات + شارات)
-class NurseryRowCard extends StatelessWidget {
+class NurseryRowCard extends ConsumerWidget {
   const NurseryRowCard({super.key, required this.n});
   final Nursery n;
   @override
-  Widget build(BuildContext context) => FnCard(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final km = nurseryDistanceKm(ref, n);
+    return FnCard(
         onTap: () => context.push('/store/${n.id}'),
         padding: const EdgeInsets.all(12),
         child: Row(children: [
@@ -69,7 +86,7 @@ class NurseryRowCard extends StatelessWidget {
               Text(n.ratingAvg.toStringAsFixed(1), style: FnText.label13),
             ]),
             const SizedBox(height: 2),
-            Text([n.district ?? n.city, if (n.distanceKm != null) Fmt.km(n.distanceKm!)].join(' • '), style: FnText.caption11.muted),
+            Text([n.district ?? n.city, if (km != null) Fmt.km(km)].join(' • '), style: FnText.caption11.muted),
             const SizedBox(height: 8),
             Row(children: [
               FnBadge(n.isOpen ? tr('مفتوح الآن') : tr('مغلق'), bg: n.isOpen ? FnColors.soft : FnColors.bgBase, fg: n.isOpen ? FnColors.deep : FnColors.muted),
@@ -81,4 +98,5 @@ class NurseryRowCard extends StatelessWidget {
           ])),
         ]),
       );
+  }
 }

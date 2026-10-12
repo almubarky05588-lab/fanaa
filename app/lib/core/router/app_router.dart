@@ -42,6 +42,8 @@ import '../../features/merchant/setup/merchant_setup_screen.dart';
 import '../../features/merchant/shell/merchant_shell.dart';
 import '../../features/merchant/wallet/merchant_wallet_screen.dart';
 import '../supabase/supabase_client.dart';
+import '../../features/common/blocked_screen.dart';
+import '../../features/common/notifications_screen.dart';
 import 'auth_redirect.dart';
 import 'shop_mode.dart';
 
@@ -87,6 +89,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       final p = ref.read(profileProvider).valueOrNull;
       if (p == null) return null;
+      // حساب موقوف من الإدارة: شاشة الإيقاف فقط (والدعم)
+      if (!p.isActive) return (loc == '/blocked' || loc == '/support') ? null : '/blocked';
+      if (loc == '/blocked') return '/splash';
+      if (loc == '/notifications') return null;
       if (loc.startsWith('/invoice/') || loc == '/support' || loc.startsWith('/legal/')) return null; // مشتركة بين الطرفين
       final merchantArea = loc.startsWith('/m/');
       // صاحب المتجر يدخل واجهة العميل فقط في وضع «تسوّق كعميل»
@@ -135,6 +141,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       top('/pay-methods', (_) => const PaymentMethodsScreen()),
       top('/support', (_) => const SupportScreen()),
       top('/legal/:kind', (s) => LegalScreen(kind: s.pathParameters['kind']!)),
+      top('/notifications', (_) => const NotificationsScreen()),
+      top('/blocked', (_) => const BlockedScreen()),
 
       // -------------------------------------------------------------- التاجر
       top('/m/setup', (_) => const MerchantSetupScreen()),

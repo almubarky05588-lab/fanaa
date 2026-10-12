@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../core/location/location.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/widgets/fn_logo.dart';
@@ -10,6 +11,10 @@ import '../../../data/repositories/catalog_repo.dart';
 import '../../../data/models/catalog.dart';
 import '../../../data/models/profile.dart';
 import '../../../data/repositories/order_repo.dart';
+import '../shell/customer_shell.dart' show backToMyStore;
+import '../../../data/repositories/content_repo.dart';
+import '../../common/notifications_screen.dart' show NotificationBell;
+import '../widgets/category_tile.dart';
 import '../widgets/nursery_card.dart';
 import '../widgets/product_card.dart';
 import '../../../core/i18n/i18n.dart';
@@ -44,6 +49,8 @@ class HomeScreen extends ConsumerWidget {
           ref.invalidate(_nearbyProvider);
           ref.invalidate(categoriesProvider);
           ref.invalidate(popularProductsProvider);
+          ref.invalidate(bannersProvider);
+          ref.invalidate(notificationsProvider);
         },
         child: CustomScrollView(slivers: [
           SliverToBoxAdapter(
@@ -69,9 +76,25 @@ class HomeScreen extends ConsumerWidget {
                       ),
                     ),
                   ])),
+                  if (profile?.isMerchant == true) ...[
+                    GestureDetector(
+                      onTap: () => backToMyStore(context),
+                      child: Container(
+                        height: 44,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(color: FnColors.surface, borderRadius: BorderRadius.circular(22)),
+                        child: Row(mainAxisSize: MainAxisSize.min, children: [
+                          const Icon(Icons.storefront_rounded, size: 18, color: FnColors.deep),
+                          const SizedBox(width: 6),
+                          Text(tr('متجري'), style: FnText.label13.deep),
+                        ]),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
                   FnIconButton(onTap: () => context.push('/map'), child: const Icon(Icons.map_outlined, size: 20, color: FnColors.deep)),
                   const SizedBox(width: 8),
-                  FnIconButton(onTap: () {}, child: const Icon(Icons.notifications_none_rounded, size: 21, color: FnColors.ink)),
+                  const NotificationBell(),
                 ]),
               ),
             ),
@@ -97,7 +120,7 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
           ),
-          const SliverToBoxAdapter(child: Padding(padding: EdgeInsets.fromLTRB(FnSpace.page, 16, FnSpace.page, 0), child: _PromoBanner())),
+          const SliverToBoxAdapter(child: Padding(padding: EdgeInsets.only(top: 16), child: _Banners())),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(FnSpace.page, 24, FnSpace.page, 12),
@@ -137,7 +160,7 @@ class HomeScreen extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(horizontal: FnSpace.page),
                   itemCount: list.length,
                   separatorBuilder: (_, __) => const SizedBox(width: 12),
-                  itemBuilder: (_, i) => _CategoryTile(c: list[i], index: i),
+                  itemBuilder: (_, i) => CategoryTile(c: list[i], index: i),
                 ),
               ),
               orElse: () => const SizedBox(height: 96),
@@ -167,11 +190,85 @@ class HomeScreen extends ConsumerWidget {
   }
 }
 
-class _PromoBanner extends StatelessWidget {
-  const _PromoBanner();
+/// بنرات الرئيسية من لوحة التحكم — أكثر من بنر يصير شرائح تتقلّب، وبدونها يظهر البنر الافتراضي
+class _Banners extends ConsumerStatefulWidget {
+  const _Banners();
   @override
-  Widget build(BuildContext context) => GestureDetector(
-      onTap: () => context.go('/stores'),
+  ConsumerState<_Banners> createState() => _BannersState();
+}
+
+class _BannersState extends ConsumerState<_Banners> {
+  final _page = PageController(viewportFraction: .92);
+  int _index = 0;
+
+  void _open(AppBanner b) {
+    final v = b.linkValue ?? '';
+    switch (b.linkType) {
+      case 'store' when v.isNotEmpty:
+        context.push('/store/$v');
+      case 'category' when v.isNotEmpty:
+        context.push('/stores?category=$v');
+      case 'url' when v.isNotEmpty:
+        launchUrl(Uri.parse(v), mode: LaunchMode.externalApplication);
+      case 'none':
+        break;
+      default:
+        context.go('/stores');
+    }
+  }
+
+  @override
+  void dispose() {
+    _page.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final list = ref.watch(bannersProvider).valueOrNull ?? const <AppBanner>[];
+    if (list.isEmpty) {
+      return const Padding(padding: EdgeInsets.symmetric(horizontal: FnSpace.page), child: _PromoBanner());
+    }
+    if (list.length == 1) {
+      return Padding(padding: const EdgeInsets.symmetric(horizontal: FnSpace.page), child: _PromoBanner(b: list.first, onTap: () => _open(list.first)));
+    }
+    return Column(children: [
+      SizedBox(
+        height: 150,
+        child: PageView.builder(
+          controller: _page,
+          itemCount: list.length,
+          onPageChanged: (i) => setState(() => _index = i),
+          itemBuilder: (_, i) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: _PromoBanner(b: list[i], onTap: () => _open(list[i])),
+          ),
+        ),
+      ),
+      const SizedBox(height: 8),
+      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        for (var i = 0; i < list.length; i++)
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            margin: const EdgeInsets.symmetric(horizontal: 3),
+            width: i == _index ? 18 : 6, height: 6,
+            decoration: BoxDecoration(color: i == _index ? FnColors.primary : FnColors.border, borderRadius: BorderRadius.circular(3)),
+          ),
+      ]),
+    ]);
+  }
+}
+
+class _PromoBanner extends StatelessWidget {
+  const _PromoBanner({this.b, this.onTap});
+  final AppBanner? b;
+  final VoidCallback? onTap;
+  @override
+  Widget build(BuildContext context) {
+    final hasImage = (b?.imageUrl ?? '').isNotEmpty;
+    final cta = b?.ctaLabel ?? tr('تسوّق الآن');
+    return GestureDetector(
+      onTap: onTap ?? () => context.go('/stores'),
       child: Container(
         height: 150,
         decoration: BoxDecoration(
@@ -179,47 +276,36 @@ class _PromoBanner extends StatelessWidget {
           gradient: const LinearGradient(begin: Alignment.topRight, end: Alignment.bottomLeft, colors: [FnColors.primary, FnColors.deep]),
         ),
         clipBehavior: Clip.antiAlias,
-        child: Stack(children: [
-          Positioned(left: -30, bottom: -40, child: Container(width: 160, height: 160,
-              decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: .08)))),
-          Positioned(left: 18, top: 22, child: FnLogoMark(size: 104, color: Colors.white.withValues(alpha: .9), gradient: false)),
+        child: Stack(fit: StackFit.expand, children: [
+          if (hasImage) ...[
+            // صورة البنر (يُفضّل 1200×450) مع تظليل خفيف ليبقى النص مقروءًا
+            FnImage(url: b!.imageUrl, radius: 0),
+            const DecoratedBox(decoration: BoxDecoration(gradient: LinearGradient(
+                begin: AlignmentDirectional.centerStart, end: AlignmentDirectional.centerEnd,
+                colors: [Color(0xB30C3E2A), Color(0x000C3E2A)]))),
+          ] else ...[
+            Positioned(left: -30, bottom: -40, child: Container(width: 160, height: 160,
+                decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: .08)))),
+            PositionedDirectional(end: 18, top: 22, child: FnLogoMark(size: 104, color: Colors.white.withValues(alpha: .9), gradient: false)),
+          ],
           Padding(
             padding: const EdgeInsets.all(20),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(tr('هناك نبتة لكل شخص'), style: FnText.heading18.onDark),
+              Text(b == null ? tr('هناك نبتة لكل شخص') : tr(b!.title), style: FnText.heading18.onDark, maxLines: 2, overflow: TextOverflow.ellipsis),
               const SizedBox(height: 2),
-              Text(tr('خصم ٢٠٪ على أول طلب من فناء'), style: FnText.caption11.soft),
+              if (b == null || (b!.subtitle ?? '').isNotEmpty)
+                Text(b == null ? tr('خصم ٢٠٪ على أول طلب من فناء') : tr(b!.subtitle!), style: FnText.caption11.soft, maxLines: 2),
               const Spacer(),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(color: FnColors.surface, borderRadius: BorderRadius.circular(FnRadius.pill)),
-                child: Text(tr('تسوّق الآن'), style: FnText.label13.deep),
-              ),
+              if (b?.linkType != 'none' && cta.isNotEmpty)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(color: FnColors.surface, borderRadius: BorderRadius.circular(FnRadius.pill)),
+                  child: Text(tr(cta), style: FnText.label13.deep),
+                ),
             ]),
           ),
         ]),
-      ));
-}
-
-class _CategoryTile extends StatelessWidget {
-  const _CategoryTile({required this.c, required this.index});
-  final Category c;
-  final int index;
-  static const _bgs = [FnColors.soft, Color(0xFFF6E9E1), Color(0xFFE6EEF6), Color(0xFFEFE8F4), Color(0xFFF7F0DE)];
-  static const _fgs = [FnColors.deep, FnColors.clay, FnColors.sky, FnColors.plum, FnColors.star];
-  static const _icons = [Icons.local_florist_outlined, Icons.park_outlined, Icons.water_drop_outlined, Icons.yard_outlined, Icons.handyman_outlined];
-  @override
-  Widget build(BuildContext context) => GestureDetector(
-        onTap: () => context.push('/stores?category=${c.id}'),
-        child: SizedBox(
-          width: 72,
-          child: Column(children: [
-            Container(width: 64, height: 64,
-                decoration: BoxDecoration(color: _bgs[index % 5], borderRadius: BorderRadius.circular(20)),
-                child: Icon(_icons[index % 5], color: _fgs[index % 5], size: 26)),
-            const SizedBox(height: 6),
-            Text(tr(c.nameAr), style: FnText.caption11, maxLines: 1, overflow: TextOverflow.ellipsis),
-          ]),
-        ),
-      );
+      ),
+    );
+  }
 }

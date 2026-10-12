@@ -13,6 +13,7 @@ import '../../../data/repositories/order_repo.dart';
 import '../../customer/orders/my_orders_screen.dart' show statusColors;
 import '../orders/merchant_orders_screen.dart' show merchantOrdersTabRequest;
 import '../../../core/i18n/i18n.dart';
+import '../../common/notifications_screen.dart' show NotificationBell;
 
 final merchantStatsProvider = FutureProvider.family<Map<String, dynamic>, String>(
     (ref, nid) => ref.watch(orderRepoProvider).merchantStats(nid));
@@ -84,8 +85,23 @@ class _Dash extends ConsumerWidget {
                 Text(n.name, style: FnText.heading18),
                 Text(tr('لوحة التاجر'), style: FnText.caption11.muted),
               ])),
-              FnIconButton(radius: 16, onTap: () {}, child: const Icon(Icons.notifications_none_rounded, size: 20, color: FnColors.ink)),
+              const NotificationBell(radius: 16),
             ]),
+            if (!n.isApproved) ...[
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(color: const Color(0xFFF7F0DE), borderRadius: BorderRadius.circular(16)),
+                child: Row(children: [
+                  const Icon(Icons.hourglass_top_rounded, color: FnColors.star, size: 22),
+                  const SizedBox(width: 10),
+                  Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Text(tr('متجرك قيد المراجعة'), style: FnText.bodyStrong15),
+                    Text(tr('جهّز منتجاتك الآن — يظهر متجرك للعملاء بعد موافقة الإدارة'), style: FnText.caption11.muted),
+                  ])),
+                ]),
+              ),
+            ],
             const SizedBox(height: 14),
             _OpenToggle(n: n),
             const SizedBox(height: 12),

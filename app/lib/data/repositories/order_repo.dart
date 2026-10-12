@@ -131,6 +131,12 @@ class OrderRepo {
     return Address.fromJson(j);
   }
 
+  Future<void> setDefaultAddress(String id) async {
+    final uid = _c.auth.currentUser!.id;
+    await _c.from('addresses').update({'is_default': false}).eq('user_id', uid);
+    await _c.from('addresses').update({'is_default': true}).eq('id', id);
+  }
+
   // -------------------------------------------------------------- الطلبات
   Future<String> placeOrder({required String nurseryId, required String addressId, required String paymentMethod,
       String? coupon, String? note, DateTime? scheduledAt}) async {

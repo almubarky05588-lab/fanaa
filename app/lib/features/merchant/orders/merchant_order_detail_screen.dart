@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/utils/format.dart';
@@ -90,6 +91,8 @@ class _State extends ConsumerState<MerchantOrderDetailScreen> {
                     if (o.customerPhone != null)
                       Directionality(textDirection: TextDirection.ltr, child: Text(Fmt.phone(o.customerPhone!), style: FnText.caption11.muted)),
                     Text(o.addressLine, style: FnText.caption11.muted),
+                    if ((o.address['notes'] ?? '').toString().isNotEmpty)
+                      Text(tr('للمندوب: {0}', [o.address['notes']]), style: FnText.caption11.muted),
                     if ((o.note ?? '').isNotEmpty) Text(tr('ملاحظة: {0}', [o.note]), style: FnText.caption11.clay),
                   ])),
                   if (o.customerPhone != null)
@@ -100,6 +103,10 @@ class _State extends ConsumerState<MerchantOrderDetailScreen> {
                     ),
                 ]),
               ),
+              if (o.address['lat'] is num && o.address['lng'] is num) ...[
+                const SizedBox(height: 12),
+                _DeliveryMap(lat: (o.address['lat'] as num).toDouble(), lng: (o.address['lng'] as num).toDouble()),
+              ],
               const SizedBox(height: 12),
               Text(tr('المنتجات'), style: FnText.label13.muted),
               const SizedBox(height: 8),
@@ -159,6 +166,49 @@ class _State extends ConsumerState<MerchantOrderDetailScreen> {
           ]),
         );
       }(),
+    );
+  }
+}
+
+/// موقع العميل على الخريطة + زر الاتجاهات (يفتح خرائط قوقل، وإلا خرائط أبل)
+class _DeliveryMap extends StatelessWidget {
+  const _DeliveryMap({required this.lat, required this.lng});
+  final double lat, lng;
+
+  Future<void> _directions() async {
+    final google = Uri.parse('comgooglemaps://?daddr=$lat,$lng&directionsmode=driving');
+    if (await canLaunchUrl(google)) {
+      await launchUrl(google);
+    } else {
+      await launchUrl(Uri.parse('https://maps.apple.com/?daddr=$lat,$lng&dirflg=d'), mode: LaunchMode.externalApplication);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final pos = LatLng(lat, lng);
+    return FnCard(
+      padding: EdgeInsets.zero,
+      child: Column(children: [
+        ClipRRect(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(FnRadius.card)),
+          child: SizedBox(
+            height: 160,
+            child: IgnorePointer(
+              child: GoogleMap(
+                initialCameraPosition: CameraPosition(target: pos, zoom: 15.5),
+                markers: {Marker(markerId: const MarkerId('customer'), position: pos)},
+                zoomControlsEnabled: false, mapToolbarEnabled: false, myLocationButtonEnabled: false,
+                scrollGesturesEnabled: false, zoomGesturesEnabled: false, rotateGesturesEnabled: false, tiltGesturesEnabled: false,
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: FnButton(label: tr('الاتجاهات إلى العميل'), icon: Icons.directions_rounded, height: 48, onPressed: _directions),
+        ),
+      ]),
     );
   }
 }

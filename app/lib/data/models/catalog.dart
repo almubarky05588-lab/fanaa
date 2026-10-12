@@ -23,6 +23,7 @@ class Nursery {
   final double deliveryRadiusKm;
   final bool autoAccept;
   final bool onVacation;
+  final bool isApproved;
 
   const Nursery({
     required this.id,
@@ -49,6 +50,7 @@ class Nursery {
     this.deliveryRadiusKm = 8,
     this.autoAccept = false,
     this.onVacation = false,
+    this.isApproved = true,
   });
 
   factory Nursery.fromJson(Map<String, dynamic> j) => Nursery(
@@ -76,6 +78,7 @@ class Nursery {
         deliveryRadiusKm: (j['delivery_radius_km'] as num?)?.toDouble() ?? 8,
         autoAccept: j['auto_accept'] ?? false,
         onVacation: j['on_vacation'] ?? false,
+        isApproved: j['is_approved'] ?? true,
       );
 
   String get location => [district, city].where((e) => (e ?? '').isNotEmpty).join(' — ');
@@ -87,9 +90,15 @@ class Category {
   final String nameAr;
   final String slug;
   final String? icon;
-  const Category({required this.id, required this.nameAr, required this.slug, this.icon});
-  factory Category.fromJson(Map<String, dynamic> j) =>
-      Category(id: j['id'], nameAr: j['name_ar'], slug: j['slug'], icon: j['icon']);
+  /// طريقة العرض التي يختارها الأدمن: icon | image | text
+  final String displayMode;
+  final String? imageUrl;
+  final String? bgColor;
+  const Category({required this.id, required this.nameAr, required this.slug, this.icon,
+      this.displayMode = 'icon', this.imageUrl, this.bgColor});
+  factory Category.fromJson(Map<String, dynamic> j) => Category(
+      id: j['id'], nameAr: j['name_ar'], slug: j['slug'], icon: j['icon'],
+      displayMode: j['display_mode'] ?? 'icon', imageUrl: j['image_url'], bgColor: j['bg_color']);
 }
 
 class ProductVariant {

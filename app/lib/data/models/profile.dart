@@ -11,6 +11,8 @@ class Profile {
   final UserRole role;
   final String? avatarUrl;
   final int loyaltyPoints;
+  /// false = أوقفته الإدارة
+  final bool isActive;
 
   const Profile({
     required this.id,
@@ -19,6 +21,7 @@ class Profile {
     required this.role,
     this.avatarUrl,
     this.loyaltyPoints = 0,
+    this.isActive = true,
   });
 
   factory Profile.fromJson(Map<String, dynamic> j) => Profile(
@@ -28,6 +31,7 @@ class Profile {
         role: roleFrom(j['role']),
         avatarUrl: j['avatar_url'],
         loyaltyPoints: j['loyalty_points'] ?? 0,
+        isActive: j['is_active'] ?? true,
       );
 
   bool get isMerchant => role == UserRole.merchant;

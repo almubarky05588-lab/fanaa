@@ -14,6 +14,7 @@ import '../../../data/repositories/catalog_repo.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../widgets/product_card.dart';
 import '../../../core/i18n/i18n.dart';
+import '../widgets/nursery_card.dart' show nurseryDistanceKm;
 
 /// 05 صفحة المتجر
 class StoreScreen extends ConsumerStatefulWidget {
@@ -186,11 +187,11 @@ class _Header extends ConsumerWidget {
   }
 }
 
-class _InfoCard extends StatelessWidget {
+class _InfoCard extends ConsumerWidget {
   const _InfoCard({required this.n});
   final Nursery n;
   @override
-  Widget build(BuildContext context) => FnCard(
+  Widget build(BuildContext context, WidgetRef ref) => FnCard(
         shadow: true,
         radius: 24,
         padding: const EdgeInsets.all(16),
@@ -201,7 +202,8 @@ class _InfoCard extends StatelessWidget {
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(n.name, style: FnText.heading18, maxLines: 1, overflow: TextOverflow.ellipsis),
               const SizedBox(height: 2),
-              Text(n.location, style: FnText.caption11.muted, maxLines: 1, overflow: TextOverflow.ellipsis),
+              Text([n.location, if (nurseryDistanceKm(ref, n) != null) tr('يبعد {0}', [Fmt.km(nurseryDistanceKm(ref, n)!)])].join(' • '),
+                  style: FnText.caption11.muted, maxLines: 1, overflow: TextOverflow.ellipsis),
             ])),
             const SizedBox(width: 8),
             FnBadge(n.isOpen ? tr('مفتوح الآن') : tr('مغلق'), bg: n.isOpen ? FnColors.soft : FnColors.bgBase, fg: n.isOpen ? FnColors.deep : FnColors.muted),

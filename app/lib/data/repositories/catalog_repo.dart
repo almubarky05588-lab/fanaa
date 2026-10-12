@@ -6,7 +6,7 @@ import '../models/catalog.dart';
 
 const nurseryCols = 'id,name,slug,description,logo_url,cover_url,city,district,rating_avg,rating_count,'
     'delivery_fee,free_delivery_over,min_order,prep_time_min,is_open,on_vacation,owner_id,phone,tax_number,'
-    'delivery_radius_km,auto_accept,lat,lng';
+    'delivery_radius_km,auto_accept,lat,lng,is_approved';
 
 const productCols = 'id,nursery_id,category_id,name,description,images,base_price,stock,care_light,care_water,'
     'care_temp,is_available,sold_count,product_variants(id,name,price,stock,is_active,sort)';

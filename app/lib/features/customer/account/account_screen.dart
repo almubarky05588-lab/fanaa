@@ -14,6 +14,7 @@ import '../../../data/repositories/catalog_repo.dart';
 import '../../../data/repositories/coupon_repo.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../../../core/i18n/i18n.dart';
+import '../shell/customer_shell.dart' show backToMyStore;
 
 /// 06 المزيد / 13 حسابي
 class AccountScreen extends ConsumerStatefulWidget {
@@ -156,6 +157,14 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
             ),
           ]),
         ),
+        if (myStore != null) ...[
+          const SizedBox(height: 10),
+          FnCard(
+            padding: const EdgeInsets.all(4),
+            child: FnListRow(title: tr('العودة للوحة متجري'), subtitle: myStore.name, icon: Icons.storefront_rounded,
+                onTap: () => backToMyStore(context)),
+          ),
+        ],
         const SizedBox(height: 10),
         Row(children: [
           _Stat('${orders.length}', tr('الطلبات'), onTap: () => context.go('/orders')),
