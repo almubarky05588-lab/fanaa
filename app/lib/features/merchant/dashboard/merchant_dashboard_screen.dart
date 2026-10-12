@@ -165,7 +165,8 @@ class _QuickAction extends StatelessWidget {
                 child: Icon(icon, size: 18, color: FnColors.deep)),
             const SizedBox(width: 10),
             Expanded(child: Text(label, style: FnText.label13)),
-            const Icon(Icons.chevron_left_rounded, size: 18, color: FnColors.faint),
+            // chevron_right ينقلبه Flutter في العربية فيشير لليسار ‹ (للأمام)
+            const Icon(Icons.chevron_right_rounded, size: 18, color: FnColors.faint),
           ]),
         ),
       );
