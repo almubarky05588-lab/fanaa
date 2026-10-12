@@ -206,7 +206,7 @@ class _DeliveryMap extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(10),
-          child: FnButton(label: tr('الاتجاهات إلى العميل'), icon: Icons.directions_rounded, height: 48, onPressed: _directions),
+          child: FnButton(label: tr('الاتجاهات إلى العميل'), icon: const Icon(Icons.directions_rounded, size: 20, color: FnColors.surface), height: 48, onPressed: _directions),
         ),
       ]),
     );
