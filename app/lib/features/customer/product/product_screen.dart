@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/supabase/supabase_client.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_logo.dart';
@@ -8,6 +9,7 @@ import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/models/catalog.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../../../data/repositories/order_repo.dart';
+import '../../common/guest_login_prompt.dart';
 
 /// 08 صفحة المنتج
 class ProductScreen extends ConsumerStatefulWidget {
@@ -39,6 +41,11 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   }
 
   Future<void> _toggleFav(String id, bool now) async {
+    // المفضلة مرتبطة بالحساب — الزائر يُطلب منه التسجيل
+    if (ref.read(currentUserProvider) == null) {
+      await askToLogin(context, reason: 'احفظ نباتاتك المفضلة في حسابك وارجع لها متى ما شئت', from: '/product/$id');
+      return;
+    }
     await ref.read(catalogRepoProvider).toggleFavorite(id, !now);
     ref.invalidate(favoriteIdsProvider);
   }
