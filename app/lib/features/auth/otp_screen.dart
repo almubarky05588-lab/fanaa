@@ -9,9 +9,10 @@ import '../../core/utils/format.dart';
 import '../../core/widgets/fn_widgets.dart';
 import '../../data/models/profile.dart';
 import '../../data/repositories/auth_repo.dart';
+import 'phone_login_screen.dart' show EnglishDigitsFormatter;
 
-/// طول رمز Supabase (SMS) — 6 أرقام
-const kOtpLength = 6;
+/// طول رمز التحقق — 4 أرقام (يُضبط بنفس القيمة في إعدادات SMS في Supabase)
+const kOtpLength = 4;
 
 /// 02b / 14b — رمز التحقق
 class OtpScreen extends ConsumerStatefulWidget {
@@ -50,7 +51,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
     if (_code.length < kOtpLength || _loading) return;
     setState(() => _loading = true);
     try {
-      await ref.read(authRepoProvider).verifyOtp(widget.phone, _code);
+      await ref.read(authRepoProvider).verifyOtp(widget.phone, EnglishDigitsFormatter.convert(_code));
       ref.invalidate(profileProvider);
       // الموجّه ينقل المستخدم تلقائيًا للوجهة المحفوظة؛ هذا احتياط فقط
       if (mounted) context.go(AuthRedirect.take() ?? '/splash');
@@ -115,6 +116,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                   appContext: context,
                   length: kOtpLength,
                   keyboardType: TextInputType.number,
+                  inputFormatters: const [EnglishDigitsFormatter()],
                   autoFocus: true,
                   animationType: AnimationType.scale,
                   cursorColor: FnColors.deep,
@@ -122,12 +124,12 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                   pinTheme: PinTheme(
                     shape: PinCodeFieldShape.box,
                     borderRadius: BorderRadius.circular(16),
-                    fieldHeight: 64, fieldWidth: 50, borderWidth: 1,
+                    fieldHeight: 68, fieldWidth: 64, borderWidth: 1,
                     activeFillColor: FnColors.surface, inactiveFillColor: FnColors.surface, selectedFillColor: FnColors.surface,
                     activeColor: FnColors.deep, inactiveColor: FnColors.border, selectedColor: FnColors.primary,
                   ),
                   enableActiveFill: true,
-                  onChanged: (v) => setState(() => _code = v),
+                  onChanged: (v) => setState(() => _code = EnglishDigitsFormatter.convert(v)),
                   onCompleted: (_) => _verify(),
                 ),
               ),

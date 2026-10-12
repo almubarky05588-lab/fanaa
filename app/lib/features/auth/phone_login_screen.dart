@@ -20,9 +20,10 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
   final _phone = TextEditingController();
   bool _loading = false;
 
+  /// الرقم المحلي بدون صفر: 9 أرقام تبدأ بـ5 (مفتاح الدولة ظاهر بجانب الحقل)
   bool get _valid {
     final d = _phone.text.replaceAll(RegExp(r'[^0-9]'), '');
-    return (d.length == 9 && d.startsWith('5')) || (d.length == 10 && d.startsWith('05'));
+    return d.length == 9 && d.startsWith('5');
   }
 
   Future<void> _send() async {
@@ -125,7 +126,7 @@ class PhoneField extends StatelessWidget {
                 keyboardType: TextInputType.phone,
                 textAlign: TextAlign.left,
                 style: FnText.body15,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(10)],
+                inputFormatters: [const EnglishDigitsFormatter(), const SaudiMobileFormatter()],
                 decoration: InputDecoration(
                   hintText: '5X XXX XXXX',
                   hintStyle: FnText.body15.faint,
@@ -137,6 +138,45 @@ class PhoneField extends StatelessWidget {
           ]),
         ),
       );
+}
+
+/// يحوّل الأرقام العربية/الفارسية (٠-٩ ، ۰-۹) إلى إنجليزية أثناء الكتابة
+class EnglishDigitsFormatter extends TextInputFormatter {
+  const EnglishDigitsFormatter();
+
+  static String convert(String s) {
+    final b = StringBuffer();
+    for (final c in s.runes) {
+      if (c >= 0x0660 && c <= 0x0669) {
+        b.writeCharCode(0x30 + c - 0x0660); // ٠-٩
+      } else if (c >= 0x06F0 && c <= 0x06F9) {
+        b.writeCharCode(0x30 + c - 0x06F0); // ۰-۹
+      } else {
+        b.writeCharCode(c);
+      }
+    }
+    return b.toString();
+  }
+
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    final t = convert(newValue.text);
+    return t == newValue.text ? newValue : newValue.copyWith(text: t, selection: TextSelection.collapsed(offset: t.length));
+  }
+}
+
+/// جوال سعودي محلي: أرقام فقط، بدون الصفر أو 966 في البداية، 9 أرقام كحد أقصى
+class SaudiMobileFormatter extends TextInputFormatter {
+  const SaudiMobileFormatter();
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    var d = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
+    if (d.startsWith('00966')) d = d.substring(5);
+    if (d.startsWith('966') && d.length > 9) d = d.substring(3);
+    d = d.replaceFirst(RegExp(r'^0+'), '');
+    if (d.length > 9) d = d.substring(0, 9);
+    return TextEditingValue(text: d, selection: TextSelection.collapsed(offset: d.length));
+  }
 }
 
 class LangPill extends StatelessWidget {

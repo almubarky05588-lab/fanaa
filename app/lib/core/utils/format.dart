@@ -12,16 +12,18 @@ abstract final class Fmt {
   static String km(double v) => '${v.toStringAsFixed(1)} كم';
   static String minutes(int m) => '$m د';
 
+  /// +966 5X XXX XXXX
   static String phone(String p) {
-    final d = p.replaceAll(RegExp(r'[^0-9]'), '');
-    final local = d.startsWith('966') ? '0${d.substring(3)}' : d;
-    if (local.length == 10) {
-      return '${local.substring(0, 3)} ${local.substring(3, 6)} ${local.substring(6)}';
+    var d = p.replaceAll(RegExp(r'[^0-9]'), '');
+    if (d.startsWith('966')) d = d.substring(3);
+    d = d.replaceFirst(RegExp(r'^0+'), '');
+    if (d.length == 9) {
+      return '+966 ${d.substring(0, 2)} ${d.substring(2, 5)} ${d.substring(5)}';
     }
     return p;
   }
 
-  /// يحوّل الإدخال المحلي 05xxxxxxxx إلى E.164 (+9665xxxxxxxx)
+  /// يحوّل الإدخال المحلي 5xxxxxxxx (أو 05xxxxxxxx) إلى E.164 (+9665xxxxxxxx)
   static String toE164(String input) {
     var d = input.replaceAll(RegExp(r'[^0-9]'), '');
     if (d.startsWith('00')) d = d.substring(2);
