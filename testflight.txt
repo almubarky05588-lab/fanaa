@@ -1,10 +1,11 @@
 status: failure
-run: 20 (38282710178)
-commit: 895bb60e8d69c5ca7707270ef7a437849253a251
-Mon Oct 12 17:15:05 UTC 2026
+run: 21 (38283149980)
+commit: f7d5c45880e400e0bc73e21656bd529570928216
+Mon Oct 12 17:24:39 UTC 2026
 
 ==================== الأخطاء المباشرة ====================
-97:❌ أخطاء في الكود
+98:[!] CocoaPods did not set the base configuration of your project because your project already has a custom config set. In order for CocoaPods integration to work at all, please either set the base configurations of the target `Runner` to `Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig` or include the `Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig` in your build configuration (`Flutter/Release.xcconfig`).
+213:[!] Could not install WWDR certificate[0m
 
 ==================== آخر السجل ====================
 
@@ -21,18 +22,18 @@ Build version 17F113
 share-certs: 200
 
 ==================== fastlane + تجهيز حساب Apple ====================
-[17:14:32]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[17:14:32]: fastlane 2.241.0 (Ruby 3.3.12, gem)
-[17:14:33]: [32m------------------------------[0m
-[17:14:33]: [32m--- Step: default_platform ---[0m
-[17:14:33]: [32m------------------------------[0m
-[17:14:33]: [32mDriving the lane 'ios prepare' 🚀[0m
-[17:14:33]: [32m---------------------------------------[0m
-[17:14:33]: [32m--- Step: app_store_connect_api_key ---[0m
-[17:14:33]: [32m---------------------------------------[0m
-[17:14:33]: [32m✅ معرّف التطبيق مسجّل: sa.almubarky.fenaa[0m
-[17:14:34]: [32m✅ Associated Domains مفعّلة[0m
-[17:14:34]: [32m✅ سجل التطبيق موجود في App Store Connect: فِناء[0m
+[17:18:25]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[17:18:25]: fastlane 2.241.0 (Ruby 3.3.12, gem)
+[17:18:25]: [32m------------------------------[0m
+[17:18:25]: [32m--- Step: default_platform ---[0m
+[17:18:25]: [32m------------------------------[0m
+[17:18:25]: [32mDriving the lane 'ios prepare' 🚀[0m
+[17:18:25]: [32m---------------------------------------[0m
+[17:18:25]: [32m--- Step: app_store_connect_api_key ---[0m
+[17:18:25]: [32m---------------------------------------[0m
+[17:18:25]: [32m✅ معرّف التطبيق مسجّل: sa.almubarky.fenaa[0m
+[17:18:26]: [32m✅ Associated Domains مفعّلة[0m
+[17:18:26]: [32m✅ سجل التطبيق موجود في App Store Connect: فِناء[0m
 
 +------------------------------------------------+
 |                [32mfastlane summary[0m                |
@@ -43,7 +44,7 @@ share-certs: 200
 | 2    | app_store_connect_api_key | 0           |
 +------+---------------------------+-------------+
 
-[17:14:34]: [32mfastlane.tools finished successfully 🎉[0m
+[17:18:26]: [32mfastlane.tools finished successfully 🎉[0m
 
 ==================== Flutter ====================
 Flutter 3.47.7 • channel stable • https://github.com/flutter/flutter.git
@@ -63,15 +64,11 @@ Runner.xcworkspace
 RunnerTests
 
 ==================== تحويلات الكود (codemods) ====================
-▶ tool/codemods/pending/003_default_address.py
-✅ 003 applied
-▶ tool/codemods/pending/004_distance_directions.py
-✅ 004 applied
-▶ tool/codemods/pending/005_admin_app.py
-✅ 005 applied
+▶ tool/codemods/pending/006_directions_icon.py
+✅ 006 applied
 
 ==================== رقم البناء ====================
-version: 0.1.0+120
+version: 0.1.0+121
 
 ==================== الأيقونة والحزم ====================
 ✅ icons written to assets/brand
@@ -83,26 +80,146 @@ No platform provided
 ✓ Successfully generated launcher icons
 
 ==================== تحليل الكود ====================
-Analyzing app...                                                
+15 issues found. (ran in 14.7s)
 
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/core/location/location_picker.dart:155:25 • prefer_const_constructors
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/auth/account_type_screen.dart:97:11 • prefer_const_constructors
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/auth/account_type_screen.dart:97:53 • prefer_const_constructors
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/account/favorites_screen.dart:48:47 • prefer_const_constructors
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/account/favorites_screen.dart:61:47 • prefer_const_constructors
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/account/my_coupons_screen.dart:39:28 • prefer_const_constructors
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/payment/payment_success_screen.dart:36:29 • prefer_const_constructors
-   info • Use a function declaration rather than a variable assignment to bind a function to a name. Try rewriting the closure assignment as a function declaration • lib/features/customer/widgets/category_tile.dart:36:11 • prefer_function_declarations_over_variables
-  error • The argument type 'IconData' can't be assigned to the parameter type 'Widget?'.  • lib/features/merchant/orders/merchant_order_detail_screen.dart:209:68 • argument_type_not_assignable
-   info • The import of 'dart:typed_data' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/services.dart'. Try removing the import directive • lib/features/merchant/products/add_product_screen.dart:1:8 • unnecessary_import
-   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre. Try replacing the use of the deprecated member with the replacement • lib/features/merchant/products/add_product_screen.dart:134:13 • deprecated_member_use
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/merchant/products/merchant_products_screen.dart:78:86 • prefer_const_constructors
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/merchant/reviews/merchant_reviews_screen.dart:73:30 • prefer_const_constructors
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/merchant/settings/merchant_settings_screen.dart:159:31 • prefer_const_constructors
-   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre. Try replacing the use of the deprecated member with the replacement • lib/features/merchant/setup/merchant_setup_screen.dart:108:17 • deprecated_member_use
-   info • 'anonKey' is deprecated and shouldn't be used. Use publishableKey instead. anonKey will be removed in a future major version. Try replacing the use of the deprecated member with the replacement • lib/main.dart:21:51 • deprecated_member_use
+==================== تهيئة iOS ====================
+Warning: Building for device with codesigning disabled. You will have to manually codesign before deploying to device.
+Building sa.almubarky.fenaa for device (ios-release)...
+The following plugins do not support Swift Package Manager for ios:
+  - google_maps_flutter_ios
+This will become an error in a future version of Flutter. Please contact the plugin maintainers to request Swift Package Manager adoption.
+Running pod install...                                              5.8s
 
-16 issues found. (ran in 16.9s)
-❌ أخطاء في الكود
+==================== الأذونات والخرائط ====================
+✅ Info.plist
+✅ AppDelegate.swift
+✅ Podfile
+✅ project.pbxproj (iPhone only)
+✅ entitlements (3 configs)
+
+==================== Pods ====================
+Updating local specs repositories
+Analyzing dependencies
+Downloading dependencies
+Generating Pods project
+Integrating client project
+Pod installation complete! There are 2 dependencies from the Podfile and 4 total pods installed.
+
+[!] CocoaPods did not set the base configuration of your project because your project already has a custom config set. In order for CocoaPods integration to work at all, please either set the base configurations of the target `Runner` to `Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig` or include the `Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig` in your build configuration (`Flutter/Release.xcconfig`).
+
+==================== البناء والرفع ====================
+[17:19:32]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[17:19:32]: fastlane 2.241.0 (Ruby 3.3.12, gem)
+[17:19:33]: [32m------------------------------[0m
+[17:19:33]: [32m--- Step: default_platform ---[0m
+[17:19:33]: [32m------------------------------[0m
+[17:19:33]: [32mDriving the lane 'ios beta' 🚀[0m
+[17:19:33]: [32m----------------------[0m
+[17:19:33]: [32m--- Step: setup_ci ---[0m
+[17:19:33]: [32m----------------------[0m
+[17:19:33]: Creating temporary keychain: "fastlane_tmp_keychain".
+[17:19:34]: [36m$ security list-keychains -d user[0m
+[17:19:34]: ▸ [35m"/Users/runner/Library/Keychains/fastlane_tmp_keychain-db"[0m
+[17:19:34]: [33mFound keychain '/Users/runner/Library/Keychains/fastlane_tmp_keychain-db' in list-keychains, adding to search list skipped[0m
+[17:19:34]: Enabling match readonly mode.
+[17:19:34]: [32m---------------------------------------[0m
+[17:19:34]: [32m--- Step: app_store_connect_api_key ---[0m
+[17:19:34]: [32m---------------------------------------[0m
+[17:19:34]: [32m-------------------[0m
+[17:19:34]: [32m--- Step: match ---[0m
+[17:19:34]: [32m-------------------[0m
+[17:19:34]: [32mSuccessfully loaded '/Users/runner/work/fanaa/fanaa/app/ios/fastlane/Matchfile' 📄[0m
+
++--------------------------------------------------------------------+
+|            Detected Values from './fastlane/Matchfile'             |
++----------------+---------------------------------------------------+
+| git_url        | https://github.com/almubarky05588-lab/share-certs |
+| storage_mode   | git                                               |
+| git_branch     | fenaa                                             |
+| type           | appstore                                          |
+| app_identifier | ["sa.almubarky.fenaa"]                            |
+| team_id        | 5V6TC85KRL                                        |
+| readonly       | false                                             |
++----------------+---------------------------------------------------+
+
+
++--------------------------------------------------------------------------------------------+
+|                                 [32mSummary for match 2.241.0[0m                                  |
++----------------------------------------+---------------------------------------------------+
+| type                                   | appstore                                          |
+| api_key                                | API_KEY_REDACTED                                  |
+| readonly                               | false                                             |
+| generate_apple_certs                   | true                                              |
+| skip_provisioning_profiles             | false                                             |
+| app_identifier                         | ["sa.almubarky.fenaa"]                            |
+| team_id                                | 5V6TC85KRL                                        |
+| storage_mode                           | git                                               |
+| git_url                                | https://github.com/almubarky05588-lab/share-certs |
+| git_branch                             | fenaa                                             |
+| shallow_clone                          | false                                             |
+| clone_branch_directly                  | false                                             |
+| git_basic_authorization                | GIT_BASIC_AUTHORIZATION_REDACTED                  |
+| skip_google_cloud_account_confirmation | false                                             |
+| s3_skip_encryption                     | false                                             |
+| gitlab_host                            | https://gitlab.com                                |
+| keychain_name                          | fastlane_tmp_keychain                             |
+| force                                  | false                                             |
+| force_for_new_devices                  | false                                             |
+| include_mac_in_profiles                | false                                             |
+| include_all_certificates               | false                                             |
+| force_for_new_certificates             | false                                             |
+| renew_expired_certs                    | false                                             |
+| skip_confirmation                      | false                                             |
+| safe_remove_certs                      | false                                             |
+| skip_docs                              | false                                             |
+| platform                               | ios                                               |
+| derive_catalyst_app_identifier         | false                                             |
+| fail_on_name_taken                     | false                                             |
+| skip_certificate_matching              | false                                             |
+| skip_set_partition_list                | false                                             |
+| force_legacy_encryption                | false                                             |
+| offline_profile                        | false                                             |
+| verbose                                | false                                             |
++----------------------------------------+---------------------------------------------------+
+
+[17:19:34]: Cloning remote git repo...
+[17:19:34]: If cloning the repo takes too long, you can use the `clone_branch_directly` option in match.
+[17:19:35]: Checking out branch fenaa...
+[17:19:35]: [32m🔓  Successfully decrypted certificates repo[0m
+[17:19:35]: Verifying that the certificate and profile are still valid on the Dev Portal...
+[17:19:35]: Creating authorization token for App Store Connect API
+[17:19:35]: Installing certificate...
++---------------------------------------------------------------------------------+
+|                                  [33mLane Context[0m                                   |
++---------------------------+-----------------------------------------------------+
+| DEFAULT_PLATFORM          | ios                                                 |
+| PLATFORM_NAME             | ios                                                 |
+| LANE_NAME                 | ios beta                                            |
+| KEYCHAIN_PATH             | ~/Library/Keychains/fastlane_tmp_keychain           |
+| ORIGINAL_DEFAULT_KEYCHAIN | "/Users/runner/Library/Keychains/login.keychain-db" |
++---------------------------+-----------------------------------------------------+
+[17:24:36]: [31mCalled from Fastfile at line 56[0m
+[17:24:36]: [31m```[0m
+[17:24:36]: [31m    54:	    api_key = fenaa_api_key[0m
+[17:24:36]: [31m    55:	[0m
+[17:24:36]: [31m => 56:	    match(type: "appstore", api_key: api_key, readonly: false)[0m
+[17:24:36]: [31m    57:	    # ملف تزويد قديم بلا صلاحية الروابط؟ نعيد توليده مرة واحدة[0m
+[17:24:36]: [31m    58:	    path = ENV["sigh_#{BUNDLE_ID}_appstore_profile-path"][0m
+[17:24:36]: [31m```[0m
+
++------------------------------------------------+
+|                [32mfastlane summary[0m                |
++------+---------------------------+-------------+
+| Step | Action                    | Time (in s) |
++------+---------------------------+-------------+
+| 1    | default_platform          | 0           |
+| 2    | setup_ci                  | 0           |
+| 3    | app_store_connect_api_key | 0           |
+| 💥   | [31mmatch[0m                     | 302         |
++------+---------------------------+-------------+
+
+[17:24:36]: [31mfastlane finished with errors[0m
+[31m
+[!] Could not install WWDR certificate[0m
 
 ==================== أخطاء xcodebuild ====================
