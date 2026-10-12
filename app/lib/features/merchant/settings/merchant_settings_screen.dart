@@ -11,6 +11,7 @@ import '../../../core/widgets/store_logo.dart';
 import '../../../data/models/catalog.dart';
 import '../../../data/repositories/auth_repo.dart';
 import '../../../data/repositories/catalog_repo.dart';
+import '../../customer/account/account_screen.dart' show showLanguageSheet;
 import '../dashboard/merchant_dashboard_screen.dart';
 
 /// 21 إعدادات المتجر
@@ -217,6 +218,8 @@ class _SettingsState extends ConsumerState<_Settings> {
           ]),
           const SizedBox(height: 14),
           _Group(children: [
+            FnListRow(title: 'اللغة', icon: Icons.language_rounded, value: 'العربية', showChevron: false,
+                onTap: () => showLanguageSheet(context)),
             FnListRow(title: 'الدعم والمساعدة', icon: Icons.help_outline_rounded, onTap: () => context.push('/support')),
             FnListRow(
               title: 'تسجيل الخروج', titleStyle: FnText.bodyStrong15.clay, icon: Icons.logout_rounded, iconColor: FnColors.clay,
