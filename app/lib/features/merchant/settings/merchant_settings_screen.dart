@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../core/router/shop_mode.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/utils/format.dart';
-import '../../../core/widgets/fn_logo.dart';
 import '../../../core/widgets/fn_widgets.dart';
+import '../../../core/widgets/store_logo.dart';
 import '../../../data/models/catalog.dart';
 import '../../../data/repositories/auth_repo.dart';
 import '../../../data/repositories/catalog_repo.dart';
@@ -61,16 +62,83 @@ class _SettingsState extends ConsumerState<_Settings> {
     await _update({field: v.isEmpty ? null : double.tryParse(v)});
   }
 
+  /// يختار صورة ويرفعها ويحدّث المتجر — kind: logo | cover
+  Future<String?> _pickAndUpload(String kind) async {
+    final x = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxWidth: kind == 'logo' ? 600 : 1600,
+      imageQuality: 85,
+    );
+    if (x == null) return null;
+    try {
+      final url = await ref.read(catalogRepoProvider).uploadNurseryImage(widget.n.id, kind, await x.readAsBytes());
+      await _update({kind == 'logo' ? 'logo_url' : 'cover_url': url});
+      return url;
+    } catch (e) {
+      if (mounted) showFnSnack(context, 'تعذّر رفع الصورة', error: true);
+      return null;
+    }
+  }
+
   Future<void> _editStore(Nursery n) async {
+    String? logo = n.logoUrl, cover = n.coverUrl;
+    bool upLogo = false, upCover = false;
     final name = TextEditingController(text: n.name);
     final desc = TextEditingController(text: n.description ?? '');
     final phone = TextEditingController(text: n.phone ?? '');
     final saved = await showModalBottomSheet<bool>(
       context: context, isScrollControlled: true,
-      builder: (ctx) => Padding(
+      builder: (ctx) => StatefulBuilder(builder: (ctx, setSheet) => Padding(
         padding: EdgeInsets.fromLTRB(24, 20, 24, MediaQuery.viewInsetsOf(ctx).bottom + 24),
-        child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+        child: SingleChildScrollView(child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text('بيانات المتجر', style: FnText.heading18),
+          const SizedBox(height: 14),
+          // الشعار والغلاف
+          Row(children: [
+            GestureDetector(
+              onTap: upLogo ? null : () async {
+                setSheet(() => upLogo = true);
+                final u = await _pickAndUpload('logo');
+                setSheet(() { upLogo = false; if (u != null) logo = u; });
+              },
+              child: Stack(clipBehavior: Clip.none, children: [
+                StoreLogo(url: logo, size: 72, radius: 22),
+                if (upLogo)
+                  const Positioned.fill(child: Center(child: SizedBox(width: 22, height: 22,
+                      child: CircularProgressIndicator(strokeWidth: 2.4, color: FnColors.lime)))),
+                Positioned(bottom: -4, left: -4, child: Container(
+                  width: 28, height: 28,
+                  decoration: BoxDecoration(color: FnColors.surface, shape: BoxShape.circle, boxShadow: FnShadow.card),
+                  child: const Icon(Icons.photo_camera_outlined, size: 15, color: FnColors.deep),
+                )),
+              ]),
+            ),
+            const SizedBox(width: 12),
+            Expanded(child: GestureDetector(
+              onTap: upCover ? null : () async {
+                setSheet(() => upCover = true);
+                final u = await _pickAndUpload('cover');
+                setSheet(() { upCover = false; if (u != null) cover = u; });
+              },
+              child: Container(
+                height: 72,
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(color: FnColors.bgBase, borderRadius: BorderRadius.circular(18)),
+                child: Stack(fit: StackFit.expand, children: [
+                  if (cover != null) FnImage(url: cover, radius: 0),
+                  Center(child: upCover
+                      ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.4, color: FnColors.primary))
+                      : Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(color: FnColors.surface.withValues(alpha: .92), borderRadius: BorderRadius.circular(12)),
+                          child: Text(cover == null ? 'إضافة صورة الغلاف' : 'تغيير الغلاف', style: FnText.caption11.deep),
+                        )),
+                ]),
+              ),
+            )),
+          ]),
+          const SizedBox(height: 6),
+          Text('الشعار يظهر للعملاء في صفحة متجرك وبطاقته', style: FnText.caption11.faint),
           const SizedBox(height: 14),
           Text('اسم المتجر', style: FnText.label13.muted),
           const SizedBox(height: 6),
@@ -86,8 +154,8 @@ class _SettingsState extends ConsumerState<_Settings> {
               decoration: const InputDecoration(fillColor: FnColors.bgBase)),
           const SizedBox(height: 18),
           FnButton(label: 'حفظ', onPressed: () => Navigator.pop(ctx, true)),
-        ]),
-      ),
+        ])),
+      )),
     );
     if (saved != true || name.text.trim().isEmpty) return;
     await _update({
@@ -109,12 +177,11 @@ class _SettingsState extends ConsumerState<_Settings> {
             padding: const EdgeInsets.all(12),
             onTap: () => _editStore(n),
             child: Row(children: [
-              Container(width: 48, height: 48, decoration: BoxDecoration(color: FnColors.deep, borderRadius: BorderRadius.circular(16)),
-                  child: const Center(child: FnLogoMark(size: 30, color: FnColors.lime, gradient: false))),
+              StoreLogo(url: n.logoUrl, size: 48, radius: 16),
               const SizedBox(width: 12),
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(n.name, style: FnText.bodyStrong15),
-                Text('تعديل الاسم والوصف ورقم التواصل', style: FnText.caption11.muted),
+                Text('الشعار والغلاف والاسم والوصف', style: FnText.caption11.muted),
               ])),
               const Icon(Icons.edit_outlined, size: 18, color: FnColors.faint),
             ]),
@@ -150,6 +217,7 @@ class _SettingsState extends ConsumerState<_Settings> {
           ]),
           const SizedBox(height: 14),
           _Group(children: [
+            FnListRow(title: 'الدعم والمساعدة', icon: Icons.help_outline_rounded, onTap: () => context.push('/support')),
             FnListRow(
               title: 'تسجيل الخروج', titleStyle: FnText.bodyStrong15.clay, icon: Icons.logout_rounded, iconColor: FnColors.clay,
               trailing: const SizedBox.shrink(),

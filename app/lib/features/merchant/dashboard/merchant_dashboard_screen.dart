@@ -4,13 +4,14 @@ import 'package:go_router/go_router.dart';
 import '../../../core/router/shop_mode.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/utils/format.dart';
-import '../../../core/widgets/fn_logo.dart';
 import '../../../core/widgets/fn_widgets.dart';
+import '../../../core/widgets/store_logo.dart';
 import '../../../data/models/catalog.dart';
 import '../../../data/models/order.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../../customer/orders/my_orders_screen.dart' show statusColors;
+import '../orders/merchant_orders_screen.dart' show merchantOrdersTabRequest;
 
 final merchantStatsProvider = FutureProvider.family<Map<String, dynamic>, String>(
     (ref, nid) => ref.watch(orderRepoProvider).merchantStats(nid));
@@ -76,8 +77,7 @@ class _Dash extends ConsumerWidget {
           padding: EdgeInsets.fromLTRB(FnSpace.page, MediaQuery.paddingOf(context).top + 12, FnSpace.page, 24),
           children: [
             Row(children: [
-              Container(width: 46, height: 46, decoration: BoxDecoration(color: FnColors.deep, borderRadius: BorderRadius.circular(16)),
-                  child: const Center(child: FnLogoMark(size: 28, color: FnColors.lime, gradient: false))),
+              StoreLogo(url: n.logoUrl, size: 46, radius: 16),
               const SizedBox(width: 12),
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(n.name, style: FnText.heading18),
@@ -89,15 +89,23 @@ class _Dash extends ConsumerWidget {
             _OpenToggle(n: n),
             const SizedBox(height: 12),
             Row(children: [
-              _Kpi(Fmt.moneyShort((stats?['todaySales'] as num?) ?? 0), 'مبيعات اليوم', highlight: true),
+              _Kpi(Fmt.moneyShort((stats?['todaySales'] as num?) ?? 0), 'مبيعات اليوم', highlight: true,
+                  onTap: () => context.go('/m/wallet')),
               const SizedBox(width: 10),
-              _Kpi('${n.ratingAvg.toStringAsFixed(1)} ★', 'تقييم المتجر'),
+              _Kpi('${n.ratingAvg.toStringAsFixed(1)} ★', 'تقييم المتجر (${n.ratingCount})',
+                  onTap: () => context.push('/m/reviews')),
             ]),
             const SizedBox(height: 10),
             Row(children: [
-              _Kpi('${stats?['newCount'] ?? 0}', 'طلبات جديدة'),
+              _Kpi('${stats?['newCount'] ?? 0}', 'طلبات جديدة', onTap: () {
+                merchantOrdersTabRequest.value = 0;
+                context.go('/m/orders');
+              }),
               const SizedBox(width: 10),
-              _Kpi('${stats?['preparing'] ?? 0}', 'قيد التجهيز'),
+              _Kpi('${stats?['preparing'] ?? 0}', 'قيد التجهيز', onTap: () {
+                merchantOrdersTabRequest.value = 1;
+                context.go('/m/orders');
+              }),
             ]),
             const SizedBox(height: 12),
             Row(children: [
@@ -203,14 +211,17 @@ class _OpenToggleState extends ConsumerState<_OpenToggle> {
 }
 
 class _Kpi extends StatelessWidget {
-  const _Kpi(this.v, this.l, {this.highlight = false});
+  const _Kpi(this.v, this.l, {this.highlight = false, this.onTap});
   final String v, l;
   final bool highlight;
+  final VoidCallback? onTap;
   @override
   Widget build(BuildContext context) => Expanded(
-        child: Container(
+        child: FnCard(
+          onTap: onTap,
+          radius: 18,
           padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(color: highlight ? FnColors.soft : FnColors.surface, borderRadius: BorderRadius.circular(18)),
+          color: highlight ? FnColors.soft : FnColors.surface,
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(v, style: highlight ? FnText.heading18.deep : FnText.heading18),
             Text(l, style: FnText.caption11.muted),
