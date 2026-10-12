@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/location/location.dart';
+import '../../../core/location/location_picker.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/repositories/order_repo.dart';
@@ -21,21 +21,29 @@ class _AddressesScreenState extends ConsumerState<AddressesScreen> {
     if (widget.openAdd) WidgetsBinding.instance.addPostFrameCallback((_) => _add());
   }
 
+  /// الخريطة أولًا (العميل يحدّد نقطة التوصيل بنفسه) ثم التفاصيل معبّأة من الخريطة
   Future<void> _add() async {
+    final place = await pickLocation(context, title: tr('حدّد موقع التوصيل'));
+    if (place == null || !mounted) return;
     final label = TextEditingController(text: tr('المنزل'));
-    final line = TextEditingController();
-    final district = TextEditingController();
-    final city = TextEditingController(text: tr('الرياض'));
+    final line = TextEditingController(text: place.street ?? '');
+    final district = TextEditingController(text: place.district ?? '');
+    final city = TextEditingController(text: place.city ?? tr('الرياض'));
     final notes = TextEditingController();
+    bool saving = false;
     final saved = await showModalBottomSheet<bool>(
       context: context, isScrollControlled: true,
-      builder: (ctx) => Padding(
+      builder: (ctx) => StatefulBuilder(builder: (ctx, setSheet) => Padding(
         padding: EdgeInsets.fromLTRB(24, 20, 24, MediaQuery.viewInsetsOf(ctx).bottom + 24),
         child: SingleChildScrollView(
           child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(tr('عنوان جديد'), style: FnText.heading18),
             const SizedBox(height: 4),
-            Text(tr('سنستخدم موقعك الحالي لتحديد نقطة التوصيل'), style: FnText.caption11.muted),
+            Row(children: [
+              const Icon(Icons.place_rounded, size: 14, color: FnColors.primary),
+              const SizedBox(width: 6),
+              Expanded(child: Text(tr('تم تحديد الموقع على الخريطة'), style: FnText.caption11.muted)),
+            ]),
             const SizedBox(height: 14),
             for (final (c, h) in [(label, tr('اسم العنوان (المنزل، العمل)')), (line, tr('الشارع ورقم المبنى')), (district, tr('الحي')), (city, tr('المدينة')), (notes, tr('ملاحظات للمندوب (اختياري)'))])
               Padding(
@@ -43,17 +51,24 @@ class _AddressesScreenState extends ConsumerState<AddressesScreen> {
                 child: TextField(controller: c, decoration: InputDecoration(hintText: h, fillColor: FnColors.bgBase)),
               ),
             const SizedBox(height: 6),
-            FnButton(label: tr('حفظ العنوان'), onPressed: () async {
-              if (line.text.trim().isEmpty || city.text.trim().isEmpty) return;
-              final loc = await ref.read(currentLocationProvider.future);
-              await ref.read(orderRepoProvider).addAddress(
-                    label: label.text.trim(), line: line.text.trim(), district: district.text.trim(), city: city.text.trim(),
-                    notes: notes.text.trim(), lat: loc.lat, lng: loc.lng, isDefault: true);
-              if (ctx.mounted) Navigator.pop(ctx, true);
+            FnButton(label: tr('حفظ العنوان'), loading: saving, onPressed: () async {
+              if (city.text.trim().isEmpty) return;
+              setSheet(() => saving = true);
+              try {
+                await ref.read(orderRepoProvider).addAddress(
+                      label: label.text.trim().isEmpty ? tr('المنزل') : label.text.trim(),
+                      line: line.text.trim().isEmpty ? (place.summary.isEmpty ? tr('موقع محدد على الخريطة') : place.summary) : line.text.trim(),
+                      district: district.text.trim(), city: city.text.trim(),
+                      notes: notes.text.trim(), lat: place.lat, lng: place.lng, isDefault: true);
+                if (ctx.mounted) Navigator.pop(ctx, true);
+              } catch (e) {
+                setSheet(() => saving = false);
+                if (ctx.mounted) showFnSnack(ctx, fnErrorText(e), error: true);
+              }
             }),
           ]),
         ),
-      ),
+      )),
     );
     if (saved == true) ref.invalidate(addressesProvider);
   }
