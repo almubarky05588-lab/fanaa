@@ -42,6 +42,7 @@ class NotificationsScreen extends ConsumerWidget {
   IconData _icon(AppNotification n) => switch (n.kind) {
         'new_order' => Icons.shopping_bag_outlined,
         'order_cancelled' => Icons.cancel_outlined,
+        'order_received' => Icons.task_alt_rounded,
         'order_status' => Icons.local_shipping_outlined,
         _ => Icons.campaign_outlined,
       };

@@ -31,12 +31,13 @@ class AppNotification {
   /// النص حسب لغة التطبيق — إشعارات الطلبات تُبنى من نوعها، والإعلانات تظهر كما كتبها الأدمن
   String get displayTitle => switch (kind) {
         'new_order' => tr('طلب جديد'),
-        'order_cancelled' => tr('ألغى العميل الطلب'),
+        'order_cancelled' => tr('ألغت الإدارة الطلب'),
+        'order_received' => tr('العميل أكّد استلام الطلب'),
         'order_status' => orderStatusFrom(data['status'] as String? ?? '').labelAr,
         _ => title,
       };
   String get displayBody => switch (kind) {
-        'new_order' || 'order_cancelled' => tr('طلب #{0}', [data['order_number']]),
+        'new_order' || 'order_cancelled' || 'order_received' => tr('طلب #{0}', [data['order_number']]),
         'order_status' => tr('{0} • طلب #{1}', [data['nursery'] ?? '', data['order_number']]),
         _ => body ?? '',
       };

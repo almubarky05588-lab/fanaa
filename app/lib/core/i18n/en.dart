@@ -559,4 +559,8 @@ const Map<String, String> kEn = {
   'متجرك قيد المراجعة': 'Your store is under review',
   'جهّز منتجاتك الآن — يظهر متجرك للعملاء بعد موافقة الإدارة': 'Set up your products now — your store goes live once approved',
   'حسابك موقوف — تواصل مع الدعم': 'Your account is suspended — contact support',
+  'ألغت الإدارة الطلب': 'Order cancelled by admin',
+  'العميل أكّد استلام الطلب': 'Customer confirmed receipt',
+  'إلغاء الطلب يتم عن طريق الإدارة — تواصل مع الدعم': 'Orders can only be cancelled by admin — contact support',
+  'انتقال غير صالح': 'Invalid status change',
 };

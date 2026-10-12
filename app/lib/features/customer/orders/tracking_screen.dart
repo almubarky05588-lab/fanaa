@@ -118,18 +118,6 @@ class TrackingScreen extends ConsumerWidget {
                             if (context.mounted) showFnSnack(context, fnErrorText(e), error: true);
                           }
                         },
-                      )
-                    else if (o.status == OrderStatus.pending)
-                      FnGhostButton(
-                        label: tr('إلغاء الطلب'), textColor: FnColors.clay,
-                        onPressed: () async {
-                          try {
-                            await ref.read(orderRepoProvider).updateStatus(o.id, OrderStatus.cancelled, note: tr('ألغاه العميل'));
-                            ref.invalidate(myOrdersProvider);
-                          } catch (e) {
-                            if (context.mounted) showFnSnack(context, fnErrorText(e), error: true);
-                          }
-                        },
                       ),
                   ],
                 ),

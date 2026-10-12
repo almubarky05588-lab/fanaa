@@ -94,50 +94,70 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
 }
 
 /// حقل الجوال: شريحة [علم +966] على اليسار والرقم بجانبها مباشرة (LTR)
-class PhoneField extends StatelessWidget {
-  const PhoneField({super.key, required this.controller, this.onChanged, this.onSubmitted});
+class PhoneField extends StatefulWidget {
+  const PhoneField({super.key, required this.controller, this.onChanged, this.onSubmitted, this.autofocus = true});
   final TextEditingController controller;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
+  final bool autofocus;
+  @override
+  State<PhoneField> createState() => _PhoneFieldState();
+}
+
+class _PhoneFieldState extends State<PhoneField> {
+  final _focus = FocusNode();
 
   @override
-  Widget build(BuildContext context) => Container(
-        height: 58,
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(color: FnColors.surface, borderRadius: BorderRadius.circular(FnRadius.field)),
-        child: Directionality(
-          textDirection: TextDirection.ltr,
-          child: Row(children: [
-            Container(
-              height: 42,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(color: FnColors.bgBase, borderRadius: BorderRadius.circular(10)),
-              child: Row(children: [
-                ClipRRect(borderRadius: BorderRadius.circular(3),
-                    child: SvgPicture.asset('assets/brand/flag_sa.svg', width: 24, height: 16, fit: BoxFit.cover)),
-                const SizedBox(width: 8),
-                Text('+966', style: FnText.label13),
-              ]),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: TextField(
-                controller: controller,
-                onChanged: onChanged,
-                onSubmitted: onSubmitted,
-                keyboardType: TextInputType.phone,
-                textAlign: TextAlign.left,
-                style: FnText.body15,
-                inputFormatters: [const EnglishDigitsFormatter(), const SaudiMobileFormatter()],
-                decoration: InputDecoration(
-                  hintText: '5X XXX XXXX',
-                  hintStyle: FnText.body15.faint,
-                  filled: false, isDense: true, border: InputBorder.none, enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none, contentPadding: EdgeInsets.zero,
+  void dispose() {
+    _focus.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+        // الضغط في أي مكان من الصندوق يفتح الكيبورد
+        behavior: HitTestBehavior.opaque,
+        onTap: () => _focus.requestFocus(),
+        child: Container(
+          height: 58,
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(color: FnColors.surface, borderRadius: BorderRadius.circular(FnRadius.field)),
+          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: Row(children: [
+              Container(
+                height: 42,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(color: FnColors.bgBase, borderRadius: BorderRadius.circular(10)),
+                child: Row(children: [
+                  ClipRRect(borderRadius: BorderRadius.circular(3),
+                      child: SvgPicture.asset('assets/brand/flag_sa.svg', width: 24, height: 16, fit: BoxFit.cover)),
+                  const SizedBox(width: 8),
+                  Text('+966', style: FnText.label13),
+                ]),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: TextField(
+                  controller: widget.controller,
+                  focusNode: _focus,
+                  autofocus: widget.autofocus,
+                  onChanged: widget.onChanged,
+                  onSubmitted: widget.onSubmitted,
+                  keyboardType: TextInputType.phone,
+                  textAlign: TextAlign.left,
+                  style: FnText.body15,
+                  inputFormatters: const [EnglishDigitsFormatter(), SaudiMobileFormatter()],
+                  decoration: InputDecoration(
+                    hintText: '5X XXX XXXX',
+                    hintStyle: FnText.body15.faint,
+                    filled: false, isDense: true, border: InputBorder.none, enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none, contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
                 ),
               ),
-            ),
-          ]),
+            ]),
+          ),
         ),
       );
 }
@@ -177,6 +197,8 @@ class SaudiMobileFormatter extends TextInputFormatter {
     if (d.startsWith('966') && d.length > 9) d = d.substring(3);
     d = d.replaceFirst(RegExp(r'^0+'), '');
     if (d.length > 9) d = d.substring(0, 9);
+    // بدون تغيير فعلي: نرجّع القيمة كما هي (لا نلمس حالة الكتابة عند iOS)
+    if (d == newValue.text) return newValue;
     return TextEditingValue(text: d, selection: TextSelection.collapsed(offset: d.length));
   }
 }
