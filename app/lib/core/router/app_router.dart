@@ -25,6 +25,7 @@ import '../../features/customer/product/product_screen.dart';
 import '../../features/customer/shell/customer_shell.dart';
 import '../../features/customer/store/store_screen.dart';
 import '../../features/customer/stores/stores_screen.dart';
+import '../../features/merchant/coupons/merchant_coupons_screen.dart';
 import '../../features/merchant/dashboard/merchant_dashboard_screen.dart';
 import '../../features/merchant/orders/merchant_order_detail_screen.dart';
 import '../../features/merchant/orders/merchant_orders_screen.dart';
@@ -36,6 +37,7 @@ import '../../features/merchant/shell/merchant_shell.dart';
 import '../../features/merchant/wallet/merchant_wallet_screen.dart';
 import '../supabase/supabase_client.dart';
 import 'auth_redirect.dart';
+import 'shop_mode.dart';
 
 class _AuthNotifier extends ChangeNotifier {
   _AuthNotifier(Stream<dynamic> s) { _sub = s.listen((_) => notifyListeners()); }
@@ -57,7 +59,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     navigatorKey: _rootKey,
     initialLocation: '/splash',
-    refreshListenable: notifier,
+    refreshListenable: Listenable.merge([notifier, ShopMode.active]),
     redirect: (context, state) {
       final loggedIn = auth.currentSession != null;
       final loc = state.matchedLocation;
@@ -81,7 +83,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       if (p == null) return null;
       if (loc.startsWith('/invoice/')) return null; // مشتركة بين الطرفين
       final merchantArea = loc.startsWith('/m/');
-      if (p.isMerchant && !merchantArea) return '/m/dashboard';
+      // صاحب المتجر يدخل واجهة العميل فقط في وضع «تسوّق كعميل»
+      if (p.isMerchant && !merchantArea && !ShopMode.active.value) return '/m/dashboard';
       if (!p.isMerchant && merchantArea) return '/home';
       return null;
     },
@@ -136,6 +139,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       top('/m/order/:id', (s) => MerchantOrderDetailScreen(id: s.pathParameters['id']!)),
       top('/m/products/new', (_) => const AddProductScreen()),
+      top('/m/coupons', (_) => const MerchantCouponsScreen()),
     ],
   );
 });

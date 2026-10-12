@@ -5,7 +5,9 @@ import '../../../core/theme/tokens.dart';
 import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_logo.dart';
 import '../../../core/widgets/fn_widgets.dart';
+import '../../../data/models/coupon.dart';
 import '../../../data/models/order.dart';
+import '../../../data/repositories/coupon_repo.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../checkout/checkout_state.dart';
 
@@ -21,26 +23,64 @@ class CartScreen extends ConsumerStatefulWidget {
 class _CartScreenState extends ConsumerState<CartScreen> {
   final _coupon = TextEditingController();
   String? _selectedNursery;
+  CouponCheck? _applied;
+  bool _checking = false;
+
+  double _delivery(Cart c) {
+    final n = c.nursery!;
+    return (n.freeDeliveryOver != null && c.subtotal >= n.freeDeliveryOver!) ? 0.0 : n.deliveryFee;
+  }
+
+  /// الخصم الفعّال لهذه السلة فقط
+  double _discountFor(Cart c) => (_applied?.ok == true && _applied?.nurseryId == c.nurseryId) ? _applied!.discount : 0;
+
+  Future<void> _validate(Cart c, {bool silent = false}) async {
+    final code = _coupon.text.trim();
+    if (code.isEmpty) {
+      setState(() => _applied = null);
+      return;
+    }
+    setState(() => _checking = true);
+    try {
+      final r = await ref.read(couponRepoProvider).validate(nurseryId: c.nurseryId, code: code, subtotal: c.subtotal);
+      if (!mounted) return;
+      setState(() => _applied = r.ok ? r : null);
+      if (!silent || !r.ok) {
+        showFnSnack(context, r.ok ? '${r.message} — خصم ${Fmt.money(r.discount)}' : r.message, error: !r.ok);
+      }
+    } catch (e) {
+      if (mounted) showFnSnack(context, fnErrorText(e), error: true);
+    } finally {
+      if (mounted) setState(() => _checking = false);
+    }
+  }
 
   Future<void> _setQty(CartItem i, int q) async {
     await ref.read(orderRepoProvider).setQty(i.id, q);
     ref.invalidate(cartsProvider);
+    // إعادة حساب الخصم على المجموع الجديد
+    if (_applied != null) {
+      final list = await ref.read(cartsProvider.future);
+      final c = list.where((x) => x.nurseryId == _applied!.nurseryId).firstOrNull;
+      if (c != null && mounted) await _validate(c, silent: true);
+    }
   }
 
   Future<void> _clear(Cart c) async {
     await ref.read(orderRepoProvider).clearCart(c.id);
+    setState(() => _applied = null);
     ref.invalidate(cartsProvider);
   }
 
   void _checkout(Cart c) {
-    final n = c.nursery!;
-    final delivery = (n.freeDeliveryOver != null && c.subtotal >= n.freeDeliveryOver!) ? 0.0 : n.deliveryFee;
+    final discount = _discountFor(c);
     ref.read(checkoutDraftProvider.notifier).state = CheckoutDraft(
       nurseryId: c.nurseryId,
-      nurseryName: n.name,
+      nurseryName: c.nursery!.name,
       subtotal: c.subtotal,
-      delivery: delivery,
-      coupon: _coupon.text.trim().isEmpty ? null : _coupon.text.trim().toUpperCase(),
+      delivery: _delivery(c),
+      discount: discount,
+      coupon: discount > 0 ? _applied!.code : null,
     );
     context.push('/checkout/${c.nurseryId}');
   }
@@ -76,7 +116,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
             );
           }
           final n = c.nursery!;
-          final delivery = (n.freeDeliveryOver != null && c.subtotal >= n.freeDeliveryOver!) ? 0.0 : n.deliveryFee;
+          final delivery = _delivery(c);
+          final discount = _discountFor(c);
           return ListView(
             padding: const EdgeInsets.fromLTRB(FnSpace.page, 8, FnSpace.page, 24),
             children: [
@@ -113,26 +154,45 @@ class _CartScreenState extends ConsumerState<CartScreen> {
               ],
               Container(
                 padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 8, 8),
-                decoration: BoxDecoration(color: FnColors.surface, borderRadius: BorderRadius.circular(16)),
+                decoration: BoxDecoration(
+                  color: FnColors.surface,
+                  borderRadius: BorderRadius.circular(16),
+                  border: discount > 0 ? Border.all(color: FnColors.primary, width: 1.2) : null,
+                ),
                 child: Row(children: [
+                  if (discount > 0) ...[
+                    const Icon(Icons.check_circle_rounded, size: 18, color: FnColors.primary),
+                    const SizedBox(width: 8),
+                  ],
                   Expanded(
                     child: TextField(
                       controller: _coupon,
                       textCapitalization: TextCapitalization.characters,
+                      onChanged: (_) { if (_applied != null) setState(() => _applied = null); },
+                      onSubmitted: (_) => _validate(c),
                       decoration: InputDecoration(
                         hintText: 'أدخل كود الخصم', filled: false, isDense: true, contentPadding: EdgeInsets.zero,
                         border: InputBorder.none, enabledBorder: InputBorder.none, focusedBorder: InputBorder.none, hintStyle: FnText.body15.faint),
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                      if (_coupon.text.trim().isNotEmpty) showFnSnack(context, 'سيُطبّق الكوبون عند تأكيد الطلب');
-                    },
+                    onTap: _checking
+                        ? null
+                        : () {
+                            FocusScope.of(context).unfocus();
+                            if (discount > 0) {
+                              _coupon.clear();
+                              setState(() => _applied = null);
+                            } else {
+                              _validate(c);
+                            }
+                          },
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                      decoration: BoxDecoration(color: FnColors.soft, borderRadius: BorderRadius.circular(12)),
-                      child: Text('تطبيق', style: FnText.label13.deep),
+                      decoration: BoxDecoration(color: discount > 0 ? FnColors.bgBase : FnColors.soft, borderRadius: BorderRadius.circular(12)),
+                      child: _checking
+                          ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: FnColors.deep))
+                          : Text(discount > 0 ? 'إزالة' : 'تطبيق', style: discount > 0 ? FnText.label13.clay : FnText.label13.deep),
                     ),
                   ),
                 ]),
@@ -142,6 +202,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 child: Column(children: [
                   FnKV('مجموع المنتجات', Fmt.money(c.subtotal)),
                   FnKV('رسوم التوصيل', delivery == 0 ? 'مجاني' : Fmt.money(delivery)),
+                  if (discount > 0) FnKV('خصم الكوبون ${_applied!.code}', '− ${Fmt.money(discount)}', valueColor: FnColors.primary),
                   if (n.freeDeliveryOver != null && delivery > 0)
                     Padding(
                       padding: const EdgeInsets.only(top: 2, bottom: 4),
@@ -151,7 +212,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                       ),
                     ),
                   const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: FnDivider()),
-                  FnKV('الإجمالي', Fmt.money(c.subtotal + delivery), strong: true),
+                  FnKV('الإجمالي', Fmt.money((c.subtotal + delivery - discount).clamp(0, double.infinity)), strong: true),
                   Align(alignment: AlignmentDirectional.centerStart, child: Text('الأسعار شاملة ضريبة القيمة المضافة', style: FnText.caption11.faint)),
                 ]),
               ),
@@ -164,7 +225,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
         final c = list == null ? null : _current(list);
         if (c == null) return null;
         final n = c.nursery!;
-        final delivery = (n.freeDeliveryOver != null && c.subtotal >= n.freeDeliveryOver!) ? 0.0 : n.deliveryFee;
+        final total = (c.subtotal + _delivery(c) - _discountFor(c)).clamp(0, double.infinity);
         final belowMin = c.subtotal < n.minOrder;
         return FnBottomBar(
           child: Row(children: [
@@ -177,7 +238,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
             const SizedBox(width: 14),
             Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.end, children: [
               Text('الإجمالي', style: FnText.caption11.muted),
-              Text(Fmt.moneyShort(c.subtotal + delivery), style: FnText.heading18),
+              Text(Fmt.moneyShort(total), style: FnText.heading18),
             ]),
           ]),
         );

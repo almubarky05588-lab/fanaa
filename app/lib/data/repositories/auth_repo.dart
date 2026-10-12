@@ -7,8 +7,9 @@ import '../models/profile.dart';
 /// حسابات التجربة — تدخل بالرمز 123456 بدون SMS (للاختبار ومراجعة Apple).
 /// تُحذف قبل الإطلاق التجاري أو بعد ربط مزوّد SMS.
 const _demoAccounts = {
-  '+966500000001': 'demo.customer@fenaa.app',
-  '+966500000002': 'demo.merchant@fenaa.app',
+  '+966500000001': 'demo.customer@fenaa.app',   // عميل
+  '+966500000002': 'demo.merchant@fenaa.app',   // مشتل الروضة
+  '+966500000003': 'demo.merchant2@fenaa.app',  // مشتل الياسمين
 };
 
 class AuthRepo {
