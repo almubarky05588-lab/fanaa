@@ -8,6 +8,20 @@ LOG="${CI_LOG:-/tmp/ci.log}"
 REPO_URL="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 DIR=/tmp/ci-report
 
+# تحويلات الكود طُبّقت في هذا البناء؟ احفظ نتيجتها في main حتى يبقى المستودع مطابقًا لما بُني
+if [ -f /tmp/codemods_applied ] && [ -n "${GITHUB_WORKSPACE:-}" ]; then
+  (
+    cd "$GITHUB_WORKSPACE" || exit 0
+    git config user.name "fenaa-ci"; git config user.email "ci@fenaa.local"
+    mkdir -p app/tool/codemods/done
+    for f in app/tool/codemods/pending/*.py; do [ -f "$f" ] && git mv "$f" app/tool/codemods/done/; done
+    git add app/lib app/tool/codemods
+    git commit -q -m "chore: apply codemods from build #${GITHUB_RUN_NUMBER:-?}" &&
+      git pull -q --rebase --autostash origin main &&
+      git push -q origin HEAD:main && echo "✅ codemods committed to main"
+  ) || echo "⚠️ codemod commit failed"
+fi
+
 rm -rf "$DIR"
 if ! git clone -q --depth 1 --branch ci-report "$REPO_URL" "$DIR" 2>/dev/null; then
   mkdir -p "$DIR" && cd "$DIR" && git init -q && git checkout -q -b ci-report && git remote add origin "$REPO_URL"

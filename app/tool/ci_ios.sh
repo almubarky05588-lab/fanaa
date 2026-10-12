@@ -40,6 +40,14 @@ if [ ! -d ios/Runner ]; then
 fi
 ls ios
 
+step "تحويلات الكود (codemods)"
+if ls tool/codemods/pending/*.py >/dev/null 2>&1; then
+  for f in tool/codemods/pending/*.py; do echo "▶ $f"; python3 "$f" .; done
+  touch /tmp/codemods_applied
+else
+  echo "لا توجد تحويلات معلّقة"
+fi
+
 step "رقم البناء"
 export BUILD_NUMBER=$(( 100 + ${GITHUB_RUN_NUMBER:-1} ))
 sed -i '' -E "s/^version: (.*)\+.*/version: \1+$BUILD_NUMBER/" pubspec.yaml
