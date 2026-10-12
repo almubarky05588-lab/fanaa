@@ -39,6 +39,9 @@ dependencies:
   image_picker: ^1.1.2
   share_plus: ^10.1.2
 
+  # الدفع (صفحة ماي فاتورة داخل التطبيق)
+  webview_flutter: ^4.10.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
