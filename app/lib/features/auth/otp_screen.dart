@@ -52,12 +52,12 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
     if (_code.length < kOtpLength || _loading) return;
     setState(() => _loading = true);
     try {
-      await ref.read(authRepoProvider).verifyOtp(widget.phone, EnglishDigitsFormatter.convert(_code));
+      await ref.read(authRepoProvider).verifyOtp(widget.phone, EnglishDigitsFormatter.convert(_code), role: widget.role);
       ref.invalidate(profileProvider);
       // الموجّه ينقل المستخدم تلقائيًا للوجهة المحفوظة؛ هذا احتياط فقط
       if (mounted) context.go(AuthRedirect.take() ?? '/splash');
-    } catch (_) {
-      if (mounted) showFnSnack(context, tr('الرمز غير صحيح أو انتهت صلاحيته'), error: true);
+    } catch (e) {
+      if (mounted) showFnSnack(context, e is OtpException ? tr(e.message) : tr('الرمز غير صحيح أو انتهت صلاحيته'), error: true);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -68,8 +68,8 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
       await ref.read(authRepoProvider).sendOtp(widget.phone, role: widget.role);
       _startTimer();
       if (mounted) showFnSnack(context, tr('تم إرسال رمز جديد'));
-    } catch (_) {
-      if (mounted) showFnSnack(context, tr('تعذّر الإرسال'), error: true);
+    } catch (e) {
+      if (mounted) showFnSnack(context, e is OtpException ? tr(e.message) : tr('تعذّر الإرسال'), error: true);
     }
   }
 

@@ -563,4 +563,12 @@ const Map<String, String> kEn = {
   'العميل أكّد استلام الطلب': 'Customer confirmed receipt',
   'إلغاء الطلب يتم عن طريق الإدارة — تواصل مع الدعم': 'Orders can only be cancelled by admin — contact support',
   'انتقال غير صالح': 'Invalid status change',
+  'رقم الجوال غير صحيح': 'Invalid mobile number',
+  'خدمة الرسائل غير مهيّأة': 'SMS service is not configured',
+  'انتظر قليلًا قبل طلب رمز جديد': 'Please wait a moment before requesting a new code',
+  'تجاوزت عدد المحاولات، حاول بعد ساعة': 'Too many attempts — try again in an hour',
+  'تعذّر حفظ الرمز': 'Could not save the code',
+  'تعذّر إرسال الرسالة': 'Could not send the SMS',
+  'محاولات كثيرة — اطلب رمزًا جديدًا': 'Too many attempts — request a new code',
+  'تعذّر تسجيل الدخول، حاول مجددًا': 'Could not sign in — please try again',
 };

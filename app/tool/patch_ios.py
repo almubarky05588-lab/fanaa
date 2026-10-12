@@ -66,7 +66,7 @@ print("✅ project.pbxproj (iPhone only)")
 # ------------------------------------------------ Associated Domains
 ent = os.path.join(ROOT, "Runner", "Runner.entitlements")
 with open(ent, "wb") as f:
-    plistlib.dump({"com.apple.developer.associated-domains": [f"applinks:{LINK_HOST}"]}, f)
+    plistlib.dump({"com.apple.developer.associated-domains": [f"applinks:{LINK_HOST}", f"webcredentials:{LINK_HOST}"]}, f)
 p = os.path.join(ROOT, "Runner.xcodeproj", "project.pbxproj")
 s = open(p, encoding="utf-8").read()
 if "CODE_SIGN_ENTITLEMENTS" not in s:

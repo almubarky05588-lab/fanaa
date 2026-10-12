@@ -35,7 +35,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
       if (!mounted) return;
       context.push('/auth/otp', extra: {'phone': _phone.text, 'role': widget.role});
     } catch (e) {
-      if (mounted) showFnSnack(context, tr('تعذّر إرسال الرمز، تحقّق من الرقم'), error: true);
+      if (mounted) showFnSnack(context, e is OtpException ? tr(e.message) : tr('تعذّر إرسال الرمز، تحقّق من الرقم'), error: true);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
