@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../core/location/location_picker.dart';
 import '../../../core/router/shop_mode.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/utils/format.dart';
@@ -13,6 +14,7 @@ import '../../../data/repositories/auth_repo.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../../customer/account/account_screen.dart' show showLanguageSheet;
 import '../dashboard/merchant_dashboard_screen.dart';
+import '../setup/merchant_setup_screen.dart' show normalizeIban;
 import '../../../core/i18n/i18n.dart';
 
 /// 21 إعدادات المتجر
@@ -62,6 +64,50 @@ class _SettingsState extends ConsumerState<_Settings> {
     );
     if (v == null) return;
     await _update({field: v.isEmpty ? null : double.tryParse(v)});
+  }
+
+  Future<void> _editLocation(Nursery n) async {
+    final p = await pickLocation(context, title: tr('موقع المتجر'), lat: n.lat, lng: n.lng);
+    if (p == null) return;
+    await _update({'location': 'POINT(${p.lng} ${p.lat})', if (p.district != null) 'district': p.district});
+    if (mounted) showFnSnack(context, tr('تم تحديث موقع المتجر'));
+  }
+
+  Future<void> _editIban(Nursery n) async {
+    final repo = ref.read(catalogRepoProvider);
+    final current = await repo.iban(n.id);
+    if (!mounted) return;
+    final c = TextEditingController(text: current?.substring(2) ?? '');
+    final v = await showModalBottomSheet<String>(
+      context: context, isScrollControlled: true,
+      builder: (ctx) => Padding(
+        padding: EdgeInsets.fromLTRB(24, 20, 24, MediaQuery.viewInsetsOf(ctx).bottom + 24),
+        child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(tr('الآيبان (لتحويل أرباحك)'), style: FnText.heading18),
+          const SizedBox(height: 12),
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: TextField(controller: c, autofocus: true, keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(22)],
+                decoration: const InputDecoration(prefixText: 'SA  ', fillColor: FnColors.bgBase)),
+          ),
+          const SizedBox(height: 16),
+          FnButton(label: tr('حفظ'), onPressed: () => Navigator.pop(ctx, c.text.trim())),
+        ]),
+      ),
+    );
+    if (v == null) return;
+    final iban = normalizeIban(v);
+    if (iban == null) {
+      if (mounted) showFnSnack(context, tr('الآيبان غير صحيح — SA ثم 22 رقمًا'), error: true);
+      return;
+    }
+    try {
+      await repo.setIban(n.id, iban);
+      if (mounted) showFnSnack(context, tr('تم حفظ الآيبان'));
+    } catch (e) {
+      if (mounted) showFnSnack(context, fnErrorText(e), error: true);
+    }
   }
 
   /// يختار صورة ويرفعها ويحدّث المتجر — kind: logo | cover
@@ -193,12 +239,16 @@ class _SettingsState extends ConsumerState<_Settings> {
           _Group(children: [
             FnListRow(title: tr('الكوبونات والعروض'), subtitle: tr('أنشئ أكواد خصم لعملائك'), icon: Icons.local_offer_outlined,
                 onTap: () => context.push('/m/coupons')),
+            FnListRow(title: tr('الآيبان'), subtitle: tr('لتحويل أرباحك'), icon: Icons.account_balance_outlined,
+                onTap: () => _editIban(n)),
             FnListRow(title: tr('تسوّق كعميل'), subtitle: tr('تصفّح المتاجر الأخرى واشترِ منها'), icon: Icons.shopping_bag_outlined,
                 onTap: () => startShoppingAsCustomer(context)),
           ]),
           const SizedBox(height: 8),
           _label(tr('التوصيل والرسوم')),
           _Group(children: [
+            FnListRow(title: tr('موقع المتجر'), icon: Icons.place_outlined, value: n.district ?? tr('حدّد على الخريطة'),
+                onTap: () => _editLocation(n)),
             FnListRow(title: tr('نطاق التوصيل'), showChevron: false, value: Fmt.km(n.deliveryRadiusKm),
                 onTap: () => _editNumber(tr('نطاق التوصيل'), 'delivery_radius_km', n.deliveryRadiusKm, suffix: tr('كم'))),
             FnListRow(title: tr('رسوم التوصيل'), showChevron: false, value: Fmt.moneyShort(n.deliveryFee),

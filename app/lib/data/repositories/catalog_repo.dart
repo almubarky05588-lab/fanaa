@@ -6,7 +6,7 @@ import '../models/catalog.dart';
 
 const nurseryCols = 'id,name,slug,description,logo_url,cover_url,city,district,rating_avg,rating_count,'
     'delivery_fee,free_delivery_over,min_order,prep_time_min,is_open,on_vacation,owner_id,phone,tax_number,'
-    'delivery_radius_km,auto_accept';
+    'delivery_radius_km,auto_accept,lat,lng';
 
 const productCols = 'id,nursery_id,category_id,name,description,images,base_price,stock,care_light,care_water,'
     'care_temp,is_available,sold_count,product_variants(id,name,price,stock,is_active,sort)';
@@ -140,6 +140,12 @@ class CatalogRepo {
   }
 
   Future<void> updateNursery(String id, Map<String, dynamic> data) => _c.from('nurseries').update(data).eq('id', id);
+
+  /// الآيبان — جدول خاص لا يقرؤه إلا صاحب المتجر
+  Future<String?> iban(String nurseryId) async =>
+      (await _c.from('nursery_payout').select('iban').eq('nursery_id', nurseryId).maybeSingle())?['iban'] as String?;
+  Future<void> setIban(String nurseryId, String iban) =>
+      _c.from('nursery_payout').upsert({'nursery_id': nurseryId, 'iban': iban, 'updated_at': DateTime.now().toUtc().toIso8601String()});
 
   Future<List<Map<String, dynamic>>> workingHours(String nurseryId) async =>
       List<Map<String, dynamic>>.from(await _c.from('working_hours').select().eq('nursery_id', nurseryId).order('weekday'));
