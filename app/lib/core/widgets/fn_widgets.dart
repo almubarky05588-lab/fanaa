@@ -12,7 +12,8 @@ class FnBackButton extends StatelessWidget {
   Widget build(BuildContext context) => FnIconButton(
         size: size,
         onTap: onTap ?? () => context.canPop() ? context.pop() : context.go('/'),
-        child: const Icon(Icons.chevron_right_rounded, size: 24, color: FnColors.ink),
+        // chevron_left ينقلبه Flutter تلقائيًا في العربية فيشير لليمين ›
+        child: const Icon(Icons.chevron_left_rounded, size: 24, color: FnColors.ink),
       );
 }
 
@@ -241,10 +242,11 @@ class FnStepper extends StatelessWidget {
   }
 }
 
-/// صف قائمة: أيقونة + عنوان يمينًا، والقيمة ثم السهم في أقصى اليسار
+/// صف قائمة: أيقونة + عنوان يمينًا، والقيمة ثم السهم في أقصى اليسار.
+/// السهم يظهر فقط إذا كان الصف ينقل لشاشة أخرى (onTap + showChevron).
 class FnListRow extends StatelessWidget {
   const FnListRow({super.key, required this.title, this.subtitle, this.icon, this.value, this.trailing, this.onTap,
-      this.iconColor = FnColors.deep, this.titleStyle});
+      this.iconColor = FnColors.deep, this.titleStyle, this.showChevron = true});
   final String title;
   final String? subtitle;
   final IconData? icon;
@@ -253,6 +255,7 @@ class FnListRow extends StatelessWidget {
   final VoidCallback? onTap;
   final Color iconColor;
   final TextStyle? titleStyle;
+  final bool showChevron;
   @override
   Widget build(BuildContext context) => InkWell(
         onTap: onTap,
@@ -270,7 +273,10 @@ class FnListRow extends StatelessWidget {
               if (subtitle != null) Text(subtitle!, style: FnText.caption11.muted),
             ])),
             if (value != null) ...[Text(value!, style: FnText.caption11.muted), const SizedBox(width: 8)],
-            trailing ?? const Icon(Icons.chevron_left_rounded, size: 18, color: FnColors.faint),
+            trailing ??
+                (onTap != null && showChevron
+                    ? const Icon(Icons.chevron_right_rounded, size: 18, color: FnColors.faint) // ‹ في العربية
+                    : const SizedBox.shrink()),
           ]),
         ),
       );
