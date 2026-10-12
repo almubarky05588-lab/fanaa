@@ -1,0 +1,11 @@
+-- طُبّق عبر Supabase (0009_admin_controls): صلاحيات الأدمن، موافقة المتاجر، الحظر، عرض الأقسام، البنرات، الإشعارات.
+-- النص الكامل محفوظ في سجل المايقريشن في Supabase؛ هذا الملف يوثّق العناصر التي أضافها.
+--   is_admin()                       — دالة صلاحية الأدمن (role = admin)
+--   <table>_admin_all                — سياسة قراءة/تعديل كاملة للأدمن على كل الجداول
+--   nurseries.is_approved            — المتاجر الجديدة تنتظر موافقة الأدمن (الحالية معتمدة)
+--   t_orders_block_banned            — الحساب الموقوف / المتجر غير المعتمد لا يستقبل طلبات
+--   categories.display_mode/image_url/bg_color — أيقونة / صورة / نص
+--   banners                          — بنرات الرئيسية بالربط (stores/store/category/url/none) ومواعيد العرض
+--   t_orders_notify / notify_order() — إشعارات تلقائية: طلب جديد للتاجر، تغيّر الحالة للعميل، الإلغاء للتاجر
+--   admin_broadcast(role,title,body) — إشعار عام من الأدمن (all / customer / merchant)
+select 1;
