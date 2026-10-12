@@ -92,6 +92,32 @@ class TrackingScreen extends ConsumerWidget {
                     const SizedBox(height: 14),
                     if (o.status == OrderStatus.delivered)
                       FnButton(label: 'عرض الفاتورة', onPressed: () => context.push('/invoice/${o.id}'))
+                    else if (o.status == OrderStatus.outForDelivery)
+                      FnButton(
+                        label: 'استلمت طلبي',
+                        icon: const Icon(Icons.check_circle_outline_rounded, size: 18),
+                        onPressed: () async {
+                          final ok = await showDialog<bool>(
+                            context: context,
+                            builder: (d) => AlertDialog(
+                              title: Text('تأكيد الاستلام', style: FnText.heading18),
+                              content: Text('هل وصلك الطلب كاملًا؟', style: FnText.body15.muted),
+                              actions: [
+                                TextButton(onPressed: () => Navigator.pop(d, false), child: Text('ليس بعد', style: FnText.label13.muted)),
+                                TextButton(onPressed: () => Navigator.pop(d, true), child: Text('نعم، استلمته', style: FnText.label13.primary)),
+                              ],
+                            ),
+                          );
+                          if (ok != true) return;
+                          try {
+                            await ref.read(orderRepoProvider).updateStatus(o.id, OrderStatus.delivered);
+                            ref.invalidate(myOrdersProvider);
+                            if (context.mounted) showFnSnack(context, 'شكرًا لك! تم تأكيد استلام الطلب');
+                          } catch (e) {
+                            if (context.mounted) showFnSnack(context, fnErrorText(e), error: true);
+                          }
+                        },
+                      )
                     else if (o.status == OrderStatus.pending)
                       FnGhostButton(
                         label: 'إلغاء الطلب', textColor: FnColors.clay,

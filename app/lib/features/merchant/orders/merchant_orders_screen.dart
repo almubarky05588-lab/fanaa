@@ -19,6 +19,9 @@ class MerchantOrdersScreen extends ConsumerWidget {
 
 enum _Tab { pending, preparing, ready, done }
 
+/// تطلبه بطاقات لوحة التاجر لفتح تبويب معيّن: 0 جديدة، 1 قيد التجهيز، 2 جاهزة، 3 مكتملة
+final merchantOrdersTabRequest = ValueNotifier<int?>(null);
+
 class _Orders extends ConsumerStatefulWidget {
   const _Orders({required this.n});
   final Nursery n;
@@ -30,9 +33,22 @@ class _OrdersState extends ConsumerState<_Orders> {
   _Tab _tab = _Tab.pending;
   StreamSubscription? _sub;
 
+  void _applyTabRequest() {
+    final i = merchantOrdersTabRequest.value;
+    if (i == null) return;
+    merchantOrdersTabRequest.value = null;
+    if (mounted) setState(() => _tab = _Tab.values[i]);
+  }
+
   @override
   void initState() {
     super.initState();
+    final i = merchantOrdersTabRequest.value;
+    if (i != null) {
+      _tab = _Tab.values[i];
+      merchantOrdersTabRequest.value = null;
+    }
+    merchantOrdersTabRequest.addListener(_applyTabRequest);
     // تحديث فوري عند وصول طلب جديد أو تغيّر الحالة
     _sub = ref.read(orderRepoProvider).watchMerchantOrders(widget.n.id).listen((_) {
       ref.invalidate(merchantOrdersProvider(widget.n.id));
@@ -41,7 +57,11 @@ class _OrdersState extends ConsumerState<_Orders> {
   }
 
   @override
-  void dispose() { _sub?.cancel(); super.dispose(); }
+  void dispose() {
+    merchantOrdersTabRequest.removeListener(_applyTabRequest);
+    _sub?.cancel();
+    super.dispose();
+  }
 
   bool _inTab(Order o) => switch (_tab) {
         _Tab.pending => o.status == OrderStatus.pending,
