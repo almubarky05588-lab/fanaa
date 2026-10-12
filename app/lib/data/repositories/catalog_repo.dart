@@ -73,6 +73,41 @@ class CatalogRepo {
     }
   }
 
+  // ---- المتاجر المفضلة
+  Future<Set<String>> favoriteNurseryIds() async {
+    if (_c.auth.currentUser == null) return {};
+    final rows = await _c.from('favorite_nurseries').select('nursery_id');
+    return rows.map((e) => e['nursery_id'] as String).toSet();
+  }
+
+  Future<void> toggleFavoriteNursery(String nurseryId, bool fav) async {
+    final uid = _c.auth.currentUser!.id;
+    if (fav) {
+      await _c.from('favorite_nurseries').upsert({'user_id': uid, 'nursery_id': nurseryId});
+    } else {
+      await _c.from('favorite_nurseries').delete().match({'user_id': uid, 'nursery_id': nurseryId});
+    }
+  }
+
+  Future<List<Product>> favoriteProducts() async {
+    if (_c.auth.currentUser == null) return [];
+    final rows = await _c.from('favorites')
+        .select('products($productCols,categories(name_ar),nurseries(id,name,slug))')
+        .order('created_at', ascending: false);
+    return rows.where((e) => e['products'] != null).map((e) => Product.fromJson(Map<String, dynamic>.from(e['products']))).toList();
+  }
+
+  Future<List<Nursery>> favoriteNurseries() async {
+    if (_c.auth.currentUser == null) return [];
+    final rows = await _c.from('favorite_nurseries').select('nurseries($nurseryCols)').order('created_at', ascending: false);
+    return rows.where((e) => e['nurseries'] != null).map((e) => Nursery.fromJson(Map<String, dynamic>.from(e['nurseries']))).toList();
+  }
+
+  /// تقييمات متجر — للتاجر
+  Future<List<Map<String, dynamic>>> nurseryReviews(String nurseryId) async => List<Map<String, dynamic>>.from(
+      await _c.from('reviews').select('id,rating,comment,created_at,profiles(full_name)')
+          .eq('nursery_id', nurseryId).order('created_at', ascending: false).limit(100));
+
   // ---- التاجر
   Future<List<Product>> merchantProducts(String nurseryId) async {
     final rows = await _c.from('products').select('$productCols,categories(name_ar)')
@@ -96,6 +131,14 @@ class CatalogRepo {
     return _c.storage.from('products').getPublicUrl(key);
   }
 
+  /// شعار/غلاف المتجر — مسار يبدأ بمعرّف المتجر (تسمح به سياسة التخزين للمالك فقط)
+  Future<String> uploadNurseryImage(String nurseryId, String kind, Uint8List bytes) async {
+    final key = '$nurseryId/${kind}_${DateTime.now().millisecondsSinceEpoch}.jpg';
+    await _c.storage.from('nurseries').uploadBinary(key, bytes,
+        fileOptions: const FileOptions(upsert: true, contentType: 'image/jpeg'));
+    return _c.storage.from('nurseries').getPublicUrl(key);
+  }
+
   Future<void> updateNursery(String id, Map<String, dynamic> data) => _c.from('nurseries').update(data).eq('id', id);
 
   Future<List<Map<String, dynamic>>> workingHours(String nurseryId) async =>
@@ -112,3 +155,8 @@ final productProvider = FutureProvider.family<Product?, String>((ref, id) => ref
 final nurseryProductsProvider =
     FutureProvider.family<List<Product>, String>((ref, id) => ref.watch(catalogRepoProvider).products(nurseryId: id, limit: 100));
 final popularProductsProvider = FutureProvider((ref) => ref.watch(catalogRepoProvider).products(limit: 10));
+final favoriteNurseryIdsProvider = FutureProvider((ref) => ref.watch(catalogRepoProvider).favoriteNurseryIds());
+final favoriteProductsProvider = FutureProvider((ref) => ref.watch(catalogRepoProvider).favoriteProducts());
+final favoriteNurseriesProvider = FutureProvider((ref) => ref.watch(catalogRepoProvider).favoriteNurseries());
+final nurseryReviewsProvider =
+    FutureProvider.family<List<Map<String, dynamic>>, String>((ref, id) => ref.watch(catalogRepoProvider).nurseryReviews(id));

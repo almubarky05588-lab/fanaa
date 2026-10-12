@@ -39,6 +39,21 @@ class CouponRepo {
 
   Future<void> delete(String code) => _c.from('coupons').delete().eq('code', code);
 
+  /// الكوبونات التي استخدمها العميل في طلباته
+  Future<List<Map<String, dynamic>>> myRedemptions() async {
+    if (_c.auth.currentUser == null) return [];
+    final rows = List<Map<String, dynamic>>.from(await _c.from('coupon_redemptions')
+        .select('code,created_at,order_id,coupons(type,value,nurseries(name))')
+        .order('created_at', ascending: false));
+    // قيمة الخصم ورقم الطلب من جدول الطلبات
+    final ids = rows.map((r) => r['order_id']).whereType<String>().toList();
+    final orders = ids.isEmpty
+        ? const <Map<String, dynamic>>[]
+        : List<Map<String, dynamic>>.from(await _c.from('orders').select('id,order_number,discount').inFilter('id', ids));
+    final byId = {for (final o in orders) o['id'] as String: o};
+    return [for (final r in rows) {...r, 'order': byId[r['order_id']]}];
+  }
+
   Future<CouponCheck> validate({required String nurseryId, required String code, required double subtotal}) async {
     final r = await _c.rpc('validate_coupon', params: {'p_nursery_id': nurseryId, 'p_code': code, 'p_subtotal': subtotal});
     return CouponCheck.fromJson(Map<String, dynamic>.from(r as Map), nurseryId);
@@ -46,5 +61,6 @@ class CouponRepo {
 }
 
 final couponRepoProvider = Provider((ref) => CouponRepo(ref.watch(supabaseProvider)));
+final myRedemptionsProvider = FutureProvider((ref) => ref.watch(couponRepoProvider).myRedemptions());
 final merchantCouponsProvider =
     FutureProvider.family<List<Coupon>, String>((ref, nid) => ref.watch(couponRepoProvider).list(nid));

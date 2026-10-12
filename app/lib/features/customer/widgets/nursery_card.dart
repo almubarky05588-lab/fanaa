@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_widgets.dart';
+import '../../../core/widgets/store_logo.dart';
 import '../../../data/models/catalog.dart';
 
 /// بطاقة المتجر الأفقية في الرئيسية (غلاف + اسم + تقييم)
@@ -19,8 +20,12 @@ class NurseryTileCard extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Stack(children: [
-              FnImage(url: n.coverUrl, height: 96, width: width, radius: 0,
-                  bg: FnColors.primary, markColor: Colors.white.withValues(alpha: .55), markFactor: .45),
+              if (n.coverUrl == null && n.logoUrl != null)
+                Container(height: 96, width: width, color: FnColors.soft,
+                    alignment: Alignment.center, child: StoreLogo(url: n.logoUrl, size: 60))
+              else
+                FnImage(url: n.coverUrl, height: 96, width: width, radius: 0,
+                    bg: FnColors.primary, markColor: Colors.white.withValues(alpha: .55), markFactor: .45),
               if (n.isOpen)
                 const Positioned(top: 8, left: 8, child: FnBadge('مفتوح', bg: FnColors.surface)),
             ]),
@@ -53,7 +58,7 @@ class NurseryRowCard extends StatelessWidget {
         onTap: () => context.push('/store/${n.id}'),
         padding: const EdgeInsets.all(12),
         child: Row(children: [
-          FnImage(url: n.logoUrl ?? n.coverUrl, size: 76, radius: 18, bg: FnColors.soft),
+          StoreLogo(url: n.logoUrl ?? n.coverUrl, size: 76, radius: 18),
           const SizedBox(width: 12),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [

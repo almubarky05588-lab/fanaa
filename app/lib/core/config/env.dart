@@ -15,6 +15,11 @@ abstract final class Env {
   /// وهنا فقط لاستدعاءات Places/Geocoding إن وُجدت.
   static const mapsKey = String.fromEnvironment('MAPS_KEY', defaultValue: '');
 
+  // بيانات الدعم — تُحدَّث ببيانات العميل الفعلية قبل الإطلاق
+  static const supportWhatsapp = '966500000000';
+  static const supportPhone = '0500000000';
+  static const supportEmail = 'support@fenaa.sa';
+
   static const appName = 'فناء';
   static const vatRate = 0.15;
   static const currency = 'ر.س';

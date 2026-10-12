@@ -48,8 +48,6 @@ class _BackToStoreBar extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(child: Text('أنت تتسوّق كعميل', style: FnText.label13.onDark)),
               Text('العودة لمتجري', style: FnText.label13.lime),
-              const SizedBox(width: 4),
-              const Icon(Icons.arrow_back_rounded, size: 16, color: FnColors.lime),
             ]),
           ),
         ),

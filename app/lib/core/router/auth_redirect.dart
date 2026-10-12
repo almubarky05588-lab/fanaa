@@ -24,4 +24,6 @@ bool customerRouteNeedsAuth(String loc) =>
     loc.startsWith('/order/') ||
     loc.startsWith('/invoice/') ||
     loc == '/account' ||
-    loc == '/addresses';
+    loc == '/addresses' ||
+    loc == '/favorites' ||
+    loc == '/my-coupons';
