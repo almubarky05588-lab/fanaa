@@ -131,8 +131,8 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
         _Group(children: [
           FnListRow(title: 'طلباتي', icon: Icons.shopping_bag_outlined, value: '${orders.length}', onTap: () => context.go('/orders')),
           FnListRow(title: 'العناوين المحفوظة', icon: Icons.location_on_outlined, value: '${addrs.length}', onTap: () => context.push('/addresses')),
-          FnListRow(title: 'طرق الدفع', icon: Icons.credit_card_rounded, onTap: () => showFnSnack(context, 'تُحفظ البطاقات عند أول دفع')),
-          FnListRow(title: 'المفضلة', icon: Icons.favorite_border_rounded, value: '${favs.length}', onTap: () {}),
+          FnListRow(title: 'طرق الدفع', icon: Icons.credit_card_rounded, showChevron: false, onTap: () => showFnSnack(context, 'تُحفظ البطاقات عند أول دفع')),
+          FnListRow(title: 'المفضلة', icon: Icons.favorite_border_rounded, value: '${favs.length}'),
         ]),
         const SizedBox(height: 10),
         _Group(children: [

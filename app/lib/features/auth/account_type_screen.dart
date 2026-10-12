@@ -62,7 +62,8 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
                     onTap: () => setState(() => _role = UserRole.merchant),
                   ),
                   const Spacer(),
-                  FnButton(label: 'تأكيد', icon: const Icon(Icons.arrow_back_rounded, size: 18), onPressed: _confirm),
+                  // arrow_forward ينقلبه Flutter في العربية فيشير لليسار ← (للأمام)
+                  FnButton(label: 'تأكيد', icon: const Icon(Icons.arrow_forward_rounded, size: 18), onPressed: _confirm),
                   const SizedBox(height: 14),
                   const Center(child: LangPill()),
                 ],
