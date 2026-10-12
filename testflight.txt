@@ -1,61 +1,17 @@
 status: failure
-run: 3 (38231029347)
-commit: 1f5c535901b6d2ef61bcdbad4a57ee148969bc5e
-Mon Oct 12 09:38:55 UTC 2026
+run: 4 (38231438710)
+commit: 14270f4bfef771faa0bb392799bf96feb808b5a0
+Mon Oct 12 09:44:56 UTC 2026
 
 ==================== الأخطاء المباشرة ====================
+187:[!] The platform of the target `Runner` (iOS 14.0) may not be compatible with `Flutter (1.0.0)` which has a minimum requirement of iOS 15.0.
+189:[!] The platform of the target `Runner` (iOS 14.0) may not be compatible with `Google-Maps-iOS-Utils (6.1.0)` which has a minimum requirement of iOS 15.0.
+191:[!] The platform of the target `Runner` (iOS 14.0) may not be compatible with `GoogleMaps (9.4.0)` which has a minimum requirement of iOS 15.0.
+193:[!] CocoaPods did not set the base configuration of your project because your project already has a custom config set. In order for CocoaPods integration to work at all, please either set the base configurations of the target `Runner` to `Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig` or include the `Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig` in your build configuration (`Flutter/Release.xcconfig`).
+365:[09:44:54]: Could not find App ID with bundle identifier 'sa.almubarky.fenaa'
+450:[!] Couldn't find bundle identifier 'sa.almubarky.fenaa' for the user ''[0m
 
 ==================== آخر السجل ====================
-
-==================== Xcode ====================
-Xcode 26.6
-Build version 17F113
-
-==================== الأسرار ====================
-✅ MATCH_GIT_TOKEN
-✅ MATCH_PASSWORD
-✅ APP_STORE_CONNECT_KEY_ID
-✅ APP_STORE_CONNECT_ISSUER_ID
-✅ APP_STORE_CONNECT_KEY
-share-certs: 200
-
-==================== Flutter ====================
-Flutter 3.47.7 • channel stable • https://github.com/flutter/flutter.git
-Framework • revision abaf9c5237 (4 days ago) • 2026-10-08 09:51:21 -0700
-Engine • hash d8a2d6c768c334d53e16277f837970ffa1e2de81 (revision deb287481e) (4 days ago) • 2026-10-07 17:09:12.000Z
-Tools • Dart 3.13.5 • DevTools 2.60.0
-
-==================== مشروع iOS ====================
-Recreating project ....
-  ios/Runner.xcworkspace/contents.xcworkspacedata (created)
-  ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist (created)
-  ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings (created)
-  ios/RunnerTests/RunnerTests.swift (created)
-  ios/Runner/Info.plist (created)
-  ios/Runner/Runner-Bridging-Header.h (created)
-  ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png (created)
-  ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md (created)
-  ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json (created)
-  ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png (created)
-  ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png (created)
-  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png (created)
-  ios/Runner/Base.lproj/LaunchScreen.storyboard (created)
-  ios/Runner/Base.lproj/Main.storyboard (created)
   ios/Runner/AppDelegate.swift (created)
   ios/Runner/SceneDelegate.swift (created)
   ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata (created)
@@ -76,12 +32,385 @@ Recreating project ....
   .idea/workspace.xml (created)
   test/widget_test.dart (created)
 Resolving dependencies...
-Because fenaa depends on flutter_localizations from sdk which depends on intl ^0.20.3, intl ^0.20.3 is required.
-So, because fenaa depends on intl ^0.19.0, version solving failed.
+Downloading packages...
+Got dependencies.
+Upgrading analysis_options.yaml to exclude build and platform directories.
+Wrote 48 files.
+
+All done!
+You can find general documentation for Flutter at: https://docs.flutter.dev/
+Detailed API documentation is available at: https://api.flutter.dev/
+If you prefer video documentation, consider: https://www.youtube.com/c/flutterdev
+
+In order to run your application, type:
+
+  $ flutter run
+
+Your application code is in ./lib/main.dart.
+
+Flutter
+Podfile
+Runner
+Runner.xcodeproj
+Runner.xcworkspace
+RunnerTests
+
+==================== رقم البناء ====================
+version: 0.1.0+104
+
+==================== الأيقونة والحزم ====================
+✅ icons written to assets/brand
+Resolving dependencies...
+Downloading packages...
+  cached_network_image 3.4.1 (4.0.4 available)
+  cached_network_image_platform_interface 4.1.1 (5.0.3 available)
+  cached_network_image_web 1.3.1 (2.0.3 available)
+  cli_util 0.4.2 (0.6.0 available)
+  code_assets 1.2.1 (2.1.0 available)
+  cross_file 0.3.5+5 (0.4.0 available)
+  flutter_lints 5.0.0 (6.0.0 available)
+  flutter_riverpod 2.6.1 (3.4.3 available)
+  geolocator 13.0.4 (14.1.1 available)
+  geolocator_android 4.6.2 (5.1.1+1 available)
+  go_router 14.8.1 (18.0.2 available)
+  google_fonts 6.3.3 (9.0.0 available)
+  hooks 2.0.2 (2.2.0 available)
+  lints 5.1.1 (6.1.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  objective_c 9.5.0 (9.6.2 available)
+  petitparser 7.0.2 (7.1.0 available)
+  pin_code_fields 8.0.1 (10.1.1 available)
+  qr 3.0.2 (4.0.0 available)
+  record_use 0.6.0 (1.1.1 available)
+  riverpod 2.6.1 (3.4.3 available)
+  share_plus 10.1.4 (13.3.1 available)
+  share_plus_platform_interface 5.0.2 (7.2.0 available)
+  shimmer 3.0.0 (4.0.0 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.0 (2.4.3 available)
+  win32 5.15.0 (6.4.0 available)
+  xml 7.0.1 (7.1.0 available)
+Got dependencies!
+29 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+  ════════════════════════════════════════════
+     FLUTTER LAUNCHER ICONS (v0.14.4)                               
+  ════════════════════════════════════════════
+  
+• Overwriting default iOS launcher icon with new icon
+No platform provided
+
+✓ Successfully generated launcher icons
+
+==================== تحليل الكود ====================
+Analyzing app...                                                
+
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/auth/account_type_screen.dart:95:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/auth/account_type_screen.dart:95:53 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/account/account_screen.dart:79:13 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/account/account_screen.dart:80:13 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/account/account_screen.dart:141:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/account/account_screen.dart:142:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/home/home_screen.dart:108:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/home/home_screen.dart:109:20 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/home/home_screen.dart:129:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/home/home_screen.dart:130:20 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/orders/invoice_screen.dart:47:19 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/payment/payment_success_screen.dart:35:29 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/payment/payment_success_screen.dart:50:19 • prefer_const_constructors
+   info • The import of 'dart:typed_data' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/services.dart'. Try removing the import directive • lib/features/merchant/products/add_product_screen.dart:1:8 • unnecessary_import
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre. Try replacing the use of the deprecated member with the replacement • lib/features/merchant/products/add_product_screen.dart:133:13 • deprecated_member_use
+   info • 'anonKey' is deprecated and shouldn't be used. Use publishableKey instead. anonKey will be removed in a future major version. Try replacing the use of the deprecated member with the replacement • lib/main.dart:18:51 • deprecated_member_use
+
+16 issues found. (ran in 19.4s)
+
+==================== تهيئة iOS ====================
+Warning: Building for device with codesigning disabled. You will have to manually codesign before deploying to device.
+Building sa.almubarky.fenaa for device (ios-release)...
+The following plugins do not support Swift Package Manager for ios:
+  - google_maps_flutter_ios
+This will become an error in a future version of Flutter. Please contact the plugin maintainers to request Swift Package Manager adoption.
+Running pod install...                                              7.7s
+
+==================== الأذونات والخرائط ====================
+✅ Info.plist
+✅ AppDelegate.swift
+✅ Podfile
+✅ project.pbxproj
+
+==================== Pods ====================
+Updating local specs repositories
+Analyzing dependencies
+Downloading dependencies
+Installing GoogleMaps 9.4.0
+Generating Pods project
+Integrating client project
+Pod installation complete! There are 2 dependencies from the Podfile and 4 total pods installed.
+
+[!] The platform of the target `Runner` (iOS 14.0) may not be compatible with `Flutter (1.0.0)` which has a minimum requirement of iOS 15.0.
+
+[!] The platform of the target `Runner` (iOS 14.0) may not be compatible with `Google-Maps-iOS-Utils (6.1.0)` which has a minimum requirement of iOS 15.0.
+
+[!] The platform of the target `Runner` (iOS 14.0) may not be compatible with `GoogleMaps (9.4.0)` which has a minimum requirement of iOS 15.0.
+
+[!] CocoaPods did not set the base configuration of your project because your project already has a custom config set. In order for CocoaPods integration to work at all, please either set the base configurations of the target `Runner` to `Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig` or include the `Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig` in your build configuration (`Flutter/Release.xcconfig`).
+
+==================== fastlane ====================
+Successfully installed rouge-3.28.0
+Successfully installed xcpretty-0.4.1
+Successfully installed xcpretty-travis-formatter-1.0.1
+Building native extensions. This could take a while...
+Successfully installed nkf-0.3.0
+Successfully installed nanaimo-0.4.0
+Successfully installed colored2-3.1.2
+Successfully installed claide-1.1.0
+Successfully installed CFPropertyList-3.0.8
+Successfully installed atomos-0.1.3
+Successfully installed xcodeproj-1.28.1
+Successfully installed word_wrap-1.0.0
+Successfully installed tty-cursor-0.7.1
+Successfully installed tty-spinner-0.9.3
+Successfully installed tty-screen-0.8.2
+Successfully installed unicode-emoji-4.3.0
+Successfully installed unicode-display_width-3.3.0
+Successfully installed terminal-table-4.0.0
+Successfully installed terminal-notifier-3.1.0
+Successfully installed naturally-2.3.0
+Successfully installed simctl-1.6.10
+Successfully installed security-0.3.0
+Successfully installed rubyzip-3.7.0
+Successfully installed plist-3.7.2
+Successfully installed mutex_m-0.3.0
+Successfully installed multipart-post-2.4.1
+Successfully installed multi_json-1.21.2
+Successfully installed mini_magick-4.13.2
+Successfully installed jwt-3.3.0
+Successfully installed highline-2.0.3
+Successfully installed mini_mime-1.1.5
+Successfully installed google-cloud-errors-1.7.0
+Successfully installed net-protocol-0.4.0
+Successfully installed net-http-0.10.0
+Successfully installed faraday-net_http-3.4.4
+Successfully installed faraday-2.14.4
+Successfully installed google-cloud-env-2.4.1
+Successfully installed google-cloud-core-1.9.0
+Successfully installed public_suffix-7.0.5
+Successfully installed addressable-2.9.0
+Successfully installed signet-0.22.0
+Successfully installed os-1.1.4
+Successfully installed google-logging-utils-0.2.0
+Successfully installed googleauth-1.17.4
+Successfully installed retriable-4.2.0
+Successfully installed uber-0.1.0
+Successfully installed trailblazer-option-0.1.2
+Successfully installed declarative-0.0.20
+Successfully installed representable-3.3.1
+Successfully installed faraday-follow_redirects-0.5.0
+Successfully installed google-apis-core-1.3.0
+Successfully installed google-apis-storage_v1-0.69.0
+Successfully installed google-apis-iamcredentials_v1-0.28.0
+Building native extensions. This could take a while...
+Successfully installed digest-crc-0.7.0
+Successfully installed google-cloud-storage-1.62.1
+Successfully installed google-apis-playcustomapp_v1-0.18.0
+Successfully installed google-apis-androidpublisher_v3-0.109.0
+Successfully installed gh_inspector-1.1.3
+Successfully installed fastlane-sirp-1.1.0
+Successfully installed fastimage-2.4.1
+Successfully installed faraday-retry-2.4.0
+Successfully installed faraday-multipart-1.2.0
+Successfully installed domain_name-0.6.20260921
+Successfully installed http-cookie-1.1.6
+Successfully installed faraday-cookie_jar-0.0.8
+Successfully installed excon-1.7.2
+Successfully installed emoji_regex-3.2.3
+Successfully installed dotenv-2.8.1
+Successfully installed csv-3.3.6
+Successfully installed commander-4.6.0
+Successfully installed colored-1.2
+Successfully installed babosa-1.0.4
+Successfully installed aws-eventstream-1.4.0
+Successfully installed aws-sigv4-1.12.1
+Successfully installed jmespath-1.6.2
+Successfully installed aws-partitions-1.1293.0
+Successfully installed aws-sdk-core-3.257.0
+Successfully installed aws-sdk-kms-1.132.0
+Successfully installed aws-sdk-s3-1.233.2
+Successfully installed artifactory-3.0.17
+Successfully installed fastlane-2.241.0
+80 gems installed
+[09:44:51]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[09:44:51]: fastlane 2.241.0 (Ruby 3.3.12, gem)
+[09:44:53]: Sending anonymous analytics information
+[09:44:53]: Learn more at https://docs.fastlane.tools/#metrics
+[09:44:53]: No personal or sensitive data is sent.
+[09:44:53]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[09:44:53]: [32m------------------------------[0m
+[09:44:53]: [32m--- Step: default_platform ---[0m
+[09:44:53]: [32m------------------------------[0m
+[09:44:53]: [32mDriving the lane 'ios beta' 🚀[0m
+[09:44:53]: [32m----------------------[0m
+[09:44:53]: [32m--- Step: setup_ci ---[0m
+[09:44:53]: [32m----------------------[0m
+[09:44:53]: Creating temporary keychain: "fastlane_tmp_keychain".
+[09:44:53]: [36m$ security list-keychains -d user[0m
+[09:44:53]: ▸ [35m"/Users/runner/Library/Keychains/fastlane_tmp_keychain-db"[0m
+[09:44:53]: [33mFound keychain '/Users/runner/Library/Keychains/fastlane_tmp_keychain-db' in list-keychains, adding to search list skipped[0m
+[09:44:53]: Enabling match readonly mode.
+[09:44:53]: [32m---------------------------------------[0m
+[09:44:53]: [32m--- Step: app_store_connect_api_key ---[0m
+[09:44:53]: [32m---------------------------------------[0m
+[09:44:53]: [32m-------------------[0m
+[09:44:53]: [32m--- Step: match ---[0m
+[09:44:53]: [32m-------------------[0m
+[09:44:53]: [32mSuccessfully loaded '/Users/runner/work/fanaa/fanaa/app/ios/fastlane/Matchfile' 📄[0m
+
++--------------------------------------------------------------------+
+|            Detected Values from './fastlane/Matchfile'             |
++----------------+---------------------------------------------------+
+| git_url        | https://github.com/almubarky05588-lab/share-certs |
+| storage_mode   | git                                               |
+| git_branch     | fenaa                                             |
+| type           | appstore                                          |
+| app_identifier | ["sa.almubarky.fenaa"]                            |
+| team_id        | 5V6TC85KRL                                        |
+| readonly       | false                                             |
++----------------+---------------------------------------------------+
 
 
-You can try the following suggestion to make the pubspec resolve:
-* Try upgrading your constraint on intl: flutter pub add intl:^0.20.3
-Failed to update packages.
++--------------------------------------------------------------------------------------------+
+|                                 [32mSummary for match 2.241.0[0m                                  |
++----------------------------------------+---------------------------------------------------+
+| type                                   | appstore                                          |
+| api_key                                | API_KEY_REDACTED                                  |
+| readonly                               | false                                             |
+| generate_apple_certs                   | true                                              |
+| skip_provisioning_profiles             | false                                             |
+| app_identifier                         | ["sa.almubarky.fenaa"]                            |
+| team_id                                | 5V6TC85KRL                                        |
+| storage_mode                           | git                                               |
+| git_url                                | https://github.com/almubarky05588-lab/share-certs |
+| git_branch                             | fenaa                                             |
+| shallow_clone                          | false                                             |
+| clone_branch_directly                  | false                                             |
+| git_basic_authorization                | GIT_BASIC_AUTHORIZATION_REDACTED                  |
+| skip_google_cloud_account_confirmation | false                                             |
+| s3_skip_encryption                     | false                                             |
+| gitlab_host                            | https://gitlab.com                                |
+| keychain_name                          | fastlane_tmp_keychain                             |
+| force                                  | false                                             |
+| force_for_new_devices                  | false                                             |
+| include_mac_in_profiles                | false                                             |
+| include_all_certificates               | false                                             |
+| force_for_new_certificates             | false                                             |
+| renew_expired_certs                    | false                                             |
+| skip_confirmation                      | false                                             |
+| safe_remove_certs                      | false                                             |
+| skip_docs                              | false                                             |
+| platform                               | ios                                               |
+| derive_catalyst_app_identifier         | false                                             |
+| fail_on_name_taken                     | false                                             |
+| skip_certificate_matching              | false                                             |
+| skip_set_partition_list                | false                                             |
+| force_legacy_encryption                | false                                             |
+| offline_profile                        | false                                             |
+| verbose                                | false                                             |
++----------------------------------------+---------------------------------------------------+
+
+[09:44:53]: Cloning remote git repo...
+[09:44:53]: If cloning the repo takes too long, you can use the `clone_branch_directly` option in match.
+[09:44:54]: Checking out branch fenaa...
+[09:44:54]: [32m🔓  Successfully decrypted certificates repo[0m
+[09:44:54]: Verifying that the certificate and profile are still valid on the Dev Portal...
+[09:44:54]: Creating authorization token for App Store Connect API
+[09:44:54]: 
+[09:44:54]: [33m==========================================[0m
+[09:44:54]: Could not find App ID with bundle identifier 'sa.almubarky.fenaa'
+[09:44:54]: You can easily generate a new App ID on the Developer Portal using 'produce':
+[09:44:54]: 
+[09:44:54]: [33mfastlane produce -u  -a sa.almubarky.fenaa --skip_itc[0m
+[09:44:54]: 
+[09:44:54]: You will be asked for any missing information, like the full name of your app
+[09:44:54]: If the app should also be created on App Store Connect, remove the [33m--skip_itc[0m from the command above
+[09:44:54]: [33m==========================================[0m
+[09:44:54]: 
+[09:44:54]: [31mAn app with that bundle ID needs to exist in order to create a provisioning profile for it[0m
+[09:44:54]: [31m================================================================[0m
+[09:44:54]: Available apps:
+- Share.SmartBus (Smart bus)
+- com.Share.Fawid.co (XC com Share Fawid co)
+- com.flexstore.flexstore (flexstore)
+- com.Share.Fawid (Fawid Bundle)
+- com.share.marketzoneapp (marketzoneapp)
+- com.share.marketzone (marketzone)
+- com.nutshi.OneSignalNotificationServiceExtension (XC com nutshi OneSignalNotificationServiceExtension)
+- com.share.car-rental (Ajar)
+- com.Share.EasyPass (easyPass)
+- com.Share.Bazar (XC com Share Bazar)
+- com.share.benaaApp (Benaa App)
+- com.avocadosa.app (d24ddc29c2dc914008255b53c2ba15a9)
+- com.notchi (notchi app)
+- com.share.tawlaClient (tawla)
+- com.share.bookzly (bookzly)
+- com.3mmam.sharre.Ammam (Ammam)
+- com.orders.ynoub (Ynoub)
+- com.share.wazeefa (wazeefa)
+- com.share.kallemni (kallemni)
+- com.glutpass.glutpass (GlutPass)
+- Gajen.LetsCoffee (CoffeeUser)
+- com.Antadrak (Antadrak App)
+- com.Share.OrderApp (Order App)
+- com.share.nearU (nearU)
+- com.share.tawlaDelegate (tawla delegation)
+- com.nutshi (Nutshi)
+- com.Share.AlooApp (Aloo app)
+- * (XC Wildcard)
+- com.avocadosa.app.onesignal (onesignal)
+- com.share.ynoub (Ynoub)
+- com.Share.GET (GET)
+- com.share.tawlaIpad (tawla iPad)
+- com.sharetech.sanany (Sanany)
+- com.share.nabni (nabni)
+- com.aranswer.app (ASKhim app)
+- com.Share.PingApp (Ping)
+- com.zefafii (XC com zefafii)
+- com.share.notchi (XC com share notchi)
+- com.share.benaa (XC com share benaa)
+- sa.almubarky.shareApp (share app)
+- com.share.lamp (lamp)
+[09:44:54]: [31mMake sure to run `fastlane match` with the same user and team every time.[0m
++---------------------------------------------------------------------------------+
+|                                  [33mLane Context[0m                                   |
++---------------------------+-----------------------------------------------------+
+| DEFAULT_PLATFORM          | ios                                                 |
+| PLATFORM_NAME             | ios                                                 |
+| LANE_NAME                 | ios beta                                            |
+| KEYCHAIN_PATH             | ~/Library/Keychains/fastlane_tmp_keychain           |
+| ORIGINAL_DEFAULT_KEYCHAIN | "/Users/runner/Library/Keychains/login.keychain-db" |
++---------------------------+-----------------------------------------------------+
+[09:44:54]: [31mCalled from Fastfile at line 20[0m
+[09:44:54]: [31m```[0m
+[09:44:54]: [31m    18:	[0m
+[09:44:54]: [31m    19:	    # نفس شهادة التوزيع المستخدمة في share — ملف تزويد جديد لهذا التطبيق فقط[0m
+[09:44:54]: [31m => 20:	    match(type: "appstore", api_key: api_key, readonly: false)[0m
+[09:44:54]: [31m    21:	[0m
+[09:44:54]: [31m    22:	    profile_name = ENV["sigh_#{BUNDLE_ID}_appstore_profile-name"][0m
+[09:44:54]: [31m```[0m
+
++------------------------------------------------+
+|                [32mfastlane summary[0m                |
++------+---------------------------+-------------+
+| Step | Action                    | Time (in s) |
++------+---------------------------+-------------+
+| 1    | default_platform          | 0           |
+| 2    | setup_ci                  | 0           |
+| 3    | app_store_connect_api_key | 0           |
+| 💥   | [31mmatch[0m                     | 1           |
++------+---------------------------+-------------+
+
+[09:44:54]: [31mfastlane finished with errors[0m
+[31m
+[!] Couldn't find bundle identifier 'sa.almubarky.fenaa' for the user ''[0m
 
 ==================== أخطاء xcodebuild ====================
