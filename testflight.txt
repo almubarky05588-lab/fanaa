@@ -1,103 +1,438 @@
-status: failure
-run: 16 (38265394661)
-commit: 57c0a2c4ae9216392c296dad10e4e81e540f3f8c
-Mon Oct 12 14:48:14 UTC 2026
+status: success
+run: 17 (38266150441)
+commit: 1bffae9b21aeb21f55a98a26740b6c5903ecf1dc
+Mon Oct 12 15:02:49 UTC 2026
 
 ==================== الأخطاء المباشرة ====================
-92:❌ أخطاء في الكود
+97:[!] CocoaPods did not set the base configuration of your project because your project already has a custom config set. In order for CocoaPods integration to work at all, please either set the base configurations of the target `Runner` to `Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig` or include the `Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig` in your build configuration (`Flutter/Release.xcconfig`).
+605:[14:56:50]: ▸ [35m[[36murl_launcher_ios_url_launcher_ios[0m] [1mRegisterExecutionPolicyException[0m url_launcher_ios_url_launcher_ios.bundle[0m
+606:[14:56:50]: ▸ [35m[[36msqflite_darwin_sqflite_darwin[0m] [1mRegisterExecutionPolicyException[0m sqflite_darwin_sqflite_darwin.bundle[0m
+611:[14:56:50]: ▸ [35m[[36mshared_preferences_foundation_shared_preferences_foundation[0m] [1mRegisterExecutionPolicyException[0m shared_preferences_foundation_shared_preferences_foundation.bundle[0m
+615:[14:56:50]: ▸ [35m[[36mshare_plus_share_plus[0m] [1mRegisterExecutionPolicyException[0m share_plus_share_plus.bundle[0m
+621:[14:56:50]: ▸ [35m[[36mimage_picker_ios_image_picker_ios[0m] [1mRegisterExecutionPolicyException[0m image_picker_ios_image_picker_ios.bundle[0m
+627:[14:56:50]: ▸ [35m[[36mgoogle_maps_flutter_ios-google_maps_flutter_ios_privacy[0m] [1mRegisterExecutionPolicyException[0m google_maps_flutter_ios_privacy.bundle[0m
+629:[14:56:50]: ▸ [35m[[36mgeolocator_apple_geolocator_apple[0m] [1mRegisterExecutionPolicyException[0m geolocator_apple_geolocator_apple.bundle[0m
+631:[14:56:50]: ▸ [35m[[36mapp_links_app_links[0m] [1mRegisterExecutionPolicyException[0m app_links_app_links.bundle[0m
+633:[14:56:50]: ▸ [35m[[36mGoogleMaps-GoogleMapsResources[0m] [1mRegisterExecutionPolicyException[0m GoogleMapsResources.bundle[0m
+690:[14:57:11]: ▸ [35m[[36murl_launcher_ios[0m] [1mRegisterExecutionPolicyException[0m url_launcher_ios.o[0m
+692:[14:57:11]: ▸ [35m[[36mshare_plus[0m] [1mRegisterExecutionPolicyException[0m share_plus.o[0m
+693:[14:57:11]: ▸ [35m[[36mshared_preferences_foundation[0m] [1mRegisterExecutionPolicyException[0m shared_preferences_foundation.o[0m
+694:[14:57:11]: ▸ [35m[[36mimage_picker_ios[0m] [1mRegisterExecutionPolicyException[0m image_picker_ios.o[0m
+696:[14:57:13]: ▸ [35m[[36mgeolocator_apple[0m] [1mRegisterExecutionPolicyException[0m geolocator_apple.o[0m
+702:[14:57:16]: ▸ [35m[[36mFlutterFramework[0m] [1mRegisterExecutionPolicyException[0m FlutterFramework.o[0m
+704:[14:57:16]: ▸ [35m[[36msqflite_darwin[0m] [1mRegisterExecutionPolicyException[0m sqflite_darwin.o[0m
+711:[14:57:16]: ▸ [35m[[36mapp_links[0m] [1mRegisterExecutionPolicyException[0m app_links.o[0m
+735:[14:57:19]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mRegisterExecutionPolicyException[0m FlutterGeneratedPluginSwiftPackage.o[0m
+769:[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mRegisterExecutionPolicyException[0m GoogleMapsUtils.framework[0m
+772:[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mRegisterExecutionPolicyException[0m google_maps_flutter_ios.framework[0m
+775:[14:57:19]: ▸ [35m[[36mPods-Runner[0m] [1mRegisterExecutionPolicyException[0m Pods_Runner.framework[0m
+805:[14:58:32]: ▸ [35m[[36mRunner[0m] [1mRegisterExecutionPolicyException[0m Runner.app[0m
 
 ==================== آخر السجل ====================
+[14:56:50]: ▸ [35m[[36mGoogleMaps-GoogleMapsResources[0m] [1mWrite Auxiliary File[0m GoogleMapsResources-own-target-headers.hmap[0m
+[14:56:50]: ▸ [35m[[36mGoogleMaps-GoogleMapsResources[0m] [1mWrite Auxiliary File[0m GoogleMapsResources-generated-files.hmap[0m
+[14:56:50]: ▸ [35m[[36mGoogleMaps-GoogleMapsResources[0m] [1mWrite Auxiliary File[0m GoogleMapsResources-all-target-headers.hmap[0m
+[14:56:50]: ▸ [35m[[36mGoogleMaps-GoogleMapsResources[0m] [1mWrite Auxiliary File[0m GoogleMapsResources-all-non-framework-target-headers.hmap[0m
+[14:56:50]: ▸ [35m[[36mGoogleMaps[0m] [1mWrite Auxiliary File[0m Script-1C5FD0070B12CD7A0CA56C494088F31B.sh[0m
+[14:56:50]: ▸ [35m[[36mGoogleMaps[0m] [1mWrite Auxiliary File[0m OutputFileList-1C5FD0070B12CD7A0CA56C494088F31B-GoogleMaps-xcframeworks-output-files-79071ec51c2c8a262e71f2b99d80848c-resolved.xcfilelist[0m
+[14:56:50]: ▸ [35m[[36mGoogleMaps[0m] [1mWrite Auxiliary File[0m InputFileList-1C5FD0070B12CD7A0CA56C494088F31B-GoogleMaps-xcframeworks-input-files-f699a69bf97d87ffef5e0accce94044b-resolved.xcfilelist[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m unextended-module-swiftunextension.modulemap[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m unextended-module-overlay.yaml[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m module-swiftextension.modulemap[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m e6072d4f65d7061329687fe24e3d63a7-common-args.resp[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m GoogleMapsUtils.SwiftFileList[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m GoogleMapsUtils.SwiftConstValuesFileList[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m GoogleMapsUtils.LinkFileList[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m Google-Maps-iOS-Utils_const_extract_protocols.json[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m Google-Maps-iOS-Utils-OutputFileMap.json[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m 7187679823f38a2a940e0043cdf9d637-common-args.resp[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m GoogleMapsUtils.hmap[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m GoogleMapsUtils.DependencyStaticMetadataFileList[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m GoogleMapsUtils.DependencyMetadataFileList[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m GoogleMapsUtils-project-headers.hmap[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m GoogleMapsUtils-own-target-headers.hmap[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m GoogleMapsUtils-generated-files.hmap[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m GoogleMapsUtils-all-target-headers.hmap[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m GoogleMapsUtils-all-non-framework-target-headers.hmap[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mWrite Auxiliary File[0m GoogleMapsUtils_vers.c[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GoogleMapsUtils-Bridging-Header.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m Google-Maps-iOS-Utils-umbrella.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GQTPointQuadTreeItem.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GQTPointQuadTreeChild.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GQTPointQuadTree.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GQTPoint.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GQTBounds.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUWrappingDictionaryKey.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUWeightedLatLng.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUStyleMap.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUStyle.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUStaticCluster.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUSimpleClusterAlgorithm.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUPolygon.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUPoint.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUPlacemark.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUPair.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUNonHierarchicalDistanceBasedAlgorithm.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUMarkerClustering.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMULineString.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUKMLParser.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUHeatmapTileLayer.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUHeatmapTileLayer+Testing.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUGroundOverlay.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUGridBasedClusterAlgorithm.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUGradient.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUGeometryRenderer.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUGeometryRenderer+Testing.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUGeometryContainer.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUGeometryCollection.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUGeometry.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUGeoJSONParser.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUFeature.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUDefaultClusterRenderer.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUDefaultClusterRenderer+Testing.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUDefaultClusterIconGenerator.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUDefaultClusterIconGenerator+Testing.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUClusterRenderer.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUClusterManager.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUClusterManager+Testing.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUClusterItem.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUClusterIconGenerator.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUClusterAlgorithm.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMUCluster.h[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopying[0m GMSMarker+GMUClusteritem.h[0m
+[14:56:50]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mWrite Auxiliary File[0m FlutterGeneratedPluginSwiftPackage_const_extract_protocols.json[0m
+[14:56:50]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mWrite Auxiliary File[0m FlutterGeneratedPluginSwiftPackage.SwiftFileList[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopy[0m module.modulemap -> module.modulemap[0m
+[14:56:50]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mWrite Auxiliary File[0m FlutterGeneratedPluginSwiftPackage.SwiftConstValuesFileList[0m
+[14:56:50]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mWrite Auxiliary File[0m FlutterGeneratedPluginSwiftPackage.LinkFileList[0m
+[14:56:50]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mWrite Auxiliary File[0m FlutterGeneratedPluginSwiftPackage-OutputFileMap.json[0m
+[14:56:50]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mWrite Auxiliary File[0m FlutterGeneratedPluginSwiftPackage.modulemap[0m
+[14:56:50]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mWrite Auxiliary File[0m FlutterGeneratedPluginSwiftPackage.DependencyStaticMetadataFileList[0m
+[14:56:50]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mWrite Auxiliary File[0m FlutterGeneratedPluginSwiftPackage.DependencyMetadataFileList[0m
+[14:56:50]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mCopy[0m FlutterGeneratedPluginSwiftPackage.modulemap -> FlutterGeneratedPluginSwiftPackage.modulemap[0m
+[14:56:50]: ▸ [35m[[36mFlutterFramework[0m] [1mWrite Auxiliary File[0m FlutterFramework_const_extract_protocols.json[0m
+[14:56:50]: ▸ [35m[[36mFlutterFramework[0m] [1mWrite Auxiliary File[0m FlutterFramework.SwiftFileList[0m
+[14:56:50]: ▸ [35m[[36mFlutterFramework[0m] [1mWrite Auxiliary File[0m FlutterFramework.SwiftConstValuesFileList[0m
+[14:56:50]: ▸ [35m[[36mFlutterFramework[0m] [1mWrite Auxiliary File[0m FlutterFramework.LinkFileList[0m
+[14:56:50]: ▸ [35m[[36mFlutterFramework[0m] [1mWrite Auxiliary File[0m FlutterFramework-OutputFileMap.json[0m
+[14:56:50]: ▸ [35m[[36mFlutterFramework[0m] [1mWrite Auxiliary File[0m FlutterFramework.modulemap[0m
+[14:56:50]: ▸ [35m[[36mFlutterFramework[0m] [1mWrite Auxiliary File[0m FlutterFramework.DependencyStaticMetadataFileList[0m
+[14:56:50]: ▸ [35m[[36mFlutterFramework[0m] [1mWrite Auxiliary File[0m FlutterFramework.DependencyMetadataFileList[0m
+[14:56:50]: ▸ [35m[[36mFlutterFramework[0m] [1mCopy[0m FlutterFramework.modulemap -> FlutterFramework.modulemap[0m
+[14:56:50]: ▸ [35m[[36murl_launcher_ios_url_launcher_ios[0m] [1mProcessing[0m empty-url_launcher_ios_url_launcher_ios.plist[0m
+[14:56:50]: ▸ [35m[[36murl_launcher_ios_url_launcher_ios[0m] [1mCopying[0m PrivacyInfo.xcprivacy[0m
+[14:56:50]: ▸ [35m[[36msqflite_darwin_sqflite_darwin[0m] [1mProcessing[0m empty-sqflite_darwin_sqflite_darwin.plist[0m
+[14:56:50]: ▸ [35m[[36msqflite_darwin_sqflite_darwin[0m] [1mCopying[0m PrivacyInfo.xcprivacy[0m
+[14:56:50]: ▸ [35m[[36mshared_preferences_foundation_shared_preferences_foundation[0m] [1mProcessing[0m empty-shared_preferences_foundation_shared_preferences_foundation.plist[0m
+[14:56:50]: ▸ [35m[[36mshared_preferences_foundation_shared_preferences_foundation[0m] [1mCopying[0m PrivacyInfo.xcprivacy[0m
+[14:56:50]: ▸ [35m[[36murl_launcher_ios_url_launcher_ios[0m] [1mRegisterExecutionPolicyException[0m url_launcher_ios_url_launcher_ios.bundle[0m
+[14:56:50]: ▸ [35m[[36msqflite_darwin_sqflite_darwin[0m] [1mRegisterExecutionPolicyException[0m sqflite_darwin_sqflite_darwin.bundle[0m
+[14:56:50]: ▸ [35m[[36murl_launcher_ios_url_launcher_ios[0m] [1mTouching[0m url_launcher_ios_url_launcher_ios.bundle[0m
+[14:56:50]: ▸ [35m[[36msqflite_darwin_sqflite_darwin[0m] [1mTouching[0m sqflite_darwin_sqflite_darwin.bundle[0m
+[14:56:50]: ▸ [35m[[36mshare_plus_share_plus[0m] [1mProcessing[0m empty-share_plus_share_plus.plist[0m
+[14:56:50]: ▸ [35m[[36mshare_plus_share_plus[0m] [1mCopying[0m PrivacyInfo.xcprivacy[0m
+[14:56:50]: ▸ [35m[[36mshared_preferences_foundation_shared_preferences_foundation[0m] [1mRegisterExecutionPolicyException[0m shared_preferences_foundation_shared_preferences_foundation.bundle[0m
+[14:56:50]: ▸ [35m[[36mshared_preferences_foundation_shared_preferences_foundation[0m] [1mTouching[0m shared_preferences_foundation_shared_preferences_foundation.bundle[0m
+[14:56:50]: ▸ [35m[[36mimage_picker_ios_image_picker_ios[0m] [1mProcessing[0m empty-image_picker_ios_image_picker_ios.plist[0m
+[14:56:50]: ▸ [35m[[36mimage_picker_ios_image_picker_ios[0m] [1mCopying[0m PrivacyInfo.xcprivacy[0m
+[14:56:50]: ▸ [35m[[36mshare_plus_share_plus[0m] [1mRegisterExecutionPolicyException[0m share_plus_share_plus.bundle[0m
+[14:56:50]: ▸ [35m[[36mshare_plus_share_plus[0m] [1mTouching[0m share_plus_share_plus.bundle[0m
+[14:56:50]: ▸ [35m[[36mgoogle_maps_flutter_ios-google_maps_flutter_ios_privacy[0m] [1mProcessing[0m ResourceBundle-google_maps_flutter_ios_privacy-google_maps_flutter_ios-Info.plist[0m
+[14:56:50]: ▸ [35m[[36mgoogle_maps_flutter_ios-google_maps_flutter_ios_privacy[0m] [1mCopying[0m PrivacyInfo.xcprivacy[0m
+[14:56:50]: ▸ [35m[[36mgeolocator_apple_geolocator_apple[0m] [1mProcessing[0m empty-geolocator_apple_geolocator_apple.plist[0m
+[14:56:50]: ▸ [35m[[36mgeolocator_apple_geolocator_apple[0m] [1mCopying[0m PrivacyInfo.xcprivacy[0m
+[14:56:50]: ▸ [35m[[36mimage_picker_ios_image_picker_ios[0m] [1mRegisterExecutionPolicyException[0m image_picker_ios_image_picker_ios.bundle[0m
+[14:56:50]: ▸ [35m[[36mapp_links_app_links[0m] [1mProcessing[0m empty-app_links_app_links.plist[0m
+[14:56:50]: ▸ [35m[[36mapp_links_app_links[0m] [1mCopying[0m PrivacyInfo.xcprivacy[0m
+[14:56:50]: ▸ [35m[[36mGoogleMaps-GoogleMapsResources[0m] [1mProcessing[0m ResourceBundle-GoogleMapsResources-GoogleMaps-Info.plist[0m
+[14:56:50]: ▸ [35m[[36mGoogleMaps-GoogleMapsResources[0m] [1mCopying[0m GoogleMaps.bundle[0m
+[14:56:50]: ▸ [35m[[36mimage_picker_ios_image_picker_ios[0m] [1mTouching[0m image_picker_ios_image_picker_ios.bundle[0m
+[14:56:50]: ▸ [35m[[36mgoogle_maps_flutter_ios-google_maps_flutter_ios_privacy[0m] [1mRegisterExecutionPolicyException[0m google_maps_flutter_ios_privacy.bundle[0m
+[14:56:50]: ▸ [35m[[36mgoogle_maps_flutter_ios-google_maps_flutter_ios_privacy[0m] [1mTouching[0m google_maps_flutter_ios_privacy.bundle[0m
+[14:56:50]: ▸ [35m[[36mgeolocator_apple_geolocator_apple[0m] [1mRegisterExecutionPolicyException[0m geolocator_apple_geolocator_apple.bundle[0m
+[14:56:50]: ▸ [35m[[36mgeolocator_apple_geolocator_apple[0m] [1mTouching[0m geolocator_apple_geolocator_apple.bundle[0m
+[14:56:50]: ▸ [35m[[36mapp_links_app_links[0m] [1mRegisterExecutionPolicyException[0m app_links_app_links.bundle[0m
+[14:56:50]: ▸ [35m[[36mapp_links_app_links[0m] [1mTouching[0m app_links_app_links.bundle[0m
+[14:56:50]: ▸ [35m[[36mGoogleMaps-GoogleMapsResources[0m] [1mRegisterExecutionPolicyException[0m GoogleMapsResources.bundle[0m
+[14:56:50]: ▸ [35m[[36mGoogleMaps-GoogleMapsResources[0m] [1mTouching[0m GoogleMapsResources.bundle[0m
+[14:56:50]: ▸ [35m[[36mGoogleMaps[0m] [1mRunning script[0m [CP] Copy XCFrameworks[0m
+[14:56:50]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mProcessing[0m Google-Maps-iOS-Utils-Info.plist[0m
+[14:56:53]: ▸ [35m[[36mFlutterFramework[0m] [1mCompiling[0m FlutterFramework.swift[0m
+[14:56:54]: ▸ [35m[[36mFlutterFramework[0m] [1mCopy[0m arm64-apple-ios.swiftmodule -> FlutterFramework.swiftmodule[0m
+[14:56:54]: ▸ [35m[[36mFlutterFramework[0m] [1mCopy[0m arm64-apple-ios.swiftdoc -> FlutterFramework.swiftdoc[0m
+[14:56:54]: ▸ [35m[[36mFlutterFramework[0m] [1mCopy[0m arm64-apple-ios.abi.json -> FlutterFramework.abi.json[0m
+[14:57:04]: ▸ [35m[[36murl_launcher_ios[0m] [1mCopy[0m arm64-apple-ios.swiftmodule -> url_launcher_ios.swiftmodule[0m
+[14:57:04]: ▸ [35m[[36murl_launcher_ios[0m] [1mCopy[0m arm64-apple-ios.swiftdoc -> url_launcher_ios.swiftdoc[0m
+[14:57:04]: ▸ [35m[[36murl_launcher_ios[0m] [1mCopy[0m arm64-apple-ios.abi.json -> url_launcher_ios.abi.json[0m
+[14:57:04]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopy[0m arm64-apple-ios.swiftmodule -> GoogleMapsUtils.swiftmodule[0m
+[14:57:04]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopy[0m arm64-apple-ios.swiftdoc -> GoogleMapsUtils.swiftdoc[0m
+[14:57:04]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCopy[0m arm64-apple-ios.abi.json -> GoogleMapsUtils.abi.json[0m
+[14:57:05]: ▸ [35m[[36mshare_plus[0m] [1mCompiling[0m resource_bundle_accessor.m[0m
+[14:57:05]: ▸ [35m[[36mshared_preferences_foundation[0m] [1mCopy[0m arm64-apple-ios.swiftmodule -> shared_preferences_foundation.swiftmodule[0m
+[14:57:05]: ▸ [35m[[36mshared_preferences_foundation[0m] [1mCopy[0m arm64-apple-ios.swiftdoc -> shared_preferences_foundation.swiftdoc[0m
+[14:57:05]: ▸ [35m[[36mshared_preferences_foundation[0m] [1mCopy[0m arm64-apple-ios.abi.json -> shared_preferences_foundation.abi.json[0m
+[14:57:05]: ▸ [35m[[36mimage_picker_ios[0m] [1mCompiling[0m resource_bundle_accessor.m[0m
+[14:57:07]: ▸ [35m[[36mshare_plus[0m] [1mCompiling[0m FPPSharePlusPlugin.m[0m
+[14:57:07]: ▸ [35m[[36mimage_picker_ios[0m] [1mCompiling[0m messages.g.m[0m
+[14:57:07]: ▸ [35m[[36mshare_plus[0m] [1mLinking[0m share_plus.o[0m
+[14:57:08]: ▸ [35m[[36mimage_picker_ios[0m] [1mCompiling[0m FLTImagePickerImageUtil.m[0m
+[14:57:08]: ▸ [35m[[36mimage_picker_ios[0m] [1mCompiling[0m FIPViewProvider.m[0m
+[14:57:08]: ▸ [35m[[36mgeolocator_apple[0m] [1mCompiling[0m resource_bundle_accessor.m[0m
+[14:57:08]: ▸ [35m[[36mgeolocator_apple[0m] [1mCompiling[0m PermissionUtils.m[0m
+[14:57:08]: ▸ [35m[[36mgeolocator_apple[0m] [1mCompiling[0m PermissionHandler.m[0m
+[14:57:08]: ▸ [35m[[36mgeolocator_apple[0m] [1mCompiling[0m PositionStreamHandler.m[0m
+[14:57:08]: ▸ [35m[[36mgeolocator_apple[0m] [1mCompiling[0m LocationServiceStreamHandler.m[0m
+[14:57:08]: ▸ [35m[[36mgeolocator_apple[0m] [1mCompiling[0m LocationMapper.m[0m
+[14:57:08]: ▸ [35m[[36mgeolocator_apple[0m] [1mCompiling[0m LocationDistanceMapper.m[0m
+[14:57:08]: ▸ [35m[[36mgeolocator_apple[0m] [1mCompiling[0m LocationAccuracyMapper.m[0m
+[14:57:08]: ▸ [35m[[36mimage_picker_ios[0m] [1mCompiling[0m FLTImagePickerMetaDataUtil.m[0m
+[14:57:09]: ▸ [35m[[36mgeolocator_apple[0m] [1mCompiling[0m LocationAccuracyHandler.m[0m
+[14:57:09]: ▸ [35m[[36mgeolocator_apple[0m] [1mCompiling[0m GeolocatorPlugin.m[0m
+[14:57:09]: ▸ [35m[[36mimage_picker_ios[0m] [1mCompiling[0m FLTPHPickerSaveImageToPathOperation.m[0m
+[14:57:09]: ▸ [35m[[36mimage_picker_ios[0m] [1mCompiling[0m FLTImagePickerPlugin.m[0m
+[14:57:09]: ▸ [35m[[36mimage_picker_ios[0m] [1mCompiling[0m FLTImagePickerPhotoAssetUtil.m[0m
+[14:57:09]: ▸ [35m[[36mimage_picker_ios[0m] [1mCompiling[0m FIPPickerSeams.m[0m
+[14:57:09]: ▸ [35m[[36mgeolocator_apple[0m] [1mCompiling[0m GeolocationHandler.m[0m
+[14:57:09]: ▸ [35m[[36mgeolocator_apple[0m] [1mCompiling[0m ErrorCodes.m[0m
+[14:57:09]: ▸ [35m[[36mgeolocator_apple[0m] [1mCompiling[0m AuthorizationStatusMapper.m[0m
+[14:57:09]: ▸ [35m[[36mimage_picker_ios[0m] [1mLinking[0m image_picker_ios.o[0m
+[14:57:09]: ▸ [35m[[36mgeolocator_apple[0m] [1mCompiling[0m ActivityTypeMapper.m[0m
+[14:57:09]: ▸ [35m[[36murl_launcher_ios[0m] [1mLinking[0m url_launcher_ios.o[0m
+[14:57:09]: ▸ [35m[[36mgeolocator_apple[0m] [1mLinking[0m geolocator_apple.o[0m
+[14:57:09]: ▸ [35m[[36mshared_preferences_foundation[0m] [1mLinking[0m shared_preferences_foundation.o[0m
+[14:57:09]: ▸ [35m[[36murl_launcher_ios[0m] [1mExtract App Intents Metadata[0m
+[14:57:10]: ▸ [35m[[36msqflite_darwin[0m] [1mCompiling[0m resource_bundle_accessor.m[0m
+[14:57:10]: ▸ [35m[[36msqflite_darwin[0m] [1mCompiling[0m SqfliteOperation.m[0m
+[14:57:10]: ▸ [35m[[36msqflite_darwin[0m] [1mCompiling[0m SqflitePlugin.m[0m
+[14:57:10]: ▸ [35m[[36msqflite_darwin[0m] [1mCompiling[0m SqfliteDatabase.m[0m
+[14:57:10]: ▸ [35m[[36msqflite_darwin[0m] [1mCompiling[0m SqfliteDarwinResultSet.m[0m
+[14:57:10]: ▸ [35m[[36msqflite_darwin[0m] [1mCompiling[0m SqfliteDarwinDatabaseQueue.m[0m
+[14:57:10]: ▸ [35m[[36msqflite_darwin[0m] [1mCompiling[0m SqfliteDarwinDatabaseAdditions.m[0m
+[14:57:10]: ▸ [35m[[36msqflite_darwin[0m] [1mCompiling[0m SqfliteDarwinDatabase.m[0m
+[14:57:11]: ▸ [35m[[36msqflite_darwin[0m] [1mCompiling[0m SqfliteCursor.m[0m
+[14:57:11]: ▸ [35m[[36murl_launcher_ios[0m] [1mRegisterExecutionPolicyException[0m url_launcher_ios.o[0m
+[14:57:11]: ▸ [35m[[36mshared_preferences_foundation[0m] [1mExtract App Intents Metadata[0m
+[14:57:11]: ▸ [35m[[36mshare_plus[0m] [1mRegisterExecutionPolicyException[0m share_plus.o[0m
+[14:57:11]: ▸ [35m[[36mshared_preferences_foundation[0m] [1mRegisterExecutionPolicyException[0m shared_preferences_foundation.o[0m
+[14:57:11]: ▸ [35m[[36mimage_picker_ios[0m] [1mRegisterExecutionPolicyException[0m image_picker_ios.o[0m
+[14:57:11]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m google_maps_flutter_ios_vers.c[0m
+[14:57:13]: ▸ [35m[[36mgeolocator_apple[0m] [1mRegisterExecutionPolicyException[0m geolocator_apple.o[0m
+[14:57:13]: ▸ [35m[[36mFlutterFramework[0m] [1mLinking[0m FlutterFramework.o[0m
+[14:57:13]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GoogleMapsUtils_vers.c[0m
+[14:57:15]: ▸ [35m[[36mFlutterFramework[0m] [1mExtract App Intents Metadata[0m
+[14:57:15]: ▸ [35m[[36mPods-Runner[0m] [1mCompiling[0m Pods_Runner_vers.c[0m
+[14:57:16]: ▸ [35m[[36mPods-Runner[0m] [1mCompiling[0m Pods-Runner-dummy.m[0m
+[14:57:16]: ▸ [35m[[36mFlutterFramework[0m] [1mRegisterExecutionPolicyException[0m FlutterFramework.o[0m
+[14:57:16]: ▸ [35m[[36msqflite_darwin[0m] [1mLinking[0m sqflite_darwin.o[0m
+[14:57:16]: ▸ [35m[[36msqflite_darwin[0m] [1mRegisterExecutionPolicyException[0m sqflite_darwin.o[0m
+[14:57:16]: ▸ [35m[[36mapp_links[0m] [1mCopy[0m arm64-apple-ios.swiftmodule -> app_links.swiftmodule[0m
+[14:57:16]: ▸ [35m[[36mapp_links[0m] [1mCopy[0m arm64-apple-ios.swiftdoc -> app_links.swiftdoc[0m
+[14:57:16]: ▸ [35m[[36mapp_links[0m] [1mCopy[0m arm64-apple-ios.abi.json -> app_links.abi.json[0m
+[14:57:16]: ▸ [35m[[36mapp_links[0m] [1mLinking[0m app_links.o[0m
+[14:57:16]: ▸ [35m[[36mapp_links[0m] [1mExtract App Intents Metadata[0m
+[14:57:16]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mCompiling[0m FlutterGeneratedPluginSwiftPackage.swift[0m
+[14:57:16]: ▸ [35m[[36mapp_links[0m] [1mRegisterExecutionPolicyException[0m app_links.o[0m
+[14:57:16]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mCopy[0m arm64-apple-ios.swiftmodule -> FlutterGeneratedPluginSwiftPackage.swiftmodule[0m
+[14:57:16]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mCopy[0m arm64-apple-ios.swiftdoc -> FlutterGeneratedPluginSwiftPackage.swiftdoc[0m
+[14:57:16]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mCopy[0m arm64-apple-ios.abi.json -> FlutterGeneratedPluginSwiftPackage.abi.json[0m
+[14:57:16]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mLinking[0m FlutterGeneratedPluginSwiftPackage.o[0m
+[14:57:16]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m google_maps_flutter_ios-dummy.m[0m
+[14:57:16]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m FGMCATransactionWrapper.m[0m
+[14:57:16]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m Google-Maps-iOS-Utils-dummy.m[0m
+[14:57:16]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GQTPointQuadTreeChild.m[0m
+[14:57:16]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GQTPointQuadTree.m[0m
+[14:57:16]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUWrappingDictionaryKey.m[0m
+[14:57:16]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUStyleMap.m[0m
+[14:57:16]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUStyle.m[0m
+[14:57:16]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUStaticCluster.m[0m
+[14:57:16]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUSimpleClusterAlgorithm.m[0m
+[14:57:16]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUPoint.m[0m
+[14:57:16]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUPlacemark.m[0m
+[14:57:16]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUPair.m[0m
+[14:57:16]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUGroundOverlay.m[0m
+[14:57:16]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUGradient.m[0m
+[14:57:16]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUGeometryCollection.m[0m
+[14:57:16]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUDefaultClusterIconGenerator.m[0m
+[14:57:16]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mExtract App Intents Metadata[0m
+[14:57:16]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m google_maps_flutter_pigeon_messages.g.m[0m
+[14:57:19]: ▸ [35m[[36mFlutterGeneratedPluginSwiftPackage[0m] [1mRegisterExecutionPolicyException[0m FlutterGeneratedPluginSwiftPackage.o[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m FGMMarkerUserData.m[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUWeightedLatLng.m[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUPolygon.m[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUNonHierarchicalDistanceBasedAlgorithm.m[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMULineString.m[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUKMLParser.m[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUHeatmapTileLayer.m[0m
+[14:57:19]: ▸ [35m::warning file=/Users/runner/work/fanaa/fanaa/app/ios/Pods/Google-Maps-iOS-Utils/Sources/GoogleMapsUtilsObjC/include/GMUHeatmapTileLayer.m,line=345,col=78::bitwise operation between different enumeration types ('enum CGBitmapInfo' and 'enum CGImageAlphaInfo') [-Wenum-enum-conversion][0m
+[14:57:19]: ▸ [35m  345 |                                       colorSpaceRef, kCGBitmapByteOrder32Big | kCGImageAlphaLast,[0m
+[14:57:19]: ▸ [35m      |                                                      ~~~~~~~~~~~~~~~~~~~~~~~ ^ ~~~~~~~~~~~~~~~~~[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUGridBasedClusterAlgorithm.m[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUGeometryRenderer.m[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUGeoJSONParser.m[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUFeature.m[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUDefaultClusterRenderer.m[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMUClusterManager.m[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mCompiling[0m GMSMarker+GMUClusteritem.m[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mExtract App Intents Metadata[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m FGMTileOverlayController.m[0m
+[14:57:19]: ▸ [35m::warning file=/Users/runner/.pub-cache/hosted/pub.dev/google_maps_flutter_ios-2.18.6/ios/google_maps_flutter_ios/Sources/google_maps_flutter_ios/FGMTileOverlayController.m,line=93,col=55::bitwise operation between different enumeration types ('enum CGBitmapInfo' and 'enum CGImageAlphaInfo') [-Wenum-enum-conversion][0m
+[14:57:19]: ▸ [35m   93 |                               (kCGBitmapAlphaInfoMask & kCGImageAlphaPremultipliedLast));[0m
+[14:57:19]: ▸ [35m      |                                ~~~~~~~~~~~~~~~~~~~~~~ ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m FGMPolylineController.m[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m FGMPolygonController.m[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m FGMMarkerController.m[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m FGMImageUtils.m[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m FGMHeatmapController.m[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m FGMGroundOverlayController.m[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m FGMGoogleMapsPlugin.m[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m FGMGoogleMapController.m[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m FGMConversionUtils.m[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m FGMClusterManagersController.m[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mCompiling[0m FGMCircleController.m[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mRegisterExecutionPolicyException[0m GoogleMapsUtils.framework[0m
+[14:57:19]: ▸ [35m[[36mGoogle-Maps-iOS-Utils[0m] [1mTouching[0m GoogleMapsUtils.framework[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mProcessing[0m google_maps_flutter_ios-Info.plist[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mRegisterExecutionPolicyException[0m google_maps_flutter_ios.framework[0m
+[14:57:19]: ▸ [35m[[36mgoogle_maps_flutter_ios[0m] [1mTouching[0m google_maps_flutter_ios.framework[0m
+[14:57:19]: ▸ [35m[[36mPods-Runner[0m] [1mProcessing[0m Pods-Runner-Info.plist[0m
+[14:57:19]: ▸ [35m[[36mPods-Runner[0m] [1mRegisterExecutionPolicyException[0m Pods_Runner.framework[0m
+[14:57:19]: ▸ [35m[[36mPods-Runner[0m] [1mTouching[0m Pods_Runner.framework[0m
+[14:57:19]: ▸ [35m[[36mRunner[0m] [1mCopy[0m url_launcher_ios_url_launcher_ios.bundle -> url_launcher_ios_url_launcher_ios.bundle[0m
+[14:57:19]: ▸ [35m[[36mRunner[0m] [1mRunning script[0m [CP] Check Pods Manifest.lock[0m
+[14:57:19]: ▸ [35m[[36mRunner[0m] [1mCopy[0m sqflite_darwin_sqflite_darwin.bundle -> sqflite_darwin_sqflite_darwin.bundle[0m
+[14:57:19]: ▸ [35m[[36mRunner[0m] [1mCopy[0m shared_preferences_foundation_shared_preferences_foundation.bundle -> shared_preferences_foundation_shared_preferences_foundation.bundle[0m
+[14:57:19]: ▸ [35m[[36mRunner[0m] [1mCopy[0m share_plus_share_plus.bundle -> share_plus_share_plus.bundle[0m
+[14:57:19]: ▸ [35m[[36mRunner[0m] [1mCopy[0m image_picker_ios_image_picker_ios.bundle -> image_picker_ios_image_picker_ios.bundle[0m
+[14:57:19]: ▸ [35m[[36mRunner[0m] [1mCopy[0m geolocator_apple_geolocator_apple.bundle -> geolocator_apple_geolocator_apple.bundle[0m
+[14:57:19]: ▸ [35m[[36mRunner[0m] [1mCopy[0m app_links_app_links.bundle -> app_links_app_links.bundle[0m
+[14:57:19]: ▸ [35m[[36mRunner[0m] [1mRunning script[0m Run Script[0m
+[14:58:12]: ▸ [35m[[36mRunner[0m] [1mGenerate Asset Symbols[0m Assets.xcassets[0m
+[14:58:12]: ▸ [35m[[36mRunner[0m] [1mCopying[0m AppFrameworkInfo.plist[0m
+[14:58:12]: ▸ [35m[[36mRunner[0m] [1mCompiling[0m Main.storyboard[0m
+[14:58:17]: ▸ [35m[[36mRunner[0m] [1mCompiling[0m LaunchScreen.storyboard[0m
+[14:58:22]: ▸ [35m[36;1mnote: [0mEmplaced /Users/runner/Library/Developer/Xcode/DerivedData/Runner-ahvezortocuodrdfixtaowbulvan/Build/Intermediates.noindex/ArchiveIntermediates/Runner/InstallationBuildProductsLocation/Applications/Runner.app/AppIcon60x60@2x.png (in target 'Runner' from project 'Runner')[0m
+[14:58:22]: ▸ [35m[36;1mnote: [0mEmplaced /Users/runner/Library/Developer/Xcode/DerivedData/Runner-ahvezortocuodrdfixtaowbulvan/Build/Intermediates.noindex/ArchiveIntermediates/Runner/InstallationBuildProductsLocation/Applications/Runner.app/AppIcon76x76@2x~ipad.png (in target 'Runner' from project 'Runner')[0m
+[14:58:22]: ▸ [35m[36;1mnote: [0mEmplaced /Users/runner/Library/Developer/Xcode/DerivedData/Runner-ahvezortocuodrdfixtaowbulvan/Build/Intermediates.noindex/ArchiveIntermediates/Runner/InstallationBuildProductsLocation/Applications/Runner.app/Assets.car (in target 'Runner' from project 'Runner')[0m
+[14:58:22]: ▸ [35m[[36mRunner[0m] [1mProcessing[0m Info.plist[0m
+[14:58:24]: ▸ [35m[[36mRunner[0m] [1mCopy[0m arm64-apple-ios.swiftmodule -> Runner.swiftmodule[0m
+[14:58:24]: ▸ [35m[[36mRunner[0m] [1mCopy[0m arm64-apple-ios.swiftdoc -> Runner.swiftdoc[0m
+[14:58:24]: ▸ [35m[[36mRunner[0m] [1mCopy[0m arm64-apple-ios.abi.json -> Runner.abi.json[0m
+[14:58:25]: ▸ [35m[[36mRunner[0m] [1mCompiling[0m Runner_vers.c[0m
+[14:58:27]: ▸ [35m[[36mRunner[0m] [1mCompiling[0m GeneratedPluginRegistrant.m[0m
+[14:58:27]: ▸ [35m[[36mRunner[0m] [1mLinking[0m Runner[0m
+[14:58:28]: ▸ [35m[[36mRunner[0m] [1mRunning script[0m Thin Binary[0m
+[14:58:29]: ▸ [35m[[36mRunner[0m] [1mGenerating[0m Runner.app.dSYM[0m
+[14:58:29]: ▸ [35m[[36mRunner[0m] [1mRunning script[0m [CP] Copy Pods Resources[0m
+[14:58:32]: ▸ [35m[[36mRunner[0m] [1mExtract App Intents Metadata[0m
+[14:58:32]: ▸ [35m[1mSigning[0m Runner.app (in target 'Runner' from project 'Runner')[0m
+[14:58:32]: ▸ [35m[[36mRunner[0m] [1mRegisterExecutionPolicyException[0m Runner.app[0m
+[14:58:32]: ▸ [35m[[36mRunner[0m] [1mValidate[0m Runner.app[0m
+[14:58:32]: ▸ [35m[[36mRunner[0m] [1mTouching[0m Runner.app[0m
+[14:58:32]: ▸ [35m[36;1mnote: [0mRun script build phase 'Thin Binary' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'Runner' from project 'Runner')[0m
+[14:58:32]: ▸ [35m[36;1mnote: [0mRun script build phase 'Run Script' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'Runner' from project 'Runner')[0m
+[14:58:32]: ▸ [35m[32;1mArchive Succeeded[0m
+[14:58:33]: [33mGenerated plist file with the following values:[0m
+[14:58:33]: ▸ [35m-----------------------------------------[0m
+[14:58:33]: ▸ [35m{[0m
+[14:58:33]: ▸ [35m  "provisioningProfiles": {[0m
+[14:58:33]: ▸ [35m    "sa.almubarky.fenaa": "match AppStore sa.almubarky.fenaa"[0m
+[14:58:33]: ▸ [35m  },[0m
+[14:58:33]: ▸ [35m  "method": "app-store",[0m
+[14:58:33]: ▸ [35m  "signingStyle": "manual"[0m
+[14:58:33]: ▸ [35m}[0m
+[14:58:33]: ▸ [35m-----------------------------------------[0m
+[14:58:33]: [36m$ /usr/bin/xcrun /Users/runner/hostedtoolcache/Ruby/3.3.12/arm64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.0/gym/lib/assets/wrap_xcodebuild/xcbuild-safe.sh -exportArchive -exportOptionsPlist /var/folders/36/tjdph2t965j8snz9_vkdnw0r0000gn/T/gym_config20261012-11113-kthjdw.plist -archivePath /Users/runner/Library/Developer/Xcode/Archives/2026-10-12/Runner\ 2026-10-12\ 14.56.35.xcarchive -exportPath /var/folders/36/tjdph2t965j8snz9_vkdnw0r0000gn/T/gym_output20261012-11113-98vz0h [0m
+[14:58:44]: Compressing 5 dSYM(s)
+[14:58:44]: [36m$ cd /Users/runner/Library/Developer/Xcode/Archives/2026-10-12/Runner\ 2026-10-12\ 14.56.35.xcarchive/dSYMs && zip -r /Users/runner/work/fanaa/fanaa/app/ios/Runner.app.dSYM.zip *.dSYM[0m
+[14:58:49]: ▸ [35m  adding: App.framework.dSYM/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: App.framework.dSYM/Contents/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: App.framework.dSYM/Contents/Resources/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: App.framework.dSYM/Contents/Resources/DWARF/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: App.framework.dSYM/Contents/Resources/DWARF/App (deflated 71%)[0m
+[14:58:49]: ▸ [35m  adding: Flutter.framework.dSYM/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: Flutter.framework.dSYM/Contents/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: Flutter.framework.dSYM/Contents/Resources/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: Flutter.framework.dSYM/Contents/Resources/Relocations/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: Flutter.framework.dSYM/Contents/Resources/Relocations/aarch64/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: Flutter.framework.dSYM/Contents/Resources/Relocations/aarch64/Flutter.yml (deflated 89%)[0m
+[14:58:49]: ▸ [35m  adding: Flutter.framework.dSYM/Contents/Resources/DWARF/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: Flutter.framework.dSYM/Contents/Resources/DWARF/Flutter (deflated 75%)[0m
+[14:58:49]: ▸ [35m  adding: Flutter.framework.dSYM/Contents/Info.plist (deflated 53%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework 1.dSYM/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework 1.dSYM/Contents/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework 1.dSYM/Contents/Resources/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework 1.dSYM/Contents/Resources/Relocations/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework 1.dSYM/Contents/Resources/Relocations/aarch64/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework 1.dSYM/Contents/Resources/Relocations/aarch64/objective_c.yml (deflated 86%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework 1.dSYM/Contents/Resources/DWARF/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework 1.dSYM/Contents/Resources/DWARF/objective_c (deflated 74%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework 1.dSYM/Contents/Info.plist (deflated 52%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework.dSYM/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework.dSYM/Contents/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework.dSYM/Contents/Resources/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework.dSYM/Contents/Resources/Relocations/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework.dSYM/Contents/Resources/Relocations/aarch64/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework.dSYM/Contents/Resources/Relocations/aarch64/objective_c.yml (deflated 86%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework.dSYM/Contents/Resources/DWARF/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework.dSYM/Contents/Resources/DWARF/objective_c (deflated 74%)[0m
+[14:58:49]: ▸ [35m  adding: objective_c.framework.dSYM/Contents/Info.plist (deflated 52%)[0m
+[14:58:49]: ▸ [35m  adding: Runner.app.dSYM/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: Runner.app.dSYM/Contents/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: Runner.app.dSYM/Contents/Resources/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: Runner.app.dSYM/Contents/Resources/Relocations/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: Runner.app.dSYM/Contents/Resources/Relocations/aarch64/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: Runner.app.dSYM/Contents/Resources/Relocations/aarch64/Runner.yml (deflated 87%)[0m
+[14:58:49]: ▸ [35m  adding: Runner.app.dSYM/Contents/Resources/DWARF/ (stored 0%)[0m
+[14:58:49]: ▸ [35m  adding: Runner.app.dSYM/Contents/Resources/DWARF/Runner (deflated 71%)[0m
+[14:58:49]: ▸ [35m  adding: Runner.app.dSYM/Contents/Info.plist (deflated 52%)[0m
 
-==================== Xcode ====================
-Xcode 26.6
-Build version 17F113
+[14:58:49]: [32mSuccessfully exported and compressed dSYM file[0m
+[14:58:49]: [32mSuccessfully exported and signed the ipa file:[0m
+[14:58:49]: /Users/runner/work/fanaa/fanaa/app/ios/Runner.ipa
+[14:58:49]: [32m----------------------------------[0m
+[14:58:49]: [32m--- Step: upload_to_testflight ---[0m
+[14:58:49]: [32m----------------------------------[0m
+[14:58:49]: Creating authorization token for App Store Connect API
+[14:58:50]: [32mReady to upload new build to TestFlight (App: 6821891019)...[0m
+[14:58:50]: Going to upload updated app to App Store Connect
+[14:58:50]: [32mThis might take a few minutes. Please don't interrupt the script.[0m
+[15:00:41]: [32m--------------------------------------------------------------------[0m
+[15:00:41]: [32mSuccessfully uploaded package to App Store Connect. It might take a few minutes until it's visible online.[0m
+[15:00:41]: [32m--------------------------------------------------------------------[0m
+[15:00:41]: [32mSuccessfully uploaded the new binary to App Store Connect[0m
+[15:00:41]: [33m`skip_waiting_for_build_processing` used and `changelog` supplied - will wait until build appears on App Store Connect, update the changelog and then skip the rest of the remaining of the processing steps.[0m
+[15:00:41]: Waiting for processing on... app_id: 6821891019, app_version: 0.1.0, build_version: 117, platform: IOS
+[15:00:42]: [33mRead more information on why this build isn't showing up yet - https://github.com/fastlane/fastlane/issues/14997[0m
+[15:00:42]: Waiting for the build to show up in the build list - this may take a few minutes (check your email for processing issues if this continues)
+[15:01:13]: Waiting for the build to show up in the build list - this may take a few minutes (check your email for processing issues if this continues)
+[15:01:44]: Waiting for the build to show up in the build list - this may take a few minutes (check your email for processing issues if this continues)
+[15:02:14]: Waiting for the build to show up in the build list - this may take a few minutes (check your email for processing issues if this continues)
+[15:02:46]: [32mSuccessfully finished processing the build 0.1.0 - 117 for IOS[0m
+[15:02:46]: [32mSuccessfully set the changelog for build[0m
+[15:02:46]: [33mUsing App Store Connect's default for notifying external testers (which is true) - set `notify_external_testers` for full control[0m
 
-==================== الأسرار ====================
-✅ MATCH_GIT_TOKEN
-✅ MATCH_PASSWORD
-✅ APP_STORE_CONNECT_KEY_ID
-✅ APP_STORE_CONNECT_ISSUER_ID
-✅ APP_STORE_CONNECT_KEY
-share-certs: 200
++---------------------------------------------------+
+|                 [32mfastlane summary[0m                  |
++------+------------------------------+-------------+
+| Step | Action                       | Time (in s) |
++------+------------------------------+-------------+
+| 1    | default_platform             | 0           |
+| 2    | setup_ci                     | 0           |
+| 3    | app_store_connect_api_key    | 0           |
+| 4    | match                        | 3           |
+| 5    | update_code_signing_settings | 0           |
+| 6    | increment_build_number       | 3           |
+| 7    | build_app                    | 148         |
+| 8    | upload_to_testflight         | 236         |
++------+------------------------------+-------------+
 
-==================== fastlane + تجهيز حساب Apple ====================
-[14:47:53]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[14:47:53]: fastlane 2.241.0 (Ruby 3.3.12, gem)
-[14:47:54]: [32m------------------------------[0m
-[14:47:54]: [32m--- Step: default_platform ---[0m
-[14:47:54]: [32m------------------------------[0m
-[14:47:54]: [32mDriving the lane 'ios prepare' 🚀[0m
-[14:47:54]: [32m---------------------------------------[0m
-[14:47:54]: [32m--- Step: app_store_connect_api_key ---[0m
-[14:47:54]: [32m---------------------------------------[0m
-[14:47:54]: [32m✅ معرّف التطبيق مسجّل: sa.almubarky.fenaa[0m
-[14:47:54]: [32m✅ Associated Domains مفعّلة[0m
-[14:47:55]: [32m✅ سجل التطبيق موجود في App Store Connect: فِناء[0m
+[15:02:46]: [32mfastlane.tools just saved you 7 minutes! 🎉[0m
 
-+------------------------------------------------+
-|                [32mfastlane summary[0m                |
-+------+---------------------------+-------------+
-| Step | Action                    | Time (in s) |
-+------+---------------------------+-------------+
-| 1    | default_platform          | 0           |
-| 2    | app_store_connect_api_key | 0           |
-+------+---------------------------+-------------+
-
-[14:47:55]: [32mfastlane.tools finished successfully 🎉[0m
-
-==================== Flutter ====================
-Flutter 3.47.7 • channel stable • https://github.com/flutter/flutter.git
-Framework • revision abaf9c5237 (4 days ago) • 2026-10-08 09:51:21 -0700
-Engine • hash d8a2d6c768c334d53e16277f837970ffa1e2de81 (revision deb287481e) (5 days ago) • 2026-10-07 17:09:12.000Z
-Tools • Dart 3.13.5 • DevTools 2.60.0
-
-==================== مشروع iOS ====================
-
-Your application code is in ./lib/main.dart.
-
-Flutter
-Podfile
-Runner
-Runner.xcodeproj
-Runner.xcworkspace
-RunnerTests
-
-==================== تحويلات الكود (codemods) ====================
-لا توجد تحويلات معلّقة
-
-==================== رقم البناء ====================
-version: 0.1.0+116
-
-==================== الأيقونة والحزم ====================
-✅ icons written to assets/brand
-Got dependencies!
-29 packages have newer versions incompatible with dependency constraints.
-Try `flutter pub outdated` for more information.
-No platform provided
-
-✓ Successfully generated launcher icons
-
-==================== تحليل الكود ====================
-Analyzing app...                                                
-
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/auth/account_type_screen.dart:97:11 • prefer_const_constructors
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/auth/account_type_screen.dart:97:53 • prefer_const_constructors
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/account/favorites_screen.dart:48:47 • prefer_const_constructors
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/account/favorites_screen.dart:61:47 • prefer_const_constructors
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/account/my_coupons_screen.dart:39:28 • prefer_const_constructors
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/payment/payment_success_screen.dart:36:29 • prefer_const_constructors
-  error • tr isn't a type. Try correcting the name to match an existing type • lib/features/merchant/products/add_product_screen.dart:59:49 • not_a_type
-  error • Object patterns can only use named fields. Try specifying the field name • lib/features/merchant/products/add_product_screen.dart:59:52 • positional_field_in_object_pattern
-  error • tr isn't a type. Try correcting the name to match an existing type • lib/features/merchant/products/add_product_screen.dart:59:94 • not_a_type
-  error • Object patterns can only use named fields. Try specifying the field name • lib/features/merchant/products/add_product_screen.dart:59:97 • positional_field_in_object_pattern
-   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre. Try replacing the use of the deprecated member with the replacement • lib/features/merchant/products/add_product_screen.dart:134:13 • deprecated_member_use
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/merchant/products/merchant_products_screen.dart:78:86 • prefer_const_constructors
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/merchant/reviews/merchant_reviews_screen.dart:73:30 • prefer_const_constructors
-  error • Methods can't be invoked in constant expressions • lib/features/merchant/settings/merchant_settings_screen.dart:46:87 • const_eval_method_invocation
-   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/merchant/settings/merchant_settings_screen.dart:113:31 • prefer_const_constructors
-   info • 'anonKey' is deprecated and shouldn't be used. Use publishableKey instead. anonKey will be removed in a future major version. Try replacing the use of the deprecated member with the replacement • lib/main.dart:21:51 • deprecated_member_use
-
-16 issues found. (ran in 11.2s)
-❌ أخطاء في الكود
+==================== ✅ اكتمل — النسخة مرفوعة إلى TestFlight (رقم 117) ====================
 
 ==================== أخطاء xcodebuild ====================
+3448:PhaseScriptExecution [CP]\ Copy\ XCFrameworks /Users/runner/Library/Developer/Xcode/DerivedData/Runner-ahvezortocuodrdfixtaowbulvan/Build/Intermediates.noindex/ArchiveIntermediates/Runner/IntermediateBuildFilesPath/Pods.build/Release-iphoneos/GoogleMaps.build/Script-1C5FD0070B12CD7A0CA56C494088F31B.sh (in target 'GoogleMaps' from project 'Pods')
+6024:PhaseScriptExecution [CP]\ Check\ Pods\ Manifest.lock /Users/runner/Library/Developer/Xcode/DerivedData/Runner-ahvezortocuodrdfixtaowbulvan/Build/Intermediates.noindex/ArchiveIntermediates/Runner/IntermediateBuildFilesPath/Runner.build/Release-iphoneos/Runner.build/Script-E3A6F478091DD6AAB31D2DE1.sh (in target 'Runner' from project 'Runner')
+6052:PhaseScriptExecution Run\ Script /Users/runner/Library/Developer/Xcode/DerivedData/Runner-ahvezortocuodrdfixtaowbulvan/Build/Intermediates.noindex/ArchiveIntermediates/Runner/IntermediateBuildFilesPath/Runner.build/Release-iphoneos/Runner.build/Script-9740EEB61CF901F6004384FC.sh (in target 'Runner' from project 'Runner')
+7206:PhaseScriptExecution Thin\ Binary /Users/runner/Library/Developer/Xcode/DerivedData/Runner-ahvezortocuodrdfixtaowbulvan/Build/Intermediates.noindex/ArchiveIntermediates/Runner/IntermediateBuildFilesPath/Runner.build/Release-iphoneos/Runner.build/Script-3B06AD1E1E4923F5004D2608.sh (in target 'Runner' from project 'Runner')
+7841:PhaseScriptExecution [CP]\ Copy\ Pods\ Resources /Users/runner/Library/Developer/Xcode/DerivedData/Runner-ahvezortocuodrdfixtaowbulvan/Build/Intermediates.noindex/ArchiveIntermediates/Runner/IntermediateBuildFilesPath/Runner.build/Release-iphoneos/Runner.build/Script-57E0F3E9FFE75D61CB876773.sh (in target 'Runner' from project 'Runner')
