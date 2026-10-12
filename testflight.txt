@@ -1,9 +1,10 @@
-status: cancelled
-run: 14 (38259008331)
-commit: 3f26b59734b7a8dbf07f9cfe658af042defd290f
-Mon Oct 12 14:47:38 UTC 2026
+status: failure
+run: 16 (38265394661)
+commit: 57c0a2c4ae9216392c296dad10e4e81e540f3f8c
+Mon Oct 12 14:48:14 UTC 2026
 
 ==================== الأخطاء المباشرة ====================
+92:❌ أخطاء في الكود
 
 ==================== آخر السجل ====================
 
@@ -20,18 +21,18 @@ Build version 17F113
 share-certs: 200
 
 ==================== fastlane + تجهيز حساب Apple ====================
-[14:46:27]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[14:46:27]: fastlane 2.241.0 (Ruby 3.3.12, gem)
-[14:46:27]: [32m------------------------------[0m
-[14:46:27]: [32m--- Step: default_platform ---[0m
-[14:46:27]: [32m------------------------------[0m
-[14:46:27]: [32mDriving the lane 'ios prepare' 🚀[0m
-[14:46:27]: [32m---------------------------------------[0m
-[14:46:27]: [32m--- Step: app_store_connect_api_key ---[0m
-[14:46:27]: [32m---------------------------------------[0m
-[14:46:28]: [32m✅ معرّف التطبيق مسجّل: sa.almubarky.fenaa[0m
-[14:46:28]: [32m✅ Associated Domains مفعّلة[0m
-[14:46:28]: [32m✅ سجل التطبيق موجود في App Store Connect: فِناء[0m
+[14:47:53]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[14:47:53]: fastlane 2.241.0 (Ruby 3.3.12, gem)
+[14:47:54]: [32m------------------------------[0m
+[14:47:54]: [32m--- Step: default_platform ---[0m
+[14:47:54]: [32m------------------------------[0m
+[14:47:54]: [32mDriving the lane 'ios prepare' 🚀[0m
+[14:47:54]: [32m---------------------------------------[0m
+[14:47:54]: [32m--- Step: app_store_connect_api_key ---[0m
+[14:47:54]: [32m---------------------------------------[0m
+[14:47:54]: [32m✅ معرّف التطبيق مسجّل: sa.almubarky.fenaa[0m
+[14:47:54]: [32m✅ Associated Domains مفعّلة[0m
+[14:47:55]: [32m✅ سجل التطبيق موجود في App Store Connect: فِناء[0m
 
 +------------------------------------------------+
 |                [32mfastlane summary[0m                |
@@ -42,7 +43,7 @@ share-certs: 200
 | 2    | app_store_connect_api_key | 0           |
 +------+---------------------------+-------------+
 
-[14:46:28]: [32mfastlane.tools finished successfully 🎉[0m
+[14:47:55]: [32mfastlane.tools finished successfully 🎉[0m
 
 ==================== Flutter ====================
 Flutter 3.47.7 • channel stable • https://github.com/flutter/flutter.git
@@ -61,8 +62,11 @@ Runner.xcodeproj
 Runner.xcworkspace
 RunnerTests
 
+==================== تحويلات الكود (codemods) ====================
+لا توجد تحويلات معلّقة
+
 ==================== رقم البناء ====================
-version: 0.1.0+114
+version: 0.1.0+116
 
 ==================== الأيقونة والحزم ====================
 ✅ icons written to assets/brand
@@ -74,13 +78,26 @@ No platform provided
 ✓ Successfully generated launcher icons
 
 ==================== تحليل الكود ====================
-13 issues found. (ran in 19.7s)
+Analyzing app...                                                
 
-==================== تهيئة iOS ====================
-Warning: Building for device with codesigning disabled. You will have to manually codesign before deploying to device.
-Building sa.almubarky.fenaa for device (ios-release)...
-The following plugins do not support Swift Package Manager for ios:
-  - google_maps_flutter_ios
-This will become an error in a future version of Flutter. Please contact the plugin maintainers to request Swift Package Manager adoption.
-Running pod install...                                          
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/auth/account_type_screen.dart:97:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/auth/account_type_screen.dart:97:53 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/account/favorites_screen.dart:48:47 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/account/favorites_screen.dart:61:47 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/account/my_coupons_screen.dart:39:28 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/customer/payment/payment_success_screen.dart:36:29 • prefer_const_constructors
+  error • tr isn't a type. Try correcting the name to match an existing type • lib/features/merchant/products/add_product_screen.dart:59:49 • not_a_type
+  error • Object patterns can only use named fields. Try specifying the field name • lib/features/merchant/products/add_product_screen.dart:59:52 • positional_field_in_object_pattern
+  error • tr isn't a type. Try correcting the name to match an existing type • lib/features/merchant/products/add_product_screen.dart:59:94 • not_a_type
+  error • Object patterns can only use named fields. Try specifying the field name • lib/features/merchant/products/add_product_screen.dart:59:97 • positional_field_in_object_pattern
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre. Try replacing the use of the deprecated member with the replacement • lib/features/merchant/products/add_product_screen.dart:134:13 • deprecated_member_use
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/merchant/products/merchant_products_screen.dart:78:86 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/merchant/reviews/merchant_reviews_screen.dart:73:30 • prefer_const_constructors
+  error • Methods can't be invoked in constant expressions • lib/features/merchant/settings/merchant_settings_screen.dart:46:87 • const_eval_method_invocation
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/features/merchant/settings/merchant_settings_screen.dart:113:31 • prefer_const_constructors
+   info • 'anonKey' is deprecated and shouldn't be used. Use publishableKey instead. anonKey will be removed in a future major version. Try replacing the use of the deprecated member with the replacement • lib/main.dart:21:51 • deprecated_member_use
+
+16 issues found. (ran in 11.2s)
+❌ أخطاء في الكود
+
 ==================== أخطاء xcodebuild ====================
