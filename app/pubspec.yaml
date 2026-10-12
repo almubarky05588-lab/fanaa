@@ -39,8 +39,8 @@ dependencies:
   image_picker: ^1.1.2
   share_plus: ^10.1.2
 
-  # الدفع (صفحة ماي فاتورة داخل التطبيق)
-  webview_flutter: ^4.10.0
+  # الدفع: صفحة ماي فاتورة في Safari الآمن (يدعم Apple Pay)
+  flutter_web_auth_2: ^4.1.0
 
 dev_dependencies:
   flutter_test:
