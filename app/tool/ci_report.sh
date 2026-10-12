@@ -15,7 +15,7 @@ if [ -f /tmp/codemods_applied ] && [ -n "${GITHUB_WORKSPACE:-}" ]; then
     git config user.name "fenaa-ci"; git config user.email "ci@fenaa.local"
     mkdir -p app/tool/codemods/done
     for f in app/tool/codemods/pending/*.py; do [ -f "$f" ] && git mv "$f" app/tool/codemods/done/; done
-    git add app/lib app/tool/codemods
+    git add app/lib app/tool
     git commit -q -m "chore: apply codemods from build #${GITHUB_RUN_NUMBER:-?}" &&
       git pull -q --rebase --autostash origin main &&
       git push -q origin HEAD:main && echo "✅ codemods committed to main"
