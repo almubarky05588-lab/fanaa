@@ -11,113 +11,32 @@ jobs:
     name: بناء فناء ورفعه إلى TestFlight
     runs-on: macos-26
     timeout-minutes: 75
-    defaults:
-      run:
-        working-directory: app
-
     steps:
       - uses: actions/checkout@v4
-
-      - name: اختيار أحدث Xcode
-        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_26* | sort -V | tail -1)/Contents/Developer" && xcodebuild -version
-
-      - name: فحص توكن مستودع الشهادات
-        env:
-          MATCH_GIT_TOKEN: ${{ secrets.MATCH_GIT_TOKEN }}
-        run: |
-          TOKEN=$(printf '%s' "$MATCH_GIT_TOKEN" | tr -d '[:space:]')
-          CODE=$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $TOKEN" \
-            https://api.github.com/repos/almubarky05588-lab/share-certs)
-          echo "استجابة GitHub API: $CODE" | tee /tmp/steps.log
-          [ "$CODE" = "200" ] || { echo "❌ MATCH_GIT_TOKEN لا يصل لمستودع share-certs" | tee -a /tmp/steps.log; exit 1; }
 
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
 
-      - name: توليد مشروع iOS
-        run: |
-          if [ ! -d ios/Runner ]; then
-            flutter create --org sa.almubarky --project-name fenaa --platforms=ios . | tail -3
-            rm -f test/widget_test.dart
-          fi
-          echo "✅ ios جاهز" | tee -a /tmp/steps.log
-
-      - name: رقم البناء
-        run: |
-          BUILD=$(( 100 + ${{ github.run_number }} ))
-          echo "BUILD_NUMBER=$BUILD" >> "$GITHUB_ENV"
-          sed -i '' -E "s/^version: (.*)\+.*/version: \1+$BUILD/" pubspec.yaml
-          grep '^version:' pubspec.yaml | tee -a /tmp/steps.log
-
-      - name: الأيقونة والحزم
-        run: |
-          set -o pipefail
-          python3 -m pip install --quiet --break-system-packages pillow || python3 -m pip install --quiet pillow
-          python3 tool/make_icon.py assets/brand | tee -a /tmp/steps.log
-          flutter pub get 2>&1 | tail -5 | tee -a /tmp/steps.log
-          dart run flutter_launcher_icons 2>&1 | tail -5 | tee -a /tmp/steps.log
-
-      - name: تهيئة iOS (بدون توقيع)
-        run: |
-          set -o pipefail
-          flutter build ios --release --config-only --no-codesign 2>&1 | tee /tmp/flutter_config.log
-
-      - name: الأذونات ومفتاح الخرائط والحد الأدنى لـiOS
-        env:
-          GOOGLE_MAPS_IOS_KEY: ${{ secrets.GOOGLE_MAPS_IOS_KEY }}
-        run: python3 tool/patch_ios.py ios | tee -a /tmp/steps.log
-
-      - name: Pods
-        working-directory: app/ios
-        run: |
-          set -o pipefail
-          pod install --repo-update 2>&1 | tail -30 | tee /tmp/pods.log
-
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
 
-      - name: تثبيت fastlane
-        run: gem install fastlane --no-document
-
-      - name: البناء والرفع إلى TestFlight
-        working-directory: app/ios
+      - name: البناء والرفع
         env:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY: ${{ secrets.APP_STORE_CONNECT_KEY }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           MATCH_GIT_TOKEN: ${{ secrets.MATCH_GIT_TOKEN }}
-          FASTLANE_SKIP_UPDATE_CHECK: 'true'
+          GOOGLE_MAPS_IOS_KEY: ${{ secrets.GOOGLE_MAPS_IOS_KEY }}
         run: |
           set -o pipefail
-          rm -rf fastlane && cp -R ../fastlane_ios fastlane
-          TOKEN=$(printf '%s' "$MATCH_GIT_TOKEN" | tr -d '[:space:]')
-          export MATCH_GIT_BASIC_AUTHORIZATION=$(printf '%s' "x-access-token:$TOKEN" | base64 | tr -d '[:space:]')
-          fastlane beta 2>&1 | tee /tmp/fastlane.log
+          bash app/tool/ci_ios.sh 2>&1 | tee /tmp/ci.log
 
-      - name: نشر تقرير البناء
+      - name: التقرير
         if: always()
-        working-directory: /tmp
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          STATUS: ${{ job.status }}
-        run: |
-          REPO_URL="https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
-          rm -rf rep
-          if git clone --depth 1 --branch ci-report "$REPO_URL" rep 2>/dev/null; then cd rep; else
-            mkdir rep && cd rep && git init -q && git checkout -q -b ci-report && git remote add origin "$REPO_URL"; fi
-          git config user.name "fenaa-ci"; git config user.email "ci@fenaa.local"
-          {
-            echo "status: $STATUS"; echo "build: ${BUILD_NUMBER:-?}"; echo "commit: ${{ github.sha }}"; echo "run: ${{ github.run_id }}"
-            echo "==== steps ===="; cat /tmp/steps.log 2>/dev/null
-            echo "==== flutter config ===="; tail -n 80 /tmp/flutter_config.log 2>/dev/null
-            echo "==== pods ===="; cat /tmp/pods.log 2>/dev/null
-            echo "==== fastlane (tail) ===="; tail -n 150 /tmp/fastlane.log 2>/dev/null
-            echo "==== xcodebuild errors ===="; for f in ~/Library/Logs/gym/*.log; do grep -nE "error:|\*\* ARCHIVE FAILED|Command PhaseScriptExecution failed" "$f" | tail -n 60; done 2>/dev/null
-          } > testflight.txt
-          git add testflight.txt
-          git commit -q -m "testflight #${{ github.run_number }} $STATUS" || true
-          git push -q origin ci-report || (git pull -q --rebase origin ci-report && git push -q origin ci-report)
+        run: bash app/tool/ci_report.sh "${{ job.status }}"
