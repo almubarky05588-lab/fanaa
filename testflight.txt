@@ -1,0 +1,87 @@
+status: failure
+run: 3 (38231029347)
+commit: 1f5c535901b6d2ef61bcdbad4a57ee148969bc5e
+Mon Oct 12 09:38:55 UTC 2026
+
+==================== الأخطاء المباشرة ====================
+
+==================== آخر السجل ====================
+
+==================== Xcode ====================
+Xcode 26.6
+Build version 17F113
+
+==================== الأسرار ====================
+✅ MATCH_GIT_TOKEN
+✅ MATCH_PASSWORD
+✅ APP_STORE_CONNECT_KEY_ID
+✅ APP_STORE_CONNECT_ISSUER_ID
+✅ APP_STORE_CONNECT_KEY
+share-certs: 200
+
+==================== Flutter ====================
+Flutter 3.47.7 • channel stable • https://github.com/flutter/flutter.git
+Framework • revision abaf9c5237 (4 days ago) • 2026-10-08 09:51:21 -0700
+Engine • hash d8a2d6c768c334d53e16277f837970ffa1e2de81 (revision deb287481e) (4 days ago) • 2026-10-07 17:09:12.000Z
+Tools • Dart 3.13.5 • DevTools 2.60.0
+
+==================== مشروع iOS ====================
+Recreating project ....
+  ios/Runner.xcworkspace/contents.xcworkspacedata (created)
+  ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist (created)
+  ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings (created)
+  ios/RunnerTests/RunnerTests.swift (created)
+  ios/Runner/Info.plist (created)
+  ios/Runner/Runner-Bridging-Header.h (created)
+  ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png (created)
+  ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md (created)
+  ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json (created)
+  ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png (created)
+  ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png (created)
+  ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png (created)
+  ios/Runner/Base.lproj/LaunchScreen.storyboard (created)
+  ios/Runner/Base.lproj/Main.storyboard (created)
+  ios/Runner/AppDelegate.swift (created)
+  ios/Runner/SceneDelegate.swift (created)
+  ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata (created)
+  ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist (created)
+  ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings (created)
+  ios/Runner.xcodeproj/project.pbxproj (created)
+  ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme (created)
+  ios/Flutter/Debug.xcconfig (created)
+  ios/Flutter/Release.xcconfig (created)
+  ios/Flutter/AppFrameworkInfo.plist (created)
+  ios/.gitignore (created)
+  fenaa.iml (created)
+  .gitignore (created)
+  .idea/runConfigurations/main_dart.xml (created)
+  .idea/libraries/Dart_SDK.xml (created)
+  .idea/libraries/KotlinJavaRuntime.xml (created)
+  .idea/modules.xml (created)
+  .idea/workspace.xml (created)
+  test/widget_test.dart (created)
+Resolving dependencies...
+Because fenaa depends on flutter_localizations from sdk which depends on intl ^0.20.3, intl ^0.20.3 is required.
+So, because fenaa depends on intl ^0.19.0, version solving failed.
+
+
+You can try the following suggestion to make the pubspec resolve:
+* Try upgrading your constraint on intl: flutter pub add intl:^0.20.3
+Failed to update packages.
+
+==================== أخطاء xcodebuild ====================
