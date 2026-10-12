@@ -1,4 +1,4 @@
-"""يجهّز مشروع iOS المولَّد: الاسم، الأذونات، مفتاح الخرائط، الحد الأدنى للنظام.
+"""يجهّز مشروع iOS المولَّد: الاسم، الأذونات، مفتاح الخرائط، الحد الأدنى للنظام، آيفون فقط.
 الاستخدام: GOOGLE_MAPS_IOS_KEY=... python3 tool/patch_ios.py ios
 """
 import os, plistlib, re, sys
@@ -20,6 +20,8 @@ info.update({
     "LSApplicationQueriesSchemes": ["tel", "https", "comgooglemaps"],
     "ITSAppUsesNonExemptEncryption": False,
     "UIStatusBarStyle": "UIStatusBarStyleDarkContent",
+    # التطبيق مصمَّم عموديًا للجوال — ملء الشاشة يعفيه من شرط دعم كل الاتجاهات
+    "UIRequiresFullScreen": True,
 })
 info["UISupportedInterfaceOrientations"] = ["UIInterfaceOrientationPortrait"]
 info.pop("UISupportedInterfaceOrientations~ipad", None)
@@ -53,5 +55,7 @@ if os.path.exists(p):
 p = os.path.join(ROOT, "Runner.xcodeproj", "project.pbxproj")
 s = open(p, encoding="utf-8").read()
 s = re.sub(r"IPHONEOS_DEPLOYMENT_TARGET = [0-9.]+;", f"IPHONEOS_DEPLOYMENT_TARGET = {MIN_IOS};", s)
+# آيفون فقط (1) — بدون آيباد (2)
+s = re.sub(r'TARGETED_DEVICE_FAMILY = "?[0-9,]+"?;', 'TARGETED_DEVICE_FAMILY = 1;', s)
 open(p, "w", encoding="utf-8").write(s)
-print("✅ project.pbxproj")
+print("✅ project.pbxproj (iPhone only)")
