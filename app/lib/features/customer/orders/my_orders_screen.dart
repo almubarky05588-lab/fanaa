@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/supabase/supabase_client.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/models/order.dart';
 import '../../../data/repositories/order_repo.dart';
+import '../../common/guest_login_prompt.dart';
 
 /// طلباتي
 class MyOrdersScreen extends ConsumerWidget {
@@ -13,6 +15,18 @@ class MyOrdersScreen extends ConsumerWidget {
   final bool isTab;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(currentUserProvider);
+    if (user == null) {
+      return Scaffold(
+        appBar: FnAppBar(title: 'طلباتي', showBack: !isTab),
+        body: const GuestLoginPrompt(
+          title: 'سجّل دخولك لعرض طلباتك',
+          subtitle: 'تابع طلباتك وفواتيرك بعد تسجيل الدخول برقم جوالك',
+          from: '/orders',
+          icon: Icons.receipt_long_outlined,
+        ),
+      );
+    }
     final orders = ref.watch(myOrdersProvider);
     return Scaffold(
       appBar: FnAppBar(title: 'طلباتي', showBack: !isTab),

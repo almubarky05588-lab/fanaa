@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import '../../core/router/auth_redirect.dart';
 import '../../core/theme/tokens.dart';
 import '../../core/utils/format.dart';
 import '../../core/widgets/fn_widgets.dart';
 import '../../data/models/profile.dart';
 import '../../data/repositories/auth_repo.dart';
 
-/// طول رمز Supabase الثابت (SMS) — التصميم يعرض 4 لكن المزوّد يرسل 6
+/// طول رمز Supabase (SMS) — 6 أرقام
 const kOtpLength = 6;
 
 /// 02b / 14b — رمز التحقق
@@ -46,12 +47,13 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
   void dispose() { _timer?.cancel(); super.dispose(); }
 
   Future<void> _verify() async {
-    if (_code.length < kOtpLength) return;
+    if (_code.length < kOtpLength || _loading) return;
     setState(() => _loading = true);
     try {
       await ref.read(authRepoProvider).verifyOtp(widget.phone, _code);
       ref.invalidate(profileProvider);
-      if (mounted) context.go('/splash');
+      // الموجّه ينقل المستخدم تلقائيًا للوجهة المحفوظة؛ هذا احتياط فقط
+      if (mounted) context.go(AuthRedirect.take() ?? '/splash');
     } catch (_) {
       if (mounted) showFnSnack(context, 'الرمز غير صحيح أو انتهت صلاحيته', error: true);
     } finally {

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/router/auth_redirect.dart';
+import '../../../core/supabase/supabase_client.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_logo.dart';
 import '../../../core/widgets/fn_widgets.dart';
+import '../../../data/local/guest_cart.dart';
 import '../../../data/repositories/auth_repo.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../../../data/repositories/order_repo.dart';
@@ -42,68 +45,111 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final p = ref.watch(profileProvider).valueOrNull;
-    final orders = ref.watch(myOrdersProvider).valueOrNull ?? const [];
-    final favs = ref.watch(favoriteIdsProvider).valueOrNull ?? const <String>{};
-    final addrs = ref.watch(addressesProvider).valueOrNull ?? const [];
+    final user = ref.watch(currentUserProvider);
     return Scaffold(
       appBar: FnAppBar(title: 'حسابي', showBack: !widget.isTab),
-      body: ListView(
+      body: user == null ? _guest(context) : _member(context),
+    );
+  }
+
+  // ---------------------------------------------------------------- الزائر
+  Widget _guest(BuildContext context) => ListView(
         padding: const EdgeInsets.fromLTRB(FnSpace.page, 6, FnSpace.page, 24),
         children: [
           Container(
-            padding: const EdgeInsets.all(14),
+            padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(color: FnColors.deep, borderRadius: BorderRadius.circular(22)),
-            child: Row(children: [
-              Container(width: 54, height: 54, decoration: BoxDecoration(color: FnColors.lime, borderRadius: BorderRadius.circular(18)),
-                  child: const Center(child: FnLogoMark(size: 32, color: FnColors.deep, gradient: false))),
-              const SizedBox(width: 12),
-              Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(p?.fullName?.isNotEmpty == true ? p!.fullName! : 'أضف اسمك', style: FnText.heading18.onDark),
-                Directionality(textDirection: TextDirection.ltr, child: Text(p?.phone == null ? '' : Fmt.phone(p!.phone!), style: FnText.caption11.soft)),
-              ])),
-              GestureDetector(
-                onTap: () => _editName(p?.fullName),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-                  decoration: BoxDecoration(color: FnColors.primary, borderRadius: BorderRadius.circular(13)),
-                  child: Text('تعديل', style: FnText.caption11.onDark),
-                ),
-              ),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(children: [
+                Container(width: 54, height: 54, decoration: BoxDecoration(color: FnColors.lime, borderRadius: BorderRadius.circular(18)),
+                    child: const Center(child: FnLogoMark(size: 32, color: FnColors.deep, gradient: false))),
+                const SizedBox(width: 12),
+                Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text('أهلًا بك في فناء', style: FnText.heading18.onDark),
+                  Text('سجّل دخولك لحفظ طلباتك وعناوينك', style: FnText.caption11.soft),
+                ])),
+              ]),
+              const SizedBox(height: 14),
+              FnButton(label: 'تسجيل الدخول برقم الجوال', height: 50, color: FnColors.lime, textColor: FnColors.deep,
+                  onPressed: () => goLogin(context, from: '/more')),
             ]),
           ),
           const SizedBox(height: 10),
-          Row(children: [
-            _Stat('${orders.length}', 'الطلبات'),
-            const SizedBox(width: 10),
-            _Stat('${p?.loyaltyPoints ?? 0}', 'نقاط الولاء'),
-            const SizedBox(width: 10),
-            const _Stat('0', 'الكوبونات'),
-          ]),
-          const SizedBox(height: 10),
           _Group(children: [
-            FnListRow(title: 'طلباتي', icon: Icons.shopping_bag_outlined, value: '${orders.length}', onTap: () => context.go('/orders')),
-            FnListRow(title: 'العناوين المحفوظة', icon: Icons.location_on_outlined, value: '${addrs.length}', onTap: () => context.push('/addresses')),
-            FnListRow(title: 'طرق الدفع', icon: Icons.credit_card_rounded, onTap: () => showFnSnack(context, 'تُحفظ البطاقات عند أول دفع')),
-            FnListRow(title: 'المفضلة', icon: Icons.favorite_border_rounded, value: '${favs.length}', onTap: () {}),
-          ]),
-          const SizedBox(height: 10),
-          _Group(children: [
-            FnListRow(title: 'الإشعارات', icon: Icons.notifications_none_rounded,
-                trailing: FnSwitch(value: _notif, onChanged: (v) => setState(() => _notif = v))),
             FnListRow(title: 'اللغة', icon: Icons.language_rounded, value: 'العربية'),
             FnListRow(title: 'الدعم والمساعدة', icon: Icons.help_outline_rounded),
             FnListRow(
-              title: 'تسجيل الخروج', titleStyle: FnText.bodyStrong15.clay, icon: Icons.logout_rounded, iconColor: FnColors.clay,
-              trailing: const SizedBox.shrink(),
+              title: 'هل أنت صاحب متجر؟', subtitle: 'سجّل مشتلك وابدأ البيع', icon: Icons.storefront_outlined, iconColor: FnColors.clay,
               onTap: () async {
-                await ref.read(authRepoProvider).signOut();
+                await AppPrefs.clearRoleChoice();
                 if (context.mounted) context.go('/auth/type');
               },
             ),
           ]),
         ],
-      ),
+      );
+
+  // ---------------------------------------------------------------- المسجّل
+  Widget _member(BuildContext context) {
+    final p = ref.watch(profileProvider).valueOrNull;
+    final orders = ref.watch(myOrdersProvider).valueOrNull ?? const [];
+    final favs = ref.watch(favoriteIdsProvider).valueOrNull ?? const <String>{};
+    final addrs = ref.watch(addressesProvider).valueOrNull ?? const [];
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(FnSpace.page, 6, FnSpace.page, 24),
+      children: [
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(color: FnColors.deep, borderRadius: BorderRadius.circular(22)),
+          child: Row(children: [
+            Container(width: 54, height: 54, decoration: BoxDecoration(color: FnColors.lime, borderRadius: BorderRadius.circular(18)),
+                child: const Center(child: FnLogoMark(size: 32, color: FnColors.deep, gradient: false))),
+            const SizedBox(width: 12),
+            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(p?.fullName?.isNotEmpty == true ? p!.fullName! : 'أضف اسمك', style: FnText.heading18.onDark),
+              Directionality(textDirection: TextDirection.ltr, child: Text(p?.phone == null ? '' : Fmt.phone(p!.phone!), style: FnText.caption11.soft)),
+            ])),
+            GestureDetector(
+              onTap: () => _editName(p?.fullName),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                decoration: BoxDecoration(color: FnColors.primary, borderRadius: BorderRadius.circular(13)),
+                child: Text('تعديل', style: FnText.caption11.onDark),
+              ),
+            ),
+          ]),
+        ),
+        const SizedBox(height: 10),
+        Row(children: [
+          _Stat('${orders.length}', 'الطلبات'),
+          const SizedBox(width: 10),
+          _Stat('${p?.loyaltyPoints ?? 0}', 'نقاط الولاء'),
+          const SizedBox(width: 10),
+          const _Stat('0', 'الكوبونات'),
+        ]),
+        const SizedBox(height: 10),
+        _Group(children: [
+          FnListRow(title: 'طلباتي', icon: Icons.shopping_bag_outlined, value: '${orders.length}', onTap: () => context.go('/orders')),
+          FnListRow(title: 'العناوين المحفوظة', icon: Icons.location_on_outlined, value: '${addrs.length}', onTap: () => context.push('/addresses')),
+          FnListRow(title: 'طرق الدفع', icon: Icons.credit_card_rounded, onTap: () => showFnSnack(context, 'تُحفظ البطاقات عند أول دفع')),
+          FnListRow(title: 'المفضلة', icon: Icons.favorite_border_rounded, value: '${favs.length}', onTap: () {}),
+        ]),
+        const SizedBox(height: 10),
+        _Group(children: [
+          FnListRow(title: 'الإشعارات', icon: Icons.notifications_none_rounded,
+              trailing: FnSwitch(value: _notif, onChanged: (v) => setState(() => _notif = v))),
+          FnListRow(title: 'اللغة', icon: Icons.language_rounded, value: 'العربية'),
+          FnListRow(title: 'الدعم والمساعدة', icon: Icons.help_outline_rounded),
+          FnListRow(
+            title: 'تسجيل الخروج', titleStyle: FnText.bodyStrong15.clay, icon: Icons.logout_rounded, iconColor: FnColors.clay,
+            trailing: const SizedBox.shrink(),
+            onTap: () async {
+              await ref.read(authRepoProvider).signOut();
+              if (context.mounted) context.go('/home'); // يبقى يتصفّح كزائر
+            },
+          ),
+        ]),
+      ],
     );
   }
 }

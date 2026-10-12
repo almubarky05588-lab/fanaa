@@ -16,8 +16,9 @@ dependencies:
   flutter_riverpod: ^2.6.1
   go_router: ^14.6.0
 
-  # الباك-إند
+  # الباك-إند والتخزين المحلي
   supabase_flutter: ^2.8.0
+  shared_preferences: ^2.3.3
 
   # الواجهة
   google_fonts: ^6.2.1

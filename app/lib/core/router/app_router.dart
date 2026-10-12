@@ -35,6 +35,7 @@ import '../../features/merchant/setup/merchant_setup_screen.dart';
 import '../../features/merchant/shell/merchant_shell.dart';
 import '../../features/merchant/wallet/merchant_wallet_screen.dart';
 import '../supabase/supabase_client.dart';
+import 'auth_redirect.dart';
 
 class _AuthNotifier extends ChangeNotifier {
   _AuthNotifier(Stream<dynamic> s) { _sub = s.listen((_) => notifyListeners()); }
@@ -60,15 +61,26 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final loggedIn = auth.currentSession != null;
       final loc = state.matchedLocation;
-      final inAuth = loc.startsWith('/auth');
-      if (!loggedIn) return inAuth ? null : '/auth/type';
-      if (inAuth) return '/splash';
       if (loc == '/splash') return null;
+      final inAuth = loc.startsWith('/auth');
+
+      // بعد التحقق: ارجع لنفس النقطة التي طُلب فيها التسجيل
+      if (loggedIn && inAuth) return AuthRedirect.take() ?? '/splash';
+
+      if (!loggedIn) {
+        if (inAuth) return null;
+        if (loc.startsWith('/m/')) return '/auth/type';
+        if (customerRouteNeedsAuth(loc)) {
+          AuthRedirect.pending = state.uri.toString();
+          return '/auth/login';
+        }
+        return null; // تصفّح الزائر
+      }
+
       final p = ref.read(profileProvider).valueOrNull;
       if (p == null) return null;
+      if (loc.startsWith('/invoice/')) return null; // مشتركة بين الطرفين
       final merchantArea = loc.startsWith('/m/');
-      // الفاتورة مشتركة بين الطرفين
-      if (loc.startsWith('/invoice/')) return null;
       if (p.isMerchant && !merchantArea) return '/m/dashboard';
       if (!p.isMerchant && merchantArea) return '/home';
       return null;
