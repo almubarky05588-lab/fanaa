@@ -1,3 +1,4 @@
-/store/*    /open.html   200
-/product/*  /open.html   200
-/pay/*      /pay.html    200
+/store/*    /open.html      200
+/product/*  /open.html      200
+/pay/card   /pay-card.html  200
+/pay/*      /pay.html       200

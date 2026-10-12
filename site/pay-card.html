@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>فناء — الدفع بالبطاقة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F4F3EE;--deep:#0C3E2A;--primary:#157A4E;--lime:#B7E05C;--ink:#0B2E20;--muted:#5d6b63;--clay:#C8703F}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);font-family:Cairo,system-ui,sans-serif;color:var(--ink);
+    padding:max(16px,env(safe-area-inset-top)) 18px max(20px,env(safe-area-inset-bottom))}
+  .wrap{max-width:440px;margin:0 auto}
+  .head{display:flex;align-items:center;justify-content:space-between;margin:6px 0 18px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
+  .logo{width:38px;height:38px;border-radius:13px;background:linear-gradient(135deg,var(--primary),var(--deep));display:flex;align-items:center;justify-content:center}
+  .x{width:40px;height:40px;border-radius:14px;background:#fff;border:0;font-size:20px;color:var(--ink);display:flex;align-items:center;justify-content:center;text-decoration:none}
+  .amount{background:var(--deep);border-radius:24px;padding:20px;text-align:center;color:#fff;margin-bottom:16px}
+  .amount small{color:var(--lime);font-size:13px}
+  .amount b{display:block;font-size:30px;margin:2px 0}
+  .amount span{color:#cfe3d6;font-size:13px}
+  .card{background:#fff;border-radius:24px;padding:18px 16px 16px}
+  .card h2{font-size:15px;margin:0 0 4px;display:flex;justify-content:space-between;align-items:center}
+  .nets{display:flex;gap:6px}
+  .nets i{font-style:normal;font-size:10px;font-weight:700;border:1px solid #E4E7E1;border-radius:6px;padding:2px 6px;color:var(--muted)}
+  #card-element{min-height:220px;margin-top:6px}
+  .pay{width:100%;height:56px;border:0;border-radius:18px;background:var(--deep);color:#fff;font:700 16px Cairo,sans-serif;margin-top:14px}
+  .pay:disabled{opacity:.6}
+  .err{color:var(--clay);font-size:13px;text-align:center;min-height:20px;margin-top:10px}
+  .safe{display:flex;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-size:12px;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="brand">
+      <div class="logo"><svg width="22" height="22" viewBox="0 0 120 120"><g fill="#B7E05C">
+        <path d="M60 60c40.8 9.6 43.2 49.4 7.2 69.6-14.4-24-27.4-47.8-7.2-69.6z" transform="rotate(-82 60 60)"/>
+        <path d="M60 60c31.9 7.5 33.8 39.5 5.6 55.3-11.3-18.8-21.4-37.6-5.6-55.3z" transform="rotate(40 60 60)"/>
+        <path d="M60 60c23.8 5.6 25.2 29.4 4.2 41.3-8.4-14-16-28-4.2-41.3z" transform="rotate(158 60 60)"/></g></svg></div>
+      فناء
+    </div>
+    <a class="x" href="fenaa://pay/failed" aria-label="إغلاق">✕</a>
+  </div>
+
+  <div class="amount">
+    <small>المبلغ المستحق</small>
+    <b id="amt">—</b>
+    <span id="store"></span>
+  </div>
+
+  <div class="card">
+    <h2>بيانات البطاقة <span class="nets"><i>mada</i><i>VISA</i><i>Mastercard</i></span></h2>
+    <div id="card-element"></div>
+    <button class="pay" id="pay" disabled>جارٍ التحميل…</button>
+    <div class="err" id="err"></div>
+  </div>
+
+  <div class="safe">🔒 دفع آمن ومشفّر — بيانات بطاقتك تُرسل مباشرة لماي فاتورة</div>
+</div>
+
+<script src="https://sa.myfatoorah.com/cardview/v2/session.js"></script>
+<script>
+  var p = new URLSearchParams(location.search);
+  var order = p.get('o'), sid = p.get('sid'), cc = p.get('cc') || 'SAU', sig = p.get('t');
+  var btn = document.getElementById('pay'), err = document.getElementById('err');
+  var amount = p.get('a') || '';
+  document.getElementById('amt').textContent = amount + ' ر.س';
+  document.getElementById('store').textContent = p.get('n') || '';
+
+  function fail(msg) { err.textContent = msg; btn.disabled = false; btn.textContent = 'ادفع ' + amount + ' ر.س'; }
+
+  try {
+    myFatoorah.init({
+      countryCode: cc,
+      sessionId: sid,
+      cardViewId: 'card-element',
+      supportedNetworks: 'v,m,md',
+      style: {
+        direction: 'rtl',
+        cardHeight: 220,
+        input: {
+          color: '#0B2E20', fontSize: '15px', fontFamily: 'sans-serif',
+          inputHeight: '46px', inputMargin: '8px',
+          borderColor: '#E4E7E1', borderWidth: '1px', borderRadius: '14px', boxShadow: '',
+          placeHolder: { holderName: 'الاسم على البطاقة', cardNumber: 'رقم البطاقة', expiryDate: 'MM / YY', securityCode: 'CVV' }
+        },
+        label: { display: false },
+        error: { borderColor: '#C8703F', borderRadius: '14px', boxShadow: '' }
+      }
+    });
+    btn.disabled = false;
+    btn.textContent = 'ادفع ' + amount + ' ر.س';
+  } catch (e) { fail('تعذّر تحميل نموذج البطاقة'); }
+
+  btn.onclick = function () {
+    err.textContent = '';
+    btn.disabled = true;
+    btn.textContent = 'جارٍ الدفع…';
+    myFatoorah.submit()
+      .then(function () {
+        // البطاقة ارتبطت بالجلسة — الخادم ينفّذ الدفع بالمبلغ المحفوظ في القاعدة
+        return fetch('https://kzeawenrpvkfmeslxylz.supabase.co/functions/v1/payment-execute', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ o: order, sid: sid, t: sig })
+        }).then(function (r) { return r.json(); });
+      })
+      .then(function (res) {
+        if (res && res.url) { location.href = res.url; return; }   // صفحة التحقق من البنك (OTP)
+        fail((res && res.error) || 'تعذّر تنفيذ الدفع');
+      })
+      .catch(function (e) {
+        fail((e && e.message) ? 'تحقّق من بيانات البطاقة' : 'تعذّر تنفيذ الدفع');
+      });
+  };
+</script>
+</body>
+</html>
