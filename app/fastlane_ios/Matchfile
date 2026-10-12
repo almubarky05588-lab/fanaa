@@ -1,0 +1,10 @@
+# نفس مستودع الشهادات المشفّرة المستخدم في share
+git_url("https://github.com/almubarky05588-lab/share-certs")
+storage_mode("git")
+git_branch("main")
+
+type("appstore")
+app_identifier(["sa.almubarky.fenaa"])
+team_id("5V6TC85KRL")
+
+readonly(false)
