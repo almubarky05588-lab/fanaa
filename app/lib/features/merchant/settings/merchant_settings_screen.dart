@@ -61,6 +61,42 @@ class _SettingsState extends ConsumerState<_Settings> {
     await _update({field: v.isEmpty ? null : double.tryParse(v)});
   }
 
+  Future<void> _editStore(Nursery n) async {
+    final name = TextEditingController(text: n.name);
+    final desc = TextEditingController(text: n.description ?? '');
+    final phone = TextEditingController(text: n.phone ?? '');
+    final saved = await showModalBottomSheet<bool>(
+      context: context, isScrollControlled: true,
+      builder: (ctx) => Padding(
+        padding: EdgeInsets.fromLTRB(24, 20, 24, MediaQuery.viewInsetsOf(ctx).bottom + 24),
+        child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text('بيانات المتجر', style: FnText.heading18),
+          const SizedBox(height: 14),
+          Text('اسم المتجر', style: FnText.label13.muted),
+          const SizedBox(height: 6),
+          TextField(controller: name, decoration: const InputDecoration(fillColor: FnColors.bgBase)),
+          const SizedBox(height: 12),
+          Text('الوصف', style: FnText.label13.muted),
+          const SizedBox(height: 6),
+          TextField(controller: desc, maxLines: 3, decoration: const InputDecoration(fillColor: FnColors.bgBase)),
+          const SizedBox(height: 12),
+          Text('رقم التواصل', style: FnText.label13.muted),
+          const SizedBox(height: 6),
+          TextField(controller: phone, keyboardType: TextInputType.phone, textDirection: TextDirection.ltr,
+              decoration: const InputDecoration(fillColor: FnColors.bgBase)),
+          const SizedBox(height: 18),
+          FnButton(label: 'حفظ', onPressed: () => Navigator.pop(ctx, true)),
+        ]),
+      ),
+    );
+    if (saved != true || name.text.trim().isEmpty) return;
+    await _update({
+      'name': name.text.trim(),
+      'description': desc.text.trim().isEmpty ? null : desc.text.trim(),
+      'phone': phone.text.trim().isEmpty ? null : phone.text.trim(),
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final n = ref.watch(myNurseryProvider).valueOrNull ?? widget.n;
@@ -71,15 +107,16 @@ class _SettingsState extends ConsumerState<_Settings> {
         children: [
           FnCard(
             padding: const EdgeInsets.all(12),
+            onTap: () => _editStore(n),
             child: Row(children: [
               Container(width: 48, height: 48, decoration: BoxDecoration(color: FnColors.deep, borderRadius: BorderRadius.circular(16)),
                   child: const Center(child: FnLogoMark(size: 30, color: FnColors.lime, gradient: false))),
               const SizedBox(width: 12),
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(n.name, style: FnText.bodyStrong15),
-                Text('تعديل الاسم والشعار والوصف', style: FnText.caption11.muted),
+                Text('تعديل الاسم والوصف ورقم التواصل', style: FnText.caption11.muted),
               ])),
-              const Icon(Icons.chevron_left_rounded, color: FnColors.faint),
+              const Icon(Icons.edit_outlined, size: 18, color: FnColors.faint),
             ]),
           ),
           const SizedBox(height: 8),
@@ -93,15 +130,15 @@ class _SettingsState extends ConsumerState<_Settings> {
           const SizedBox(height: 8),
           _label('التوصيل والرسوم'),
           _Group(children: [
-            FnListRow(title: 'نطاق التوصيل', value: Fmt.km(n.deliveryRadiusKm),
+            FnListRow(title: 'نطاق التوصيل', showChevron: false, value: Fmt.km(n.deliveryRadiusKm),
                 onTap: () => _editNumber('نطاق التوصيل', 'delivery_radius_km', n.deliveryRadiusKm, suffix: 'كم')),
-            FnListRow(title: 'رسوم التوصيل', value: Fmt.moneyShort(n.deliveryFee),
+            FnListRow(title: 'رسوم التوصيل', showChevron: false, value: Fmt.moneyShort(n.deliveryFee),
                 onTap: () => _editNumber('رسوم التوصيل', 'delivery_fee', n.deliveryFee)),
-            FnListRow(title: 'توصيل مجاني فوق', value: n.freeDeliveryOver == null ? '—' : Fmt.moneyShort(n.freeDeliveryOver!),
+            FnListRow(title: 'توصيل مجاني فوق', showChevron: false, value: n.freeDeliveryOver == null ? '—' : Fmt.moneyShort(n.freeDeliveryOver!),
                 onTap: () => _editNumber('توصيل مجاني فوق', 'free_delivery_over', n.freeDeliveryOver)),
-            FnListRow(title: 'الحد الأدنى للطلب', value: Fmt.moneyShort(n.minOrder),
+            FnListRow(title: 'الحد الأدنى للطلب', showChevron: false, value: Fmt.moneyShort(n.minOrder),
                 onTap: () => _editNumber('الحد الأدنى للطلب', 'min_order', n.minOrder)),
-            FnListRow(title: 'وقت التجهيز', value: Fmt.minutes(n.prepTimeMin),
+            FnListRow(title: 'وقت التجهيز', showChevron: false, value: Fmt.minutes(n.prepTimeMin),
                 onTap: () => _editNumber('وقت التجهيز', 'prep_time_min', n.prepTimeMin, suffix: 'دقيقة')),
           ]),
           const SizedBox(height: 8),
