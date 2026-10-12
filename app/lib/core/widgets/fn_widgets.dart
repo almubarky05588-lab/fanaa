@@ -165,7 +165,7 @@ class FnButton extends StatelessWidget {
         child: loading
             ? SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.2, color: textColor))
             : Row(mainAxisSize: MainAxisSize.min, children: [
-                Text(label, style: FnText.bodyStrong15.copyWith(color: textColor)),
+                Flexible(child: Text(label, style: FnText.bodyStrong15.copyWith(color: textColor), overflow: TextOverflow.ellipsis)),
                 if (icon != null) ...[const SizedBox(width: 8), IconTheme(data: IconThemeData(color: textColor), child: icon!)],
               ]),
       );
@@ -192,6 +192,7 @@ class FnGhostButton extends StatelessWidget {
       );
 }
 
+/// شريط سفلي ثابت للزر الرئيسي — يأخذ ارتفاع محتواه فقط
 class FnBottomBar extends StatelessWidget {
   const FnBottomBar({super.key, required this.child});
   final Widget child;
@@ -199,7 +200,7 @@ class FnBottomBar extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         decoration: const BoxDecoration(color: FnColors.surface, boxShadow: FnShadow.bar),
         padding: const EdgeInsets.fromLTRB(FnSpace.page, 14, FnSpace.page, 10),
-        child: SafeArea(top: false, child: child),
+        child: SafeArea(top: false, child: IntrinsicHeight(child: child)),
       );
 }
 
@@ -223,9 +224,10 @@ class FnStepper extends StatelessWidget {
                 child: Icon(i, size: vertical ? 14 : 18, color: dark ? FnColors.surface : (f == null ? FnColors.faint : FnColors.ink))),
           ),
         );
+    // ارتفاع ثابت للرقم حتى لا يتمدد العدّاد بطول الشاشة
     final children = [
       btn(Icons.add_rounded, () => onChanged(value + 1), dark: true),
-      SizedBox(width: vertical ? s : 34, height: vertical ? 24 : null,
+      SizedBox(width: vertical ? s : 34, height: vertical ? 24 : s,
           child: Center(child: Text('$value', style: vertical ? FnText.label13 : FnText.bodyStrong15))),
       btn(Icons.remove_rounded, value > min ? () => onChanged(value - 1) : null),
     ];
