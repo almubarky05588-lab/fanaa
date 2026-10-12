@@ -151,6 +151,24 @@ class OrderRepo {
     return id as String;
   }
 
+  /// ينشئ رابط دفع ماي فاتورة للطلب (null = الطلب مدفوع أصلًا)
+  Future<String?> createPayment(String orderId) async =>
+      (await _invokeFn('payment-create', {'order_id': orderId}))['url'] as String?;
+
+  /// يسأل الخادم: هل تأكّد الدفع من ماي فاتورة؟
+  Future<bool> verifyPayment(String orderId) async =>
+      (await _invokeFn('payment-verify', {'order_id': orderId}))['paid'] == true;
+
+  Future<Map<String, dynamic>> _invokeFn(String fn, Map<String, dynamic> body) async {
+    try {
+      final r = await _c.functions.invoke(fn, body: body);
+      return Map<String, dynamic>.from(r.data as Map);
+    } on FunctionException catch (e) {
+      final d = e.details;
+      throw PaymentException(d is Map && d['error'] is String ? d['error'] as String : 'حدث خطأ غير متوقع');
+    }
+  }
+
   Future<List<Order>> myOrders() async {
     if (_guest) return const [];
     final uid = _c.auth.currentUser!.id;
@@ -243,3 +261,11 @@ final myOrdersProvider = FutureProvider((ref) {
   ref.watch(authStateProvider);
   return ref.watch(orderRepoProvider).myOrders();
 });
+
+/// خطأ من خدمة الدفع برسالة جاهزة للعرض
+class PaymentException implements Exception {
+  PaymentException(this.message);
+  final String message;
+  @override
+  String toString() => message;
+}

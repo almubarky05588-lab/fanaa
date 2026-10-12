@@ -77,10 +77,8 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
               FnButton(label: tr('تسجيل الدخول'), loading: _loading, onPressed: _valid ? _send : null),
               const SizedBox(height: 14),
               Center(
-                child: Text.rich(TextSpan(children: [
-                  TextSpan(text: tr('ليس لديك حساب؟ '), style: FnText.label13.muted),
-                  TextSpan(text: tr('سجّل الآن'), style: FnText.label13.primary),
-                ])),
+                child: Text(tr('أول مرة؟ حسابك يُنشأ تلقائيًا برقم جوالك'),
+                    style: FnText.label13.muted, textAlign: TextAlign.center),
               ),
               const SizedBox(height: 10),
               const Center(child: LangPill()),

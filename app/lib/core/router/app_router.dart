@@ -71,6 +71,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final loggedIn = auth.currentSession != null;
       final loc = state.matchedLocation;
+      // iOS يفتح التطبيق على "/" عند تفعيل الروابط العامة
+      if (state.uri.path == '/' || state.uri.path.isEmpty) return '/splash';
       if (loc == '/splash') return null;
       final inAuth = loc.startsWith('/auth');
 
@@ -101,6 +103,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
+      GoRoute(path: '/', redirect: (_, __) => '/splash'),
       GoRoute(path: '/splash', builder: (_, __) => const SplashScreen()),
 
       // ------------------------------------------------------------ المصادقة

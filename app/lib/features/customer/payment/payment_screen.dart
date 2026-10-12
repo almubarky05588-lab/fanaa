@@ -6,6 +6,7 @@ import '../../../core/utils/format.dart';
 import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../checkout/checkout_state.dart';
+import 'pay_webview_screen.dart';
 import '../../../core/i18n/i18n.dart';
 
 /// 11 بوابة الدفع
@@ -19,23 +20,41 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
   PayMethod _m = PayMethod.mada;
   bool _loading = false;
 
+  /// الطلب الإلكتروني الذي أُنشئ ولم يُدفع بعد — يُعاد استخدامه عند إعادة المحاولة
+  String? _pendingOrderId;
+
   Future<void> _pay() async {
     final d = ref.read(checkoutDraftProvider);
     if (d == null || d.address == null) return;
-    if (_m.needsCard) {
-      context.push('/payment/card', extra: _m);
-      return;
-    }
     setState(() => _loading = true);
     try {
-      final id = await ref.read(orderRepoProvider).placeOrder(
+      final repo = ref.read(orderRepoProvider);
+      final id = _pendingOrderId ?? await repo.placeOrder(
             nurseryId: d.nurseryId, addressId: d.address!.id, paymentMethod: _m.db,
             coupon: d.coupon, note: d.note, scheduledAt: d.scheduledAt);
       ref.invalidate(cartsProvider);
       ref.invalidate(myOrdersProvider);
-      if (mounted) context.go('/payment/success/$id');
+      if (_m == PayMethod.cod) {
+        if (mounted) context.go('/payment/success/$id');
+        return;
+      }
+      _pendingOrderId = id;
+      // رابط الدفع ينشئه الخادم بالمبلغ المحفوظ في القاعدة
+      final url = await repo.createPayment(id);
+      if (!mounted) return;
+      if (url != null) await PayWebViewScreen.open(context, url);
+      // التأكيد الفعلي من ماي فاتورة نفسها (لا نعتمد على صفحة الرجوع)
+      final paid = await repo.verifyPayment(id);
+      if (!mounted) return;
+      if (paid) {
+        _pendingOrderId = null;
+        ref.invalidate(myOrdersProvider);
+        context.go('/payment/success/$id');
+      } else {
+        showFnSnack(context, tr('لم يكتمل الدفع — تقدر تحاول مرة ثانية'), error: true);
+      }
     } catch (e) {
-      if (mounted) showFnSnack(context, fnErrorText(e), error: true);
+      if (mounted) showFnSnack(context, e is PaymentException ? tr(e.message) : fnErrorText(e), error: true);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -79,14 +98,14 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
             child: Row(children: [
               const Icon(Icons.lock_outline_rounded, size: 14, color: FnColors.deep),
               const SizedBox(width: 8),
-              Expanded(child: Text(_m.needsCard ? tr('تُدخل بيانات البطاقة في الخطوة التالية بشكل آمن') : tr('دفع آمن ومشفّر'),
+              Expanded(child: Text(_m == PayMethod.cod ? tr('ادفع نقدًا أو بالشبكة عند استلام طلبك') : tr('ستنتقل لصفحة الدفع الآمنة من ماي فاتورة'),
                   style: FnText.caption11.deep)),
             ]),
           ),
         ],
       ),
       bottomNavigationBar: FnBottomBar(
-        child: FnButton(label: _m.needsCard ? tr('المتابعة') : tr('ادفع {0}', [Fmt.moneyShort(d.total)]), loading: _loading, onPressed: _pay),
+        child: FnButton(label: _m == PayMethod.cod ? tr('تأكيد الطلب') : tr('ادفع {0}', [Fmt.moneyShort(d.total)]), loading: _loading, onPressed: _pay),
       ),
     );
   }

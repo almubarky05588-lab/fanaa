@@ -20,8 +20,17 @@ class AuthRepo {
 
   /// يرسل رمزًا من ٤ أرقام عبر فورجوالي (دالة الخادم otp-send)
   Future<void> sendOtp(String localPhone, {required UserRole role}) async {
-    if (isDemo(localPhone)) return; // حساب تجريبي — لا رسالة
-    await _call('otp-send', {'phone': Fmt.toE164(localPhone)});
+    if (isDemo(localPhone)) {
+      // حساب تجريبي — لا رسالة، لكن نفس قاعدة الدور
+      final demoIsMerchant = Fmt.toE164(localPhone) != '+966500000001';
+      if (demoIsMerchant != (role == UserRole.merchant)) {
+        throw OtpException(demoIsMerchant
+            ? 'هذا الرقم مسجّل كصاحب متجر — سجّل الدخول من «صاحب متجر»'
+            : 'هذا الرقم مسجّل كعميل — سجّل الدخول من «مستخدم»');
+      }
+      return;
+    }
+    await _call('otp-send', {'phone': Fmt.toE164(localPhone), 'role': role.name});
   }
 
   /// يتحقق من الرمز (دالة الخادم otp-verify) ويفتح الجلسة. الدور يُستخدم فقط عند إنشاء حساب جديد
