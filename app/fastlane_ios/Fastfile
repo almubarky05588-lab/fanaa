@@ -30,6 +30,16 @@ platform :ios do
       UI.success("✅ سُجّل معرّف التطبيق الآن: #{BUNDLE_ID}")
     end
 
+    # روابط المشاركة (Universal Links) تحتاج قدرة Associated Domains على معرّف التطبيق
+    bid ||= Spaceship::ConnectAPI::BundleId.find(BUNDLE_ID)
+    ad = Spaceship::ConnectAPI::BundleIdCapability::Type::ASSOCIATED_DOMAINS
+    if bid.get_capabilities.map(&:capability_type).include?(ad)
+      UI.success("✅ Associated Domains مفعّلة")
+    else
+      bid.create_capability(ad)
+      UI.success("✅ فُعّلت Associated Domains الآن")
+    end
+
     app = Spaceship::ConnectAPI::App.find(BUNDLE_ID)
     if app
       UI.success("✅ سجل التطبيق موجود في App Store Connect: #{app.name}")
@@ -44,6 +54,12 @@ platform :ios do
     api_key = fenaa_api_key
 
     match(type: "appstore", api_key: api_key, readonly: false)
+    # ملف تزويد قديم بلا صلاحية الروابط؟ نعيد توليده مرة واحدة
+    path = ENV["sigh_#{BUNDLE_ID}_appstore_profile-path"]
+    unless path && File.exist?(path) && File.binread(path).include?("com.apple.developer.associated-domains")
+      UI.important("ملف التزويد لا يحتوي Associated Domains — إعادة توليد")
+      match(type: "appstore", api_key: api_key, readonly: false, force: true)
+    end
     profile_name = ENV["sigh_#{BUNDLE_ID}_appstore_profile-name"]
 
     update_code_signing_settings(

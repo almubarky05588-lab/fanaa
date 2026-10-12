@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["5V6TC85KRL.sa.almubarky.fenaa"],
+        "components": [
+          { "/": "/store/*", "comment": "store page" },
+          { "/": "/product/*", "comment": "product page" }
+        ]
+      }
+    ]
+  }
+}

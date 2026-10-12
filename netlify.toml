@@ -1,0 +1,4 @@
+# موقع روابط المشاركة — ينشره Netlify تلقائيًا من مجلد site عند كل تحديث
+[build]
+  publish = "site"
+  command = "echo 'static site'"

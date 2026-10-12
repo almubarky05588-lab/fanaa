@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>فناء — سوق المشاتل</title>
+<meta name="apple-itunes-app" content="app-id=6821891019">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F4F3EE;--deep:#0C3E2A;--primary:#157A4E;--lime:#B7E05C;--ink:#0B2E20}
+  *{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:var(--bg);font-family:Cairo,system-ui,sans-serif;color:var(--ink);padding:24px}
+  .card{max-width:380px;width:100%;background:#fff;border-radius:28px;padding:32px 24px;text-align:center;
+  box-shadow:0 12px 28px rgba(11,46,32,.08)}
+  .logo{width:84px;height:84px;border-radius:26px;background:linear-gradient(135deg,var(--primary),var(--deep));
+  display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+  h1{font-size:24px;margin:0 0 6px}p{margin:0 0 22px;color:#5d6b63;font-size:15px;line-height:1.7}
+  a.btn{display:block;background:var(--deep);color:#fff;text-decoration:none;font-weight:700;padding:16px;border-radius:18px;margin-bottom:10px}
+  a.ghost{display:block;color:var(--primary);text-decoration:none;font-weight:700;padding:10px}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <svg width="48" height="48" viewBox="0 0 120 120"><g fill="#B7E05C">
+      <path d="M60 60c40.8 9.6 43.2 49.4 7.2 69.6-14.4-24-27.4-47.8-7.2-69.6z" transform="rotate(-82 60 60)"/>
+      <path d="M60 60c31.9 7.5 33.8 39.5 5.6 55.3-11.3-18.8-21.4-37.6-5.6-55.3z" transform="rotate(40 60 60)"/>
+      <path d="M60 60c23.8 5.6 25.2 29.4 4.2 41.3-8.4-14-16-28-4.2-41.3z" transform="rotate(158 60 60)"/>
+    </g></svg>
+  </div>
+  <h1>افتح في تطبيق فناء</h1>
+  <p>تصفّح هذا المتجر واطلب نباتاتك بسهولة من تطبيق فناء.</p>
+  <a class="btn" id="open" href="#">فتح التطبيق</a>
+  <a class="ghost" href="https://apps.apple.com/app/id6821891019">تحميل فناء من App Store</a>
+</div>
+<script>
+  // يحاول فتح التطبيق بنفس المسار؛ إن لم يكن مثبتًا يبقى على هذه الصفحة
+  document.getElementById('open').href = 'https://fenaa.netlify.app' + location.pathname + '?open=1';
+</script>
+</body>
+</html>
