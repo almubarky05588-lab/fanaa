@@ -41,7 +41,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           Container(width: 44, height: 5, decoration: BoxDecoration(color: FnColors.border, borderRadius: BorderRadius.circular(3))),
           Padding(padding: const EdgeInsets.all(16), child: Text('اختر عنوان التوصيل', style: FnText.heading18)),
           for (final a in list)
-            FnListRow(title: a.label, subtitle: '${a.line}، ${a.full}', icon: Icons.location_on_outlined, onTap: () => Navigator.pop(context, a)),
+            FnListRow(title: a.label, subtitle: '${a.line}، ${a.full}', icon: Icons.location_on_outlined, showChevron: false, onTap: () => Navigator.pop(context, a)),
           FnListRow(title: 'إضافة عنوان جديد', icon: Icons.add_location_alt_outlined, iconColor: FnColors.primary,
               onTap: () { Navigator.pop(context); context.push('/addresses?add=1'); }),
           const SizedBox(height: 12),
