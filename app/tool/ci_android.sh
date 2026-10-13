@@ -42,6 +42,7 @@ tail -1 /tmp/analyze.log
 
 step "تجهيز أندرويد"
 python3 tool/patch_android.py android
+python3 tool/patch_android_root.py android
 
 step "التوقيع"
 if [ -n "${ANDROID_SIGNING:-}" ]; then
