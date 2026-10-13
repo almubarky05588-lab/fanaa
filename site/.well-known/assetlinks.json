@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "sa.almubarky.fenaa",
+      "sha256_cert_fingerprints": [
+        "B9:6E:90:1A:22:E2:05:72:F6:D6:B2:6B:97:78:96:9D:B5:4D:50:1A:84:43:1E:BE:8E:1D:B9:15:CC:14:D3:09"
+      ]
+    }
+  }
+]
