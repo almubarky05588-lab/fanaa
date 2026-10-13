@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/models/profile.dart';
 import '../../../core/i18n/i18n.dart';
@@ -45,7 +46,10 @@ final checkoutDraftProvider = StateProvider<CheckoutDraft?>((_) => null);
 enum PayMethod { applePay, mada, creditCard, stcPay, tabby, cod }
 
 /// الطرق الظاهرة للعميل (البطاقة البنكية تشمل مدى وفيزا وماستركارد)
-const kShownPayMethods = [PayMethod.applePay, PayMethod.mada, PayMethod.stcPay, PayMethod.cod];
+final kShownPayMethods = <PayMethod>[
+  if (defaultTargetPlatform == TargetPlatform.iOS) PayMethod.applePay, // Apple Pay على iPhone فقط
+  PayMethod.mada, PayMethod.stcPay, PayMethod.cod,
+];
 
 extension PayMethodX on PayMethod {
   String get db => switch (this) {

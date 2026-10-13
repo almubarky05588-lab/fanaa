@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -176,6 +177,11 @@ class _DeliveryMap extends StatelessWidget {
   final double lat, lng;
 
   Future<void> _directions() async {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      await launchUrl(Uri.parse('https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=driving'),
+          mode: LaunchMode.externalApplication);
+      return;
+    }
     final google = Uri.parse('comgooglemaps://?daddr=$lat,$lng&directionsmode=driving');
     if (await canLaunchUrl(google)) {
       await launchUrl(google);
