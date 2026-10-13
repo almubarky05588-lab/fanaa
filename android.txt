@@ -1,10 +1,10 @@
 status: failure
-run: 1 (38467078394)
-commit: eeeba1d3d42a36c0c8d3cad8d9d60b7bd05131d9
-Tue Oct 13 21:00:21 UTC 2026
+run: 2 (38468769134)
+commit: 11d8397c7faa344a0fd06a3bafbc8595e0e9eaa3
+Tue Oct 13 21:18:06 UTC 2026
 
 ==================== الأخطاء المباشرة ====================
-26:PathNotFoundException: Cannot open file, path = 'ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png' (OS Error: No such file or directory, errno = 2)
+398:BUILD FAILED in 4m 39s
 
 ==================== آخر السجل ====================
 
@@ -20,28 +20,392 @@ Your application code is in ./lib/main.dart.
 
 
 ==================== تحويلات الكود (codemods) ====================
-▶ tool/codemods/pending/019_android.py
-019 applied
+لا توجد تحويلات معلّقة
 
 ==================== رقم النسخة ====================
-version: 0.1.0+1001
+version: 0.1.0+1002
 
 ==================== الأيقونة والحزم ====================
 ✅ icons written to assets/brand
 Got dependencies!
 36 packages have newer versions incompatible with dependency constraints.
 Try `flutter pub outdated` for more information.
-Unhandled exception:
-PathNotFoundException: Cannot open file, path = 'ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png' (OS Error: No such file or directory, errno = 2)
-#0      _checkForErrorResponse (dart:io/common.dart:58:9)
-#1      _File.open.<anonymous closure> (dart:io/file_impl.dart:438:7)
-<asynchronous suspension>
-#2      _File.writeAsBytes.<anonymous closure> (dart:io/file_impl.dart:728:34)
-<asynchronous suspension>
-#3      overwriteDefaultIcons (package:flutter_launcher_icons/ios.dart:272:3)
-<asynchronous suspension>
-• Creating default icons Android
-• Overwriting the default Android launcher icon with a new icon
-• Overwriting default iOS launcher icon with new icon
+No platform provided
+
+✓ Successfully generated launcher icons
+
+==================== تحليل الكود ====================
+15 issues found. (ran in 10.5s)
+
+==================== تجهيز أندرويد ====================
+✅ AndroidManifest.xml
+✅ build.gradle.kts
+
+==================== التوقيع ====================
+✅ توقيع فناء الدائم
+
+==================== بناء APK ====================
+Upgrading build.gradle.kts
+Running Gradle task 'assembleRelease'...                        
+Loading package information...                                                  
+Loading local repository...                                                     
+[                                       ] 3% Loading local repository...        
+[                                       ] 3% Fetch remote repository...         
+[=                                      ] 3% Fetch remote repository...         
+[=                                      ] 4% Fetch remote repository...         
+[=                                      ] 5% Fetch remote repository...         
+[==                                     ] 5% Fetch remote repository...         
+[==                                     ] 6% Fetch remote repository...         
+[==                                     ] 7% Fetch remote repository...         
+[==                                     ] 7% Computing updates...               
+[===                                    ] 8% Computing updates...               
+[===                                    ] 10% Computing updates...              
+[===                                    ] 10% Installing NDK (Side by side) 28.2
+[===                                    ] 10% Downloading android-ndk-r28c-linux
+[====                                   ] 10% Downloading android-ndk-r28c-linux
+[====                                   ] 11% Downloading android-ndk-r28c-linux
+[====                                   ] 12% Downloading android-ndk-r28c-linux
+[=====                                  ] 13% Downloading android-ndk-r28c-linux
+[=====                                  ] 14% Downloading android-ndk-r28c-linux
+[=====                                  ] 15% Downloading android-ndk-r28c-linux
+[======                                 ] 15% Downloading android-ndk-r28c-linux
+[======                                 ] 16% Downloading android-ndk-r28c-linux
+[======                                 ] 17% Downloading android-ndk-r28c-linux
+[=======                                ] 18% Downloading android-ndk-r28c-linux
+[=======                                ] 19% Downloading android-ndk-r28c-linux
+[=======                                ] 20% Downloading android-ndk-r28c-linux
+[========                               ] 20% Downloading android-ndk-r28c-linux
+[========                               ] 21% Downloading android-ndk-r28c-linux
+[========                               ] 22% Downloading android-ndk-r28c-linux
+[=========                              ] 23% Downloading android-ndk-r28c-linux
+[=========                              ] 24% Downloading android-ndk-r28c-linux
+[=========                              ] 25% Downloading android-ndk-r28c-linux
+[==========                             ] 25% Downloading android-ndk-r28c-linux
+[==========                             ] 26% Downloading android-ndk-r28c-linux
+[==========                             ] 27% Downloading android-ndk-r28c-linux
+[===========                            ] 28% Downloading android-ndk-r28c-linux
+[===========                            ] 29% Downloading android-ndk-r28c-linux
+[===========                            ] 30% Downloading android-ndk-r28c-linux
+[============                           ] 30% Downloading android-ndk-r28c-linux
+[============                           ] 31% Downloading android-ndk-r28c-linux
+[============                           ] 32% Downloading android-ndk-r28c-linux
+[============                           ] 33% Downloading android-ndk-r28c-linux
+[============                           ] 33% Unzipping...                      
+[============                           ] 33% Unzipping... android-ndk-r28c/    
+[============                           ] 33% Unzipping... android-ndk-r28c/READ
+[=============                          ] 33% Unzipping... android-ndk-r28c/READ
+[=============                          ] 33% Unzipping... android-ndk-r28c/meta
+[=============                          ] 33% Unzipping... android-ndk-r28c/shad
+[=============                          ] 33% Unzipping... android-ndk-r28c/ndk-
+[=============                          ] 33% Unzipping... android-ndk-r28c/wrap
+[=============                          ] 33% Unzipping... android-ndk-r28c/ndk-
+[=============                          ] 33% Unzipping... android-ndk-r28c/tool
+[=============                          ] 34% Unzipping... android-ndk-r28c/tool
+[=============                          ] 35% Unzipping... android-ndk-r28c/tool
+[==============                         ] 35% Unzipping... android-ndk-r28c/tool
+[==============                         ] 36% Unzipping... android-ndk-r28c/tool
+[==============                         ] 37% Unzipping... android-ndk-r28c/tool
+[===============                        ] 38% Unzipping... android-ndk-r28c/tool
+[===============                        ] 39% Unzipping... android-ndk-r28c/tool
+[===============                        ] 40% Unzipping... android-ndk-r28c/tool
+[================                       ] 40% Unzipping... android-ndk-r28c/tool
+[================                       ] 41% Unzipping... android-ndk-r28c/tool
+[================                       ] 42% Unzipping... android-ndk-r28c/tool
+[=================                      ] 43% Unzipping... android-ndk-r28c/tool
+[=================                      ] 44% Unzipping... android-ndk-r28c/tool
+[=================                      ] 45% Unzipping... android-ndk-r28c/tool
+[==================                     ] 45% Unzipping... android-ndk-r28c/tool
+[==================                     ] 46% Unzipping... android-ndk-r28c/tool
+[==================                     ] 47% Unzipping... android-ndk-r28c/tool
+[===================                    ] 48% Unzipping... android-ndk-r28c/tool
+[===================                    ] 49% Unzipping... android-ndk-r28c/tool
+[===================                    ] 50% Unzipping... android-ndk-r28c/tool
+[====================                   ] 50% Unzipping... android-ndk-r28c/tool
+[====================                   ] 51% Unzipping... android-ndk-r28c/tool
+[====================                   ] 52% Unzipping... android-ndk-r28c/tool
+[=====================                  ] 53% Unzipping... android-ndk-r28c/tool
+[=====================                  ] 54% Unzipping... android-ndk-r28c/tool
+[=====================                  ] 54% Unzipping... android-ndk-r28c/buil
+[=====================                  ] 54% Unzipping... android-ndk-r28c/sour
+[=====================                  ] 54% Unzipping... android-ndk-r28c/NOTI
+[=====================                  ] 54% Unzipping... android-ndk-r28c/ndk-
+[=====================                  ] 54% Unzipping... android-ndk-r28c/NOTI
+[=====================                  ] 54% Unzipping... android-ndk-r28c/pyth
+[=====================                  ] 54% Unzipping... android-ndk-r28c/preb
+[=====================                  ] 54% Unzipping... android-ndk-r28c/ndk-
+[=====================                  ] 54% Unzipping... android-ndk-r28c/sour
+[=====================                  ] 54% Unzipping... android-ndk-r28c/simp
+[=====================                  ] 55% Unzipping... android-ndk-r28c/simp
+[=====================                  ] 55% Unzipping... android-ndk-r28c/CHAN
+[=======================================] 100% Unzipping... android-ndk-r28c/CHA
+
+WARNING: Your app uses the following plugins that apply Kotlin Gradle Plugin (KGP): flutter_web_auth_2, share_plus
+Future versions of Flutter will fail to build if your app uses plugins that apply KGP.
+
+Please check the changelogs of these plugins and upgrade to a version that supports Built-in Kotlin.
+If no such version exists, report the issue to the plugin. If necessary, here is a guide on filing
+an issue against a plugin: https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers#report-incompatible-kotlin-gradle-plugin-usage-to-plugin-authors
+
+If you are a plugin author, please migrate your plugin to Built-in Kotlin using this guide: https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-plugin-authors
+Checking the license for package Android SDK Platform 33 in /usr/local/lib/android/sdk/licenses
+License for package Android SDK Platform 33 accepted.
+Preparing "Install Android SDK Platform 33 (revision 3)".
+"Install Android SDK Platform 33 (revision 3)" ready.
+Installing Android SDK Platform 33 in /usr/local/lib/android/sdk/platforms/android-33
+"Install Android SDK Platform 33 (revision 3)" complete.
+"Install Android SDK Platform 33 (revision 3)" finished.
+[=========                              ] 25%                                   
+Expected to find fonts for (MaterialIcons, packages/cupertino_icons/CupertinoIcons), but found (MaterialIcons). This usually means you are referring to font families in an IconData class but not including them in the assets section of your pubspec.yaml, are missing the package that would include them, or are missing "uses-material-design: true".
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 16264 bytes (99.0% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Checking the license for package CMake 3.22.1 in /usr/local/lib/android/sdk/licenses
+License for package CMake 3.22.1 accepted.
+Preparing "Install CMake 3.22.1 v.3.22.1".
+"Install CMake 3.22.1 v.3.22.1" ready.
+Installing CMake 3.22.1 in /usr/local/lib/android/sdk/cmake/3.22.1
+"Install CMake 3.22.1 v.3.22.1" complete.
+"Install CMake 3.22.1 v.3.22.1" finished.
+Caught exception: Already watching path: /home/runner/work/fanaa/fanaa/app/android
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':geocoding_android:checkReleaseAarMetadata'.
+> A failure occurred while executing com.android.build.gradle.internal.tasks.CheckAarMetadataWorkAction
+   > 15 issues were found when checking AAR metadata:
+
+       1.  Dependency 'androidx.fragment:fragment:1.7.1' requires libraries and applications that
+           depend on it to compile against version 34 or later of the
+           Android APIs.
+
+           :geocoding_android is currently compiled against android-33.
+
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 34, for example 36.
+
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+       2.  Dependency 'androidx.window:window:1.2.0' requires libraries and applications that
+           depend on it to compile against version 34 or later of the
+           Android APIs.
+
+           :geocoding_android is currently compiled against android-33.
+
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 34, for example 36.
+
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+       3.  Dependency 'androidx.window:window-java:1.2.0' requires libraries and applications that
+           depend on it to compile against version 34 or later of the
+           Android APIs.
+
+           :geocoding_android is currently compiled against android-33.
+
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 34, for example 36.
+
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+       4.  Dependency 'androidx.activity:activity:1.8.1' requires libraries and applications that
+           depend on it to compile against version 34 or later of the
+           Android APIs.
+
+           :geocoding_android is currently compiled against android-33.
+
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 34, for example 36.
+
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+       5.  Dependency 'androidx.lifecycle:lifecycle-livedata-core-ktx:2.7.0' requires libraries and applications that
+           depend on it to compile against version 34 or later of the
+           Android APIs.
+
+           :geocoding_android is currently compiled against android-33.
+
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 34, for example 36.
+
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+       6.  Dependency 'androidx.lifecycle:lifecycle-livedata:2.7.0' requires libraries and applications that
+           depend on it to compile against version 34 or later of the
+           Android APIs.
+
+           :geocoding_android is currently compiled against android-33.
+
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 34, for example 36.
+
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+       7.  Dependency 'androidx.lifecycle:lifecycle-viewmodel:2.7.0' requires libraries and applications that
+           depend on it to compile against version 34 or later of the
+           Android APIs.
+
+           :geocoding_android is currently compiled against android-33.
+
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 34, for example 36.
+
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+       8.  Dependency 'androidx.lifecycle:lifecycle-livedata-core:2.7.0' requires libraries and applications that
+           depend on it to compile against version 34 or later of the
+           Android APIs.
+
+           :geocoding_android is currently compiled against android-33.
+
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 34, for example 36.
+
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+       9.  Dependency 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.7.0' requires libraries and applications that
+           depend on it to compile against version 34 or later of the
+           Android APIs.
+
+           :geocoding_android is currently compiled against android-33.
+
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 34, for example 36.
+
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+      10.  Dependency 'androidx.core:core-ktx:1.13.1' requires libraries and applications that
+           depend on it to compile against version 34 or later of the
+           Android APIs.
+
+           :geocoding_android is currently compiled against android-33.
+
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 34, for example 36.
+
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+      11.  Dependency 'androidx.core:core:1.13.1' requires libraries and applications that
+           depend on it to compile against version 34 or later of the
+           Android APIs.
+
+           :geocoding_android is currently compiled against android-33.
+
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 34, for example 36.
+
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+      12.  Dependency 'androidx.lifecycle:lifecycle-runtime:2.7.0' requires libraries and applications that
+           depend on it to compile against version 34 or later of the
+           Android APIs.
+
+           :geocoding_android is currently compiled against android-33.
+
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 34, for example 36.
+
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+      13.  Dependency 'androidx.lifecycle:lifecycle-process:2.7.0' requires libraries and applications that
+           depend on it to compile against version 34 or later of the
+           Android APIs.
+
+           :geocoding_android is currently compiled against android-33.
+
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 34, for example 36.
+
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+      14.  Dependency 'androidx.annotation:annotation-experimental:1.4.0' requires libraries and applications that
+           depend on it to compile against version 34 or later of the
+           Android APIs.
+
+           :geocoding_android is currently compiled against android-33.
+
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 34, for example 36.
+
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+      15.  Dependency 'androidx.exifinterface:exifinterface:1.4.1' requires libraries and applications that
+           depend on it to compile against version 34 or later of the
+           Android APIs.
+
+           :geocoding_android is currently compiled against android-33.
+
+           Recommended action: Update this project to use a newer compileSdk
+           of at least 34, for example 36.
+
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 4m 39s
+Running Gradle task 'assembleRelease'...                          280.1s
+Gradle task assembleRelease failed with exit code 1
 
 ==================== أخطاء xcodebuild ====================
