@@ -1,0 +1,52 @@
+name: Android APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    name: بناء فناء لأندرويد
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: البناء
+        env:
+          ANDROID_SIGNING: ${{ secrets.ANDROID_SIGNING }}
+          GOOGLE_MAPS_ANDROID_KEY: ${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}
+          GOOGLE_MAPS_IOS_KEY: ${{ secrets.GOOGLE_MAPS_IOS_KEY }}
+        run: |
+          set -o pipefail
+          bash app/tool/ci_android.sh 2>&1 | tee /tmp/ci.log
+
+      - name: نشر رابط التحميل
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete android-latest --yes --cleanup-tag 2>/dev/null || true
+          gh release create android-latest /tmp/out/fenaa.apk \
+            --title "فناء — أندرويد (نسخة ${{ github.run_number }})" \
+            --notes "حمّل fenaa.apk وثبّته على جوال أندرويد." \
+            --latest=false
+          echo "📲 https://github.com/${{ github.repository }}/releases/download/android-latest/fenaa.apk"
+
+      - name: التقرير
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash app/tool/ci_report.sh "${{ job.status }}" android
