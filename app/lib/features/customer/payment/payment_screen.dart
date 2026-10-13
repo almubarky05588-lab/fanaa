@@ -85,9 +85,9 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(color: FnColors.surface, borderRadius: BorderRadius.circular(20)),
             child: Column(children: [
-              for (var i = 0; i < PayMethod.values.length; i++) ...[
-                _MethodRow(m: PayMethod.values[i], selected: _m == PayMethod.values[i], onTap: () => setState(() => _m = PayMethod.values[i])),
-                if (i < PayMethod.values.length - 1) const FnDivider(),
+              for (var i = 0; i < kShownPayMethods.length; i++) ...[
+                _MethodRow(m: kShownPayMethods[i], selected: _m == kShownPayMethods[i], onTap: () => setState(() => _m = kShownPayMethods[i])),
+                if (i < kShownPayMethods.length - 1) const FnDivider(),
               ],
             ]),
           ),

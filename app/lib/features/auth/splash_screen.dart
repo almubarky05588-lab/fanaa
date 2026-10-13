@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/supabase/supabase_client.dart';
 import '../../core/theme/tokens.dart';
 import '../../core/widgets/fn_logo.dart';
@@ -22,14 +23,30 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   Future<void> _route() async {
-    final user = ref.read(supabaseProvider).auth.currentUser;
-    String target;
-    if (user == null) {
-      target = (await AppPrefs.roleChoice()) == 'customer' ? '/home' : '/auth/type';
-    } else {
-      ref.invalidate(profileProvider);
-      final p = await ref.read(profileProvider.future);
-      target = p == null ? '/auth/type' : (p.isMerchant ? '/m/dashboard' : '/home');
+    final auth = ref.read(supabaseProvider).auth;
+    String target = '/auth/type';
+    try {
+      if (auth.currentUser == null) {
+        target = (await AppPrefs.roleChoice()) == 'customer' ? '/home' : '/auth/type';
+      } else {
+        ref.invalidate(profileProvider);
+        final p = await ref.read(profileProvider.future).timeout(const Duration(seconds: 8));
+        target = p == null ? '/auth/type' : (p.isMerchant ? '/m/dashboard' : '/home');
+      }
+    } on AuthException {
+      // الجلسة انتهت ولا يمكن تجديدها — دخول من جديد
+      await auth.signOut().catchError((_) {});
+      target = '/auth/type';
+    } on PostgrestException catch (e) {
+      if (e.code == 'PGRST301' || e.message.toLowerCase().contains('jwt')) {
+        await auth.signOut().catchError((_) {});
+        target = '/auth/type';
+      } else {
+        target = '/home';
+      }
+    } catch (_) {
+      // بطء أو انقطاع: نكمل بدل التعليق (الشاشات تعيد المحاولة بنفسها)
+      target = '/home';
     }
     if (mounted) context.go(target);
   }

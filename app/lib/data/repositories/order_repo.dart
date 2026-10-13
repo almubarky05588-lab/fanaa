@@ -173,7 +173,10 @@ class OrderRepo {
     if (_guest) return const [];
     final uid = _c.auth.currentUser!.id;
     final rows = await _c.from('orders').select('$_orderCols,nurseries(id,name,slug,logo_url,city,district)')
-        .eq('user_id', uid).order('placed_at', ascending: false);
+        .eq('user_id', uid)
+        // الطلب الإلكتروني يظهر بعد الدفع فقط — محاولات الدفع غير المكتملة لا تُعرض
+        .or('payment_method.eq.cod,payment_status.in.(paid,refunded)')
+        .order('placed_at', ascending: false);
     return rows.map((e) => Order.fromJson(e)).toList();
   }
 

@@ -44,6 +44,9 @@ final checkoutDraftProvider = StateProvider<CheckoutDraft?>((_) => null);
 /// طرق الدفع بنفس ترتيب التصميم (11 بوابة الدفع)
 enum PayMethod { applePay, mada, creditCard, stcPay, tabby, cod }
 
+/// الطرق الظاهرة للعميل (البطاقة البنكية تشمل مدى وفيزا وماستركارد)
+const kShownPayMethods = [PayMethod.applePay, PayMethod.mada, PayMethod.stcPay, PayMethod.cod];
+
 extension PayMethodX on PayMethod {
   String get db => switch (this) {
         PayMethod.applePay => 'apple_pay',
@@ -55,7 +58,7 @@ extension PayMethodX on PayMethod {
       };
   String get title => switch (this) {
         PayMethod.applePay => 'Apple Pay',
-        PayMethod.mada => tr('مدى'),
+        PayMethod.mada => tr('بطاقة بنكية'),
         PayMethod.creditCard => tr('بطاقة ائتمانية'),
         PayMethod.stcPay => 'STC Pay',
         PayMethod.tabby => tr('تابي'),
@@ -63,7 +66,7 @@ extension PayMethodX on PayMethod {
       };
   String get subtitle => switch (this) {
         PayMethod.applePay => tr('الدفع بلمسة واحدة'),
-        PayMethod.mada => tr('بطاقة مدى البنكية'),
+        PayMethod.mada => tr('مدى • فيزا • ماستركارد'),
         PayMethod.creditCard => tr('فيزا / ماستركارد'),
         PayMethod.stcPay => tr('محفظة إلكترونية'),
         PayMethod.tabby => tr('٤ دفعات بدون فوائد'),

@@ -582,4 +582,6 @@ const Map<String, String> kEn = {
   'انتهت مهلة الدفع لهذا الطلب': 'The payment window for this order has expired',
   'تعذّر إنشاء رابط الدفع': 'Could not create the payment link',
   'لم يكتمل الدفع': 'Payment not completed',
+  'بطاقة بنكية': 'Bank card',
+  'مدى • فيزا • ماستركارد': 'mada • Visa • Mastercard',
 };
