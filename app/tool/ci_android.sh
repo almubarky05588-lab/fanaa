@@ -54,6 +54,24 @@ else
   echo "⚠️ ANDROID_SIGNING غير موجود — توقيع مؤقت (لن تُثبَّت التحديثات فوق هذه النسخة)"
 fi
 
+step "أدوات أندرويد (NDK)"
+# نفس نسخة NDK اللي يطلبها Flutter — تُنزَّل مسبقًا مع إعادة المحاولة (التحميل أحيانًا يوصل ناقص)
+FLUTTER_ROOT_DIR="$(dirname "$(dirname "$(command -v flutter)")")"
+NDK_VER="$(grep -rhoE 'ndkVersion[^"]*"[0-9.]+"' "$FLUTTER_ROOT_DIR/packages/flutter_tools/gradle" 2>/dev/null | grep -oE '[0-9]+\.[0-9.]+' | head -1 || true)"
+SDKM="${ANDROID_HOME:-/usr/local/lib/android/sdk}/cmdline-tools/latest/bin/sdkmanager"
+if [ -n "$NDK_VER" ] && [ -x "$SDKM" ]; then
+  echo "NDK $NDK_VER"
+  for i in 1 2 3; do
+    if (set +o pipefail; yes | "$SDKM" --install "ndk;$NDK_VER" > /tmp/ndk.log 2>&1) && [ -f "${ANDROID_HOME:-/usr/local/lib/android/sdk}/ndk/$NDK_VER/source.properties" ]; then
+      echo "✅ NDK جاهز"; break
+    fi
+    echo "⚠️ محاولة $i فشلت — إعادة"; tail -2 /tmp/ndk.log
+    rm -rf "${ANDROID_HOME:-/usr/local/lib/android/sdk}/ndk/$NDK_VER"; sleep 15
+  done
+else
+  echo "تعذّر تحديد نسخة NDK — يكمل Gradle بنفسه"
+fi
+
 step "بناء APK"
 flutter build apk --release --build-number="$BUILD_NUMBER"
 mkdir -p /tmp/out && cp build/app/outputs/flutter-apk/app-release.apk /tmp/out/fenaa.apk
