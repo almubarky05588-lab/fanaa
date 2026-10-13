@@ -35,8 +35,7 @@
   <a class="ghost" href="https://apps.apple.com/app/id6821891019">تحميل فناء من App Store</a>
 </div>
 <script>
-  // يحاول فتح التطبيق بنفس المسار؛ إن لم يكن مثبتًا يبقى على هذه الصفحة
-  document.getElementById('open').href = 'https://fenaa.netlify.app' + location.pathname + '?open=1';
+  document.getElementById('open').href = location.origin + location.pathname + '?open=1';
 </script>
 </body>
 </html>
