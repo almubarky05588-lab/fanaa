@@ -1,18 +1,9 @@
-status: failure
-run: 4 (38471273778)
-commit: cdf34cf42dffbc0277e8fca19aeed66d16e5aece
-Tue Oct 13 21:39:07 UTC 2026
+status: success
+run: 5 (38472828033)
+commit: beb6ef48ad01cf5cfd40a73269d0801f6ec71926
+Tue Oct 13 21:53:35 UTC 2026
 
 ==================== الأخطاء المباشرة ====================
-156:/home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:109: error: cannot find symbol
-161:/home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:111: error: cannot find symbol
-166:/home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:124: error: cannot find symbol
-171:/home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:126: error: cannot find symbol
-183:  /home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:109: error: cannot find symbol
-188:  /home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:124: error: cannot find symbol
-193:  /home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:111: error: cannot find symbol
-198:  /home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:126: error: cannot find symbol
-209:BUILD FAILED in 5m 12s
 
 ==================== آخر السجل ====================
 
@@ -31,7 +22,7 @@ Your application code is in ./lib/main.dart.
 لا توجد تحويلات معلّقة
 
 ==================== رقم النسخة ====================
-version: 0.1.0+1004
+version: 0.1.0+1005
 
 ==================== الأيقونة والحزم ====================
 ✅ icons written to assets/brand
@@ -43,7 +34,7 @@ No platform provided
 ✓ Successfully generated launcher icons
 
 ==================== تحليل الكود ====================
-15 issues found. (ran in 18.1s)
+15 issues found. (ran in 15.2s)
 
 ==================== تجهيز أندرويد ====================
 ✅ AndroidManifest.xml
@@ -54,7 +45,7 @@ No platform provided
 ✅ توقيع فناء الدائم
 
 ==================== أدوات أندرويد (NDK) ====================
-NDK 26.3.11579264
+NDK 29.0.13846066
 yes: standard output: Broken pipe
 ✅ NDK جاهز
 
@@ -170,61 +161,13 @@ Preparing "Install CMake 3.22.1 v.3.22.1".
 Installing CMake 3.22.1 in /usr/local/lib/android/sdk/cmake/3.22.1
 "Install CMake 3.22.1 v.3.22.1" complete.
 "Install CMake 3.22.1 v.3.22.1" finished.
-/home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:109: error: cannot find symbol
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
-                                                        ^
-  symbol:   variable BAKLAVA
-  location: class VERSION_CODES
-/home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:111: error: cannot find symbol
-            return Locale.of(language, country, variant);
-                         ^
-  symbol:   method of(String,String,String)
-  location: class Locale
-/home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:124: error: cannot find symbol
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) { // Android 13 (API 33) and above
-                                                        ^
-  symbol:   variable BAKLAVA
-  location: class VERSION_CODES
-/home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:126: error: cannot find symbol
-            return thread.threadId();
-                         ^
-  symbol:   method threadId()
-  location: variable thread of type Thread
-4 errors
+Note: /home/runner/.pub-cache/hosted/pub.dev/geocoding_android-3.3.1/android/src/main/java/com/baseflow/geocoding/utils/LocaleConverter.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Caught exception: Already watching path: /home/runner/work/fanaa/fanaa/app/android
+Running Gradle task 'assembleRelease'...                          409.9s
+✓ Built build/app/outputs/flutter-apk/app-release.apk (65.1MB)
+-rw-r--r-- 1 runner runner 63M Oct 13 21:53 /tmp/out/fenaa.apk
 
-FAILURE: Build failed with an exception.
-
-* What went wrong:
-Execution failed for task ':sqflite_android:compileReleaseJavaWithJavac'.
-> Compilation failed; see the compiler output below.
-  /home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:109: error: cannot find symbol
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
-                                                          ^
-    symbol:   variable BAKLAVA
-    location: class VERSION_CODES
-  /home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:124: error: cannot find symbol
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) { // Android 13 (API 33) and above
-                                                          ^
-    symbol:   variable BAKLAVA
-    location: class VERSION_CODES
-  /home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:111: error: cannot find symbol
-              return Locale.of(language, country, variant);
-                           ^
-    symbol:   method of(String,String,String)
-    location: class Locale
-  /home/runner/.pub-cache/hosted/pub.dev/sqflite_android-2.4.4+1/android/src/main/java/com/tekartik/sqflite/Utils.java:126: error: cannot find symbol
-              return thread.threadId();
-                           ^
-    symbol:   method threadId()
-    location: variable thread of type Thread
-  4 errors
-
-* Try:
-> Check your code and dependencies to fix the compilation error(s)
-> Run with --scan to get full insights from a Build Scan (powered by Develocity).
-
-BUILD FAILED in 5m 12s
-Running Gradle task 'assembleRelease'...                          313.2s
-Gradle task assembleRelease failed with exit code 1
+==================== ✅ اكتمل — نسخة أندرويد 1005 ====================
 
 ==================== أخطاء xcodebuild ====================
