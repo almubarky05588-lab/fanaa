@@ -28,6 +28,11 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
     if (d == null || d.address == null) return;
     setState(() => _loading = true);
     try {
+      if (_m == PayMethod.cod && _pendingOrderId != null) {
+        // الطلب الحالي أُنشئ للدفع الإلكتروني — يكمله بطريقة إلكترونية
+        showFnSnack(context, tr('طلبك الحالي للدفع الإلكتروني — اختر Apple Pay أو البطاقة أو STC Pay'), error: true);
+        return;
+      }
       final repo = ref.read(orderRepoProvider);
       final id = _pendingOrderId ?? await repo.placeOrder(
             nurseryId: d.nurseryId, addressId: d.address!.id, paymentMethod: _m.db,
@@ -40,7 +45,7 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
       }
       _pendingOrderId = id;
       // رابط الدفع ينشئه الخادم بالمبلغ المحفوظ في القاعدة
-      final url = await repo.createPayment(id);
+      final url = await repo.createPayment(id, method: _m.db);
       if (!mounted) return;
       if (url != null) await PayWebViewScreen.open(context, url);
       // التأكيد الفعلي من ماي فاتورة نفسها (لا نعتمد على صفحة الرجوع)

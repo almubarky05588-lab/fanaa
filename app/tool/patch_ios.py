@@ -6,7 +6,7 @@ import os, plistlib, re, sys
 ROOT = sys.argv[1] if len(sys.argv) > 1 else "ios"
 MAPS_KEY = os.environ.get("GOOGLE_MAPS_IOS_KEY", "").strip() or "NO_KEY_SET"
 MIN_IOS = "15.0"                  # Flutter 3.47 و GoogleMaps 9 يتطلبان iOS 15
-LINK_HOST = "fenaa.netlify.app"   # روابط مشاركة المتاجر والمنتجات
+LINK_HOST = "fanaa-15r.pages.dev"   # روابط مشاركة المتاجر والمنتجات
 
 p = os.path.join(ROOT, "Runner", "Info.plist")
 with open(p, "rb") as f:
@@ -23,7 +23,7 @@ info.update({
     "UIStatusBarStyle": "UIStatusBarStyleDarkContent",
     # التطبيق مصمَّم عموديًا للجوال — ملء الشاشة يعفيه من شرط دعم كل الاتجاهات
     "UIRequiresFullScreen": True,
-    # روابط https://fenaa.netlify.app/store/... تفتح الشاشة المطابقة في go_router
+    # روابط https://fanaa-15r.pages.dev/store/... تفتح الشاشة المطابقة في go_router
     "FlutterDeepLinkingEnabled": True,
 })
 info["UISupportedInterfaceOrientations"] = ["UIInterfaceOrientationPortrait"]

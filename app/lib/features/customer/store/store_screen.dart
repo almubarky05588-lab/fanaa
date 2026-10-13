@@ -133,7 +133,7 @@ class _Header extends ConsumerWidget {
   }
 
   void _share() {
-    final link = 'https://fenaa.netlify.app/store/${n.id}';
+    final link = 'https://fanaa-15r.pages.dev/store/${n.id}';
     Share.share(tr('تسوّق من {0} على تطبيق فناء 🌿\n{1}', [n.name, link]), subject: n.name);
   }
 

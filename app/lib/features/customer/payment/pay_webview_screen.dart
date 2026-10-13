@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 
 /// يفتح دفع ماي فاتورة في Safari الآمن داخل التطبيق (يدعم Apple Pay)،
-/// ويُغلق تلقائيًا عندما تحوّل صفحة الرجوع (fenaa.netlify.app/pay/...) إلى fenaa://pay/...
+/// ويُغلق تلقائيًا عندما تحوّل صفحة الرجوع (fanaa-15r.pages.dev/pay/...) إلى fenaa://pay/...
 /// يرجع true لو وصل لرابط النجاح — التأكيد الفعلي يتم بالخادم بعدها
 abstract final class PayWebViewScreen {
   static Future<bool?> open(BuildContext context, String url) async {

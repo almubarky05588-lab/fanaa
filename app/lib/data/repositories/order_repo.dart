@@ -152,8 +152,8 @@ class OrderRepo {
   }
 
   /// ينشئ رابط دفع ماي فاتورة للطلب (null = الطلب مدفوع أصلًا)
-  Future<String?> createPayment(String orderId) async =>
-      (await _invokeFn('payment-create', {'order_id': orderId}))['url'] as String?;
+  Future<String?> createPayment(String orderId, {String? method}) async =>
+      (await _invokeFn('payment-create', {'order_id': orderId, if (method != null) 'method': method}))['url'] as String?;
 
   /// يسأل الخادم: هل تأكّد الدفع من ماي فاتورة؟
   Future<bool> verifyPayment(String orderId) async =>

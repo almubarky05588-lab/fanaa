@@ -584,4 +584,5 @@ const Map<String, String> kEn = {
   'لم يكتمل الدفع': 'Payment not completed',
   'بطاقة بنكية': 'Bank card',
   'مدى • فيزا • ماستركارد': 'mada • Visa • Mastercard',
+  'طلبك الحالي للدفع الإلكتروني — اختر Apple Pay أو البطاقة أو STC Pay': 'This order is set for online payment — choose Apple Pay, card or STC Pay',
 };
