@@ -31,7 +31,7 @@ grep '^version:' pubspec.yaml
 step "الأيقونة والحزم"
 python3 -m pip install --quiet pillow 2>/dev/null || python3 -m pip install --quiet --break-system-packages pillow
 python3 tool/make_icon.py assets/brand
-sed -i 's/^  android: false/  android: true/' pubspec.yaml
+sed -i -e 's/^  android: false/  android: true/' -e 's/^  ios: true/  ios: false/' pubspec.yaml   # أيقونة أندرويد فقط
 flutter pub get > /tmp/pub.log 2>&1 || { cat /tmp/pub.log; exit 1; }
 tail -3 /tmp/pub.log
 dart run flutter_launcher_icons | tail -3
