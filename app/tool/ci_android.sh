@@ -57,7 +57,7 @@ fi
 step "أدوات أندرويد (NDK)"
 # نفس نسخة NDK اللي يطلبها Flutter — تُنزَّل مسبقًا مع إعادة المحاولة (التحميل أحيانًا يوصل ناقص)
 FLUTTER_ROOT_DIR="$(dirname "$(dirname "$(command -v flutter)")")"
-NDK_VER="$(grep -rhoE 'ndkVersion[^"]*"[0-9.]+"' "$FLUTTER_ROOT_DIR/packages/flutter_tools/gradle" 2>/dev/null | grep -oE '[0-9]+\.[0-9.]+' | head -1 || true)"
+NDK_VER="$(grep -rhoE 'ndkVersion[^"]*"[0-9.]+"' "$FLUTTER_ROOT_DIR/packages/flutter_tools/gradle" 2>/dev/null | grep -oE '[0-9]+\.[0-9.]+' | sort -V | tail -1 || true)"
 SDKM="${ANDROID_HOME:-/usr/local/lib/android/sdk}/cmdline-tools/latest/bin/sdkmanager"
 if [ -n "$NDK_VER" ] && [ -x "$SDKM" ]; then
   echo "NDK $NDK_VER"
