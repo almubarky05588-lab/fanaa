@@ -9,6 +9,7 @@ import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../../../core/supabase/supabase_client.dart';
 import '../../../core/i18n/i18n.dart';
+import '../../auth/phone_login_screen.dart' show EnglishDigitsFormatter;
 
 /// مدن المملكة المتاحة للاختيار
 const kSaudiCities = [
@@ -124,7 +125,7 @@ class _MerchantSetupScreenState extends ConsumerState<MerchantSetupScreen> {
                 child: TextField(
                   controller: _iban,
                   keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(22)],
+                  inputFormatters: [const EnglishDigitsFormatter(), FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(22)],
                   decoration: const InputDecoration(prefixText: 'SA  ', hintText: '00 0000 0000 0000 0000 0000'),
                 ),
               ),

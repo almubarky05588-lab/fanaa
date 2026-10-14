@@ -9,6 +9,7 @@ import '../../../data/models/coupon.dart';
 import '../../../data/repositories/coupon_repo.dart';
 import '../dashboard/merchant_dashboard_screen.dart';
 import '../../../core/i18n/i18n.dart';
+import '../../auth/phone_login_screen.dart' show EnglishDigitsFormatter;
 
 /// الكوبونات والعروض — لصاحب المتجر
 class MerchantCouponsScreen extends ConsumerWidget {
@@ -213,7 +214,7 @@ class _CouponFormState extends ConsumerState<_CouponForm> {
             textDirection: code || number ? TextDirection.ltr : null,
             inputFormatters: code
                 ? [FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9]')), LengthLimitingTextInputFormatter(16)]
-                : (number ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))] : null),
+                : (number ? [const EnglishDigitsFormatter(), FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))] : null),
             decoration: InputDecoration(hintText: hint, suffixText: suffix, fillColor: FnColors.bgBase),
           ),
         ]),

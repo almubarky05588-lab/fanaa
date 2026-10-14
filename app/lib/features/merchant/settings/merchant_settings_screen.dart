@@ -16,6 +16,8 @@ import '../../customer/account/account_screen.dart' show showLanguageSheet;
 import '../dashboard/merchant_dashboard_screen.dart';
 import '../setup/merchant_setup_screen.dart' show normalizeIban;
 import '../../../core/i18n/i18n.dart';
+import '../../auth/phone_login_screen.dart' show EnglishDigitsFormatter;
+import '../../../core/widgets/image_source_sheet.dart';
 
 /// 21 إعدادات المتجر
 class MerchantSettingsScreen extends ConsumerWidget {
@@ -55,7 +57,7 @@ class _SettingsState extends ConsumerState<_Settings> {
           Text(title, style: FnText.heading18),
           const SizedBox(height: 12),
           TextField(controller: c, autofocus: true, keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
+              inputFormatters: [const EnglishDigitsFormatter(), FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
               decoration: InputDecoration(suffixText: tr(suffix), fillColor: FnColors.bgBase)),
           const SizedBox(height: 16),
           FnButton(label: tr('حفظ'), onPressed: () => Navigator.pop(ctx, c.text.trim())),
@@ -63,7 +65,10 @@ class _SettingsState extends ConsumerState<_Settings> {
       ),
     );
     if (v == null) return;
-    await _update({field: v.isEmpty ? null : double.tryParse(v)});
+    final parsed = double.tryParse(v);
+    // أعمدة أرقام صحيحة في القاعدة (الدقائق) — لا تقبل 40.0
+    const intFields = {'prep_time_min'};
+    await _update({field: v.isEmpty ? null : (intFields.contains(field) ? parsed?.round() : parsed)});
   }
 
   Future<void> _editLocation(Nursery n) async {
@@ -88,7 +93,7 @@ class _SettingsState extends ConsumerState<_Settings> {
           Directionality(
             textDirection: TextDirection.ltr,
             child: TextField(controller: c, autofocus: true, keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(22)],
+                inputFormatters: [const EnglishDigitsFormatter(), FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(22)],
                 decoration: const InputDecoration(prefixText: 'SA  ', fillColor: FnColors.bgBase)),
           ),
           const SizedBox(height: 16),
@@ -112,8 +117,10 @@ class _SettingsState extends ConsumerState<_Settings> {
 
   /// يختار صورة ويرفعها ويحدّث المتجر — kind: logo | cover
   Future<String?> _pickAndUpload(String kind) async {
+    final source = await pickImageSource(context);
+    if (source == null) return null;
     final x = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
+      source: source,
       maxWidth: kind == 'logo' ? 600 : 1600,
       imageQuality: 85,
     );

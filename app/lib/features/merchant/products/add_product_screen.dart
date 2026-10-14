@@ -9,6 +9,8 @@ import '../../../core/widgets/fn_widgets.dart';
 import '../../../data/models/catalog.dart';
 import '../../../data/repositories/catalog_repo.dart';
 import '../../../core/i18n/i18n.dart';
+import '../../auth/phone_login_screen.dart' show EnglishDigitsFormatter;
+import '../../../core/widgets/image_source_sheet.dart';
 
 /// 19 إضافة منتج
 class AddProductScreen extends ConsumerStatefulWidget {
@@ -33,7 +35,13 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
   Future<void> _pick() async {
     if (_images.length >= 5) return;
-    final files = await ImagePicker().pickMultiImage(imageQuality: 80, maxWidth: 1600, limit: 5 - _images.length);
+    final source = await pickImageSource(context);
+    if (source == null) return;
+    final picker = ImagePicker();
+    // الكاميرا: صورة وحدة كل مرة — الاستديو: عدة صور (حتى ٥)
+    final files = source == ImageSource.camera
+        ? [if (await picker.pickImage(source: ImageSource.camera, imageQuality: 80, maxWidth: 1600) case final x?) x]
+        : await picker.pickMultiImage(imageQuality: 80, maxWidth: 1600, limit: 5 - _images.length);
     for (final f in files) {
       _images.add((f.name, await f.readAsBytes()));
     }
@@ -140,10 +148,10 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
           )),
           Row(children: [
             Expanded(child: _field(tr('السعر (ر.س)'), TextField(controller: _price, keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))], decoration: const InputDecoration(hintText: '0.00')))),
+                inputFormatters: [const EnglishDigitsFormatter(), FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))], decoration: const InputDecoration(hintText: '0.00')))),
             const SizedBox(width: 12),
             Expanded(child: _field(tr('الكمية'), TextField(controller: _qty, keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly], decoration: const InputDecoration(hintText: '0')))),
+                inputFormatters: [const EnglishDigitsFormatter(), FilteringTextInputFormatter.digitsOnly], decoration: const InputDecoration(hintText: '0')))),
           ]),
           _field(tr('الأحجام المتاحة'), Wrap(spacing: 8, runSpacing: 8, children: [
             for (final s in [tr('صغير'), tr('متوسط'), tr('كبير')])

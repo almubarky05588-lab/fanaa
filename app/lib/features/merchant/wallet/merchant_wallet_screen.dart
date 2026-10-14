@@ -9,6 +9,7 @@ import '../../../data/models/order.dart';
 import '../../../data/repositories/order_repo.dart';
 import '../dashboard/merchant_dashboard_screen.dart';
 import '../../../core/i18n/i18n.dart';
+import '../../auth/phone_login_screen.dart' show EnglishDigitsFormatter;
 
 final _walletProvider = FutureProvider.family<Map<String, dynamic>, String>((ref, nid) => ref.watch(orderRepoProvider).wallet(nid));
 
@@ -34,11 +35,11 @@ class _Wallet extends ConsumerWidget {
           Text(tr('طلب سحب'), style: FnText.heading18),
           Text(tr('الرصيد المتاح {0}', [Fmt.money(balance)]), style: FnText.caption11.muted),
           const SizedBox(height: 14),
-          TextField(controller: amount, keyboardType: TextInputType.number, inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          TextField(controller: amount, keyboardType: TextInputType.number, inputFormatters: [const EnglishDigitsFormatter(), FilteringTextInputFormatter.digitsOnly],
               decoration: InputDecoration(hintText: tr('المبلغ'), fillColor: FnColors.bgBase)),
           const SizedBox(height: 10),
           TextField(controller: iban, decoration: InputDecoration(hintText: tr('آخر ٤ أرقام من الآيبان'), fillColor: FnColors.bgBase),
-              keyboardType: TextInputType.number, inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(4)]),
+              keyboardType: TextInputType.number, inputFormatters: [const EnglishDigitsFormatter(), FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(4)]),
           const SizedBox(height: 16),
           FnButton(label: tr('تأكيد الطلب'), onPressed: () async {
             final a = double.tryParse(amount.text) ?? 0;

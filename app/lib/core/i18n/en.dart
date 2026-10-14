@@ -587,4 +587,6 @@ const Map<String, String> kEn = {
   'طلبك الحالي للدفع الإلكتروني — اختر Apple Pay أو البطاقة أو STC Pay': 'This order is set for online payment — choose Apple Pay, card or STC Pay',
   'تسجيل الدخول كعميل': 'Sign in as a customer',
   'هذا الرقم مسجّل كعميل — سجّل الدخول من «عميل»': 'This number is registered as a customer — sign in as "Customer"',
+  'التقاط صورة': 'Take a photo',
+  'اختيار من الاستديو': 'Choose from library',
 };
