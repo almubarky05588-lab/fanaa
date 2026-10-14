@@ -1,7 +1,7 @@
-status: cancelled
-run: 10 (38559781437)
-commit: 6963dbe10d3f2a936e8016edf682ca65b7991619
-Wed Oct 14 12:00:09 UTC 2026
+status: success
+run: 11 (38560602054)
+commit: 2cf3980dd395a31052d7c8545c52104f27c0257e
+Wed Oct 14 12:07:49 UTC 2026
 
 ==================== الأخطاء المباشرة ====================
 
@@ -23,9 +23,11 @@ Your application code is in ./lib/main.dart.
 022 applied
 ▶ tool/codemods/pending/023_arabic_digits_merchant.py
 023 applied (8 fields)
+▶ tool/codemods/pending/024_camera_or_gallery.py
+024 applied
 
 ==================== رقم النسخة ====================
-version: 0.1.0+1010
+version: 0.1.0+1011
 
 ==================== الأيقونة والحزم ====================
 ✅ icons written to assets/brand
@@ -37,7 +39,7 @@ No platform provided
 ✓ Successfully generated launcher icons
 
 ==================== تحليل الكود ====================
-16 issues found. (ran in 14.6s)
+16 issues found. (ran in 15.0s)
 
 ==================== تجهيز أندرويد ====================
 ✅ AndroidManifest.xml
@@ -156,7 +158,7 @@ an issue against a plugin: https://docs.flutter.dev/release/breaking-changes/mig
 
 If you are a plugin author, please migrate your plugin to Built-in Kotlin using this guide: https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-plugin-authors
 Expected to find fonts for (MaterialIcons, packages/cupertino_icons/CupertinoIcons), but found (MaterialIcons). This usually means you are referring to font families in an IconData class but not including them in the assets section of your pubspec.yaml, are missing the package that would include them, or are missing "uses-material-design: true".
-Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 16264 bytes (99.0% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 16404 bytes (99.0% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
 Checking the license for package CMake 3.22.1 in /usr/local/lib/android/sdk/licenses
 License for package CMake 3.22.1 accepted.
 Preparing "Install CMake 3.22.1 v.3.22.1".
@@ -167,5 +169,10 @@ Installing CMake 3.22.1 in /usr/local/lib/android/sdk/cmake/3.22.1
 Note: /home/runner/.pub-cache/hosted/pub.dev/geocoding_android-3.3.1/android/src/main/java/com/baseflow/geocoding/utils/LocaleConverter.java uses or overrides a deprecated API.
 Note: Recompile with -Xlint:deprecation for details.
 Caught exception: Already watching path: /home/runner/work/fanaa/fanaa/app/android
+Running Gradle task 'assembleRelease'...                          351.6s
+✓ Built build/app/outputs/flutter-apk/app-release.apk (65.1MB)
+-rw-r--r-- 1 runner runner 63M Oct 14 12:07 /tmp/out/fenaa.apk
+
+==================== ✅ اكتمل — نسخة أندرويد 1011 ====================
 
 ==================== أخطاء xcodebuild ====================
