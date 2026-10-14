@@ -35,7 +35,8 @@ class CatalogRepo {
   Future<Nursery?> myNursery() async {
     final uid = _c.auth.currentUser?.id;
     if (uid == null) return null;
-    final j = await _c.from('nurseries').select(nurseryCols).eq('owner_id', uid).maybeSingle();
+    final j = await _c.from('nurseries').select(nurseryCols).eq('owner_id', uid)
+        .order('created_at').limit(1).maybeSingle();
     return j == null ? null : Nursery.fromJson(j);
   }
 

@@ -44,7 +44,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
                   Text(tr('نوع الحساب'), style: FnText.label13.muted),
                   const SizedBox(height: 10),
                   _Option(
-                    title: tr('مستخدم'),
+                    title: tr('عميل'),
                     subtitle: tr('تصفّح المشاتل واطلب نباتاتك المفضلة'),
                     icon: Icons.person_outline_rounded,
                     iconBg: FnColors.soft,

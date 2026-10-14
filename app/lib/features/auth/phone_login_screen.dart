@@ -60,7 +60,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                 child: Icon(merchant ? Icons.storefront_outlined : Icons.person_outline_rounded, size: 34, color: FnColors.deep),
               ),
               const SizedBox(height: 22),
-              Text(merchant ? tr('تسجيل الدخول كصاحب متجر') : tr('تسجيل الدخول كمستخدم'), style: FnText.display28),
+              Text(merchant ? tr('تسجيل الدخول كصاحب متجر') : tr('تسجيل الدخول كعميل'), style: FnText.display28),
               const SizedBox(height: 4),
               Text(tr('أدخل رقم جوالك وسنرسل لك رمز تحقق للمتابعة'), style: FnText.body15.muted),
               const SizedBox(height: 30),

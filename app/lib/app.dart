@@ -48,9 +48,14 @@ class FenaaApp extends ConsumerWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          builder: (context, child) => Directionality(
-            textDirection: en ? TextDirection.ltr : TextDirection.rtl,
-            child: child ?? const SizedBox.shrink(),
+          builder: (context, child) => GestureDetector(
+            // الضغط خارج خانات الكتابة ينزّل الكيبورد
+            behavior: HitTestBehavior.translucent,
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: Directionality(
+              textDirection: en ? TextDirection.ltr : TextDirection.rtl,
+              child: child ?? const SizedBox.shrink(),
+            ),
           ),
         );
       },

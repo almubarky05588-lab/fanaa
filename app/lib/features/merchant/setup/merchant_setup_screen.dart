@@ -65,6 +65,9 @@ class _MerchantSetupScreenState extends ConsumerState<MerchantSetupScreen> {
     try {
       final c = ref.read(supabaseProvider);
       final user = c.auth.currentUser!;
+      // لو عنده متجر أصلًا (محاولة سابقة انحفظت) لا ننشئ متجرًا ثانيًا
+      final existing = await c.from('nurseries').select('id').eq('owner_id', user.id).limit(1).maybeSingle();
+      if (existing == null) {
       final row = await c.from('nurseries').insert({
         'owner_id': user.id,
         'name': _name.text.trim(),
@@ -75,7 +78,9 @@ class _MerchantSetupScreenState extends ConsumerState<MerchantSetupScreen> {
         'location': 'POINT(${_place!.lng} ${_place!.lat})',
       }).select('id').single();
       await c.from('nursery_payout').insert({'nursery_id': row['id'], 'iban': iban});
-      ref.invalidate(myNurseryProvider);
+      }
+      // ننتظر بيانات المتجر الجديدة قبل اللوحة (وإلا ترجع اللوحة لهذه الشاشة)
+      await ref.refresh(myNurseryProvider.future);
       if (mounted) context.go('/m/dashboard');
     } catch (e) {
       if (mounted) showFnSnack(context, fnErrorText(e), error: true);

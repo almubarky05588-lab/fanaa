@@ -113,8 +113,15 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
               const SizedBox(height: 30),
               Directionality(
                 textDirection: TextDirection.ltr,
-                child: PinCodeTextField(
+                child: Theme(
+                  // الخانة المخفية خلف المربعات تاخذ تعبئة الخانات العادية — نلغيها
+                  data: Theme.of(context).copyWith(
+                    inputDecorationTheme: const InputDecorationTheme(filled: false, border: InputBorder.none,
+                        enabledBorder: InputBorder.none, focusedBorder: InputBorder.none),
+                  ),
+                  child: PinCodeTextField(
                   appContext: context,
+                  backgroundColor: Colors.transparent,
                   length: kOtpLength,
                   keyboardType: TextInputType.number,
                   inputFormatters: const [EnglishDigitsFormatter()],
@@ -132,6 +139,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                   enableActiveFill: true,
                   onChanged: (v) => setState(() => _code = EnglishDigitsFormatter.convert(v)),
                   onCompleted: (_) => _verify(),
+                ),
                 ),
               ),
               const SizedBox(height: 18),

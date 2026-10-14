@@ -26,7 +26,7 @@ class AuthRepo {
       if (demoIsMerchant != (role == UserRole.merchant)) {
         throw OtpException(demoIsMerchant
             ? 'هذا الرقم مسجّل كصاحب متجر — سجّل الدخول من «صاحب متجر»'
-            : 'هذا الرقم مسجّل كعميل — سجّل الدخول من «مستخدم»');
+            : 'هذا الرقم مسجّل كعميل — سجّل الدخول من «عميل»');
       }
       return;
     }
