@@ -5,7 +5,7 @@ import os, re, sys
 
 ROOT = sys.argv[1] if len(sys.argv) > 1 else "android"
 # مفتاح خرائط قوقل لأندرويد (يوضع داخل ملف التطبيق أصلًا — يُفضّل قفله على الحزمة sa.almubarky.fenaa)
-ANDROID_MAPS_KEY = "AIzaSyBgtm2HsISKec-VRlPjHBSkz3pD83pujms"
+ANDROID_MAPS_KEY = "AIzaSyCLwfZeMiEm84G7SkIo47kmL-Pkd-3QQtk"
 MAPS_KEY = (os.environ.get("GOOGLE_MAPS_ANDROID_KEY") or ANDROID_MAPS_KEY).strip()
 LINK_HOST = "fanaa-15r.pages.dev"
 MIN_SDK = 23
