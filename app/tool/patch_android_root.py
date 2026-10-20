@@ -46,3 +46,22 @@ for name, block in (("build.gradle.kts", KTS_BLOCK), ("build.gradle", GROOVY_BLO
         open(path, "w", encoding="utf-8").write(r)
     print(f"✅ {name} (root)")
     break
+
+# ------------------------------------------------ تعطيل الضغط (R8) في نسخة الإصدار
+# يشيل أحيانًا أجزاء تحتاجها الإضافات فيتوقف التطبيق عند التشغيل
+for name in ("build.gradle.kts", "build.gradle"):
+    path = os.path.join(ROOT, "app", name)
+    if not os.path.exists(path):
+        continue
+    g = open(path, encoding="utf-8").read()
+    if "fenaa-no-shrink" not in g:
+        kts = name.endswith(".kts")
+        line = ("            // fenaa-no-shrink\n            isMinifyEnabled = false\n            isShrinkResources = false\n"
+                if kts else "            // fenaa-no-shrink\n            minifyEnabled false\n            shrinkResources false\n")
+        i = g.find("release {", g.find("buildTypes"))
+        if i >= 0:
+            j = i + len("release {")
+            g = g[:j] + "\n" + line + g[j:]
+            open(path, "w", encoding="utf-8").write(g)
+    print(f"✅ app/{name}: بدون ضغط")
+    break
