@@ -1,7 +1,7 @@
 status: success
-run: 12 (39353694131)
-commit: 3e508cfc97bd68b1e8e2aeb463bba1dc5a83c6c5
-Tue Oct 20 01:37:38 UTC 2026
+run: 13 (39384582997)
+commit: 72ef6b76d97971438430bfdcb2f679c46368f8ca
+Tue Oct 20 07:15:37 UTC 2026
 
 ==================== الأخطاء المباشرة ====================
 
@@ -9,7 +9,7 @@ Tue Oct 20 01:37:38 UTC 2026
 
 ==================== Flutter ====================
 Flutter 3.47.7 • channel stable • https://github.com/flutter/flutter.git
-Framework • revision abaf9c5237 (11 days ago) • 2026-10-08 09:51:21 -0700
+Framework • revision abaf9c5237 (12 days ago) • 2026-10-08 09:51:21 -0700
 Engine • hash d8a2d6c768c334d53e16277f837970ffa1e2de81 (revision deb287481e) (12 days ago) • 2026-10-07 17:09:12.000Z
 Tools • Dart 3.13.5 • DevTools 2.60.0
 
@@ -19,10 +19,11 @@ Your application code is in ./lib/main.dart.
 
 
 ==================== تحويلات الكود (codemods) ====================
-لا توجد تحويلات معلّقة
+▶ tool/codemods/pending/025_safe_startup.py
+025 applied
 
 ==================== رقم النسخة ====================
-version: 0.1.0+1012
+version: 0.1.0+1013
 
 ==================== الأيقونة والحزم ====================
 ✅ icons written to assets/brand
@@ -34,12 +35,13 @@ No platform provided
 ✓ Successfully generated launcher icons
 
 ==================== تحليل الكود ====================
-16 issues found. (ran in 14.7s)
+16 issues found. (ran in 16.1s)
 
 ==================== تجهيز أندرويد ====================
 ✅ AndroidManifest.xml
 ✅ build.gradle.kts
 ✅ build.gradle.kts (root)
+✅ app/build.gradle.kts: بدون ضغط
 
 ==================== التوقيع ====================
 ✅ توقيع فناء الدائم
@@ -164,10 +166,10 @@ Installing CMake 3.22.1 in /usr/local/lib/android/sdk/cmake/3.22.1
 Note: /home/runner/.pub-cache/hosted/pub.dev/geocoding_android-3.3.1/android/src/main/java/com/baseflow/geocoding/utils/LocaleConverter.java uses or overrides a deprecated API.
 Note: Recompile with -Xlint:deprecation for details.
 Caught exception: Already watching path: /home/runner/work/fanaa/fanaa/app/android
-Running Gradle task 'assembleRelease'...                          404.0s
-✓ Built build/app/outputs/flutter-apk/app-release.apk (65.6MB)
--rw-r--r-- 1 runner runner 63M Oct 20 01:37 /tmp/out/fenaa.apk
+Running Gradle task 'assembleRelease'...                          344.8s
+✓ Built build/app/outputs/flutter-apk/app-release.apk (70.0MB)
+-rw-r--r-- 1 runner runner 67M Oct 20 07:15 /tmp/out/fenaa.apk
 
-==================== ✅ اكتمل — نسخة أندرويد 1012 ====================
+==================== ✅ اكتمل — نسخة أندرويد 1013 ====================
 
 ==================== أخطاء xcodebuild ====================
