@@ -53,7 +53,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) => const Scaffold(
-        backgroundColor: FnColors.deep,
-        body: Center(child: FnLogoLockup(markSize: 56, markColor: FnColors.lime)),
+        backgroundColor: Colors.white,
+        // الشعار بألوانه الأصلية (بدون تلوين) في منتصف الشاشة
+        body: Center(child: FnLogoMark(size: 160)),
       );
 }
