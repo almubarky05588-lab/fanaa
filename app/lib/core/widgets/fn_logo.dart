@@ -12,12 +12,14 @@ class FnLogoMark extends StatelessWidget {
   final bool gradient;
 
   @override
-  Widget build(BuildContext context) => SvgPicture.asset(
+  // fenaa-original-colors: الشعار دائمًا بألوانه الأصلية؛ شفافية اللون المُمرَّر (إن وُجد) تُطبَّق كشفافية فقط
+  Widget build(BuildContext context) => Opacity(
+        opacity: (color?.a ?? 1.0).clamp(0.0, 1.0),
+        child: SvgPicture.asset(
         'assets/brand/logo.svg',
         width: size,
         height: size,
-        // لون محدد = الشعار بلون واحد (للخلفيات الملوّنة)، بدونه = ألوان الشعار الأصلية
-        colorFilter: color == null ? null : ColorFilter.mode(color!, BlendMode.srcIn),
+      ),
       );
 }
 
