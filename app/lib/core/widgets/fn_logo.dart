@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../theme/tokens.dart';
 import '../i18n/i18n.dart';
 
@@ -11,12 +12,16 @@ class FnLogoMark extends StatelessWidget {
   final bool gradient;
 
   @override
-  Widget build(BuildContext context) => CustomPaint(
-        size: Size.square(size),
-        painter: _MarkPainter(color: color, gradient: gradient),
+  Widget build(BuildContext context) => SvgPicture.asset(
+        'assets/brand/logo.svg',
+        width: size,
+        height: size,
+        // لون محدد = الشعار بلون واحد (للخلفيات الملوّنة)، بدونه = ألوان الشعار الأصلية
+        colorFilter: color == null ? null : ColorFilter.mode(color!, BlendMode.srcIn),
       );
 }
 
+// ignore: unused_element
 class _MarkPainter extends CustomPainter {
   _MarkPainter({this.color, required this.gradient});
   final Color? color;
